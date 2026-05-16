@@ -138,44 +138,18 @@ export default function App() {
 
     const channel = supabase
         .channel("orders-live")
-        .on(
-            "postgres_changes",
-            {
-              event: "INSERT",
-              schema: "public",
-              table: "orders",
-            },
-            (payload) => {
-              setOrders((prev) => [payload.new, ...prev]);
-            }
-        )
-        .on(
-            "postgres_changes",
-            {
-              event: "UPDATE",
-              schema: "public",
-              table: "orders",
-            },
-            (payload) => {
-              setOrders((prev) =>
-                  prev.map((o) => (o.id === payload.new.id ? payload.new : o))
-              );
-            }
-        )
-        .on(
-            "postgres_changes",
-            {
-              event: "DELETE",
-              schema: "public",
-              table: "orders",
-            },
-            (payload) => {
-              setOrders((prev) => prev.filter((o) => o.id !== payload.old.id));
-            }
-        )
-        .subscribe((status) => {
-          console.log("Realtime status:", status);
-        });
+        .on("postgres_changes", { event: "*", schema: "public", table: "orders" }, (payload) => {
+          if (payload.eventType === "INSERT") {
+            setOrders((prev) => [payload.new, ...prev]);
+          }
+          if (payload.eventType === "UPDATE") {
+            setOrders((prev) => prev.map((o) => o.id === payload.new.id ? payload.new : o));
+          }
+          if (payload.eventType === "DELETE") {
+            setOrders((prev) => prev.filter((o) => o.id !== payload.old.id));
+          }
+        })
+        .subscribe();
 
     return () => {
       cancelled = true;
