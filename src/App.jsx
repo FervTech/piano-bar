@@ -535,7 +535,7 @@ export default function App() {
                                 <div key={i} style={{ marginBottom: 7 }}>
                                   <div style={{ display: "flex", justifyContent: "space-between", fontSize: 14, gap: 8 }}>
                                     <span style={{ minWidth: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{item.name} × {item.qty}</span>
-                                    <span style={{ color: "#c9a84c", flexShrink: 0 }}>GHS {item.price * item.qty}</span>
+                                    <span style={{ color: "#c9a84c", flexShrink: 0 }}>GHC {item.price * item.qty}</span>
                                   </div>
                                   {item.opts?.length > 0 && (
                                       <div style={{ fontSize: 12, color: "#a78bfa", marginTop: 2, display: "flex", alignItems: "center", gap: 4 }}>
