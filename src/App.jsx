@@ -331,7 +331,7 @@ export default function App() {
                             <div style={{ fontWeight: 600, fontSize: 15, marginBottom: 2, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{item.name}</div>
                             <div style={{ fontSize: 12, color: "#7a6a90", marginBottom: 6, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{item.description}</div>
                             <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
-                              <span style={{ color: "#c9a84c", fontWeight: 600, fontSize: 15 }}>GHS {item.price}</span>
+                              <span style={{ color: "#c9a84c", fontWeight: 600, fontSize: 15 }}>GHC {item.price}</span>
                               {item.customizable && (
                                   <span style={{ fontSize: 10, background: "#2e2050", color: "#a78bfa", padding: "2px 8px", borderRadius: 10, display: "inline-flex", alignItems: "center", gap: 4 }}>
                           <FontAwesomeIcon icon={faSlidersH} style={{ fontSize: 9 }} /> custom
@@ -377,7 +377,7 @@ export default function App() {
                     {item.name}{item.opts?.length ? ` (${item.opts.join(", ")})` : ""} × {item.qty}
                   </span>
                         <div style={{ display: "flex", alignItems: "center", gap: 5, flexShrink: 0 }}>
-                          <span style={{ color: "#c9a84c", fontSize: 13 }}>GHS {item.price * item.qty}</span>
+                          <span style={{ color: "#c9a84c", fontSize: 13 }}>GHC {item.price * item.qty}</span>
                           <QtyBtn small onClick={() => changeQty(item._key, -1)}><FontAwesomeIcon icon={faMinus} /></QtyBtn>
                           <QtyBtn small accent onClick={() => changeQty(item._key, 1)}><FontAwesomeIcon icon={faPlus} /></QtyBtn>
                         </div>
@@ -388,7 +388,7 @@ export default function App() {
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 10 }}>
                   <div style={{ minWidth: 0 }}>
                     <span style={{ color: "#7a6a90", fontSize: 12 }}>{cartCount} item{cartCount !== 1 ? "s" : ""} · </span>
-                    <span style={{ color: "#c9a84c", fontWeight: 700, fontSize: 16 }}>GHS {cartTotal}</span>
+                    <span style={{ color: "#c9a84c", fontWeight: 700, fontSize: 16 }}>GHC {cartTotal}</span>
                   </div>
                   <button onClick={submitOrder} disabled={submitting}
                           style={{ padding: "12px 20px", borderRadius: 12, background: submitting ? "#2e2050" : "linear-gradient(135deg,#7c3aed,#5b21b6)", color: submitting ? "#7a6a90" : "#fff", border: "none", cursor: submitting ? "wait" : "pointer", fontSize: 14, fontWeight: 700, display: "flex", alignItems: "center", gap: 7, flexShrink: 0, whiteSpace: "nowrap" }}>
@@ -407,7 +407,7 @@ export default function App() {
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 14 }}>
                   <div>
                     <div style={{ fontWeight: 700, fontSize: 17 }}>{customizeItem.name}</div>
-                    <div style={{ color: "#c9a84c", fontWeight: 600, marginTop: 2, fontSize: 15 }}>GHS {customizeItem.price}</div>
+                    <div style={{ color: "#c9a84c", fontWeight: 600, marginTop: 2, fontSize: 15 }}>GHC {customizeItem.price}</div>
                   </div>
                   <button onClick={() => setCustomizeItem(null)}
                           style={{ background: "#2e2050", border: "none", color: "#a78bfa", borderRadius: 8, padding: "8px 12px", cursor: "pointer", fontSize: 16, lineHeight: 1 }}>
@@ -553,7 +553,7 @@ export default function App() {
 
                           {/* Footer */}
                           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", borderTop: "1px solid #2e2050", paddingTop: 10, gap: 8, flexWrap: "wrap" }}>
-                            <span style={{ fontWeight: 700, color: "#c9a84c", fontSize: 16 }}>GHS {order.total}</span>
+                            <span style={{ fontWeight: 700, color: "#c9a84c", fontSize: 16 }}>GHC {order.total}</span>
                             {STATUS_NEXT[order.status] && (
                                 <button onClick={() => updateStatus(order.id, STATUS_NEXT[order.status])}
                                         style={{ padding: "9px 16px", borderRadius: 10, border: "none", cursor: "pointer", fontSize: 13, fontWeight: 600, display: "flex", alignItems: "center", gap: 6,
