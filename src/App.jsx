@@ -72,13 +72,13 @@ const STAT_CARDS = [
 ];
 
 /* ─────────────────────────── HELPERS ───────────────────────────── */
-const ONE_HOUR_MS = 60 * 60 * 1000;
+const THREE_HOURS_MS = 3 * 60 * 60 * 1000;
 
 function isDeliveredVisible(order) {
   // Hide Delivered orders until 1 hour has passed since they were last updated
   if (order.status !== "Delivered") return true;
   const updatedAt = new Date(order.updated_at || order.created_at);
-  return Date.now() - updatedAt.getTime() < ONE_HOUR_MS;
+  return Date.now() - updatedAt.getTime() < THREE_HOURS_MS;
 }
 
 /* ─────────────────────────── TOAST HOOK ────────────────────────── */
@@ -174,7 +174,7 @@ function OrderDetailModal({ order, onClose, onUpdateStatus }) {
                   borderBottom: i < order.items.length-1 ? "1px solid #2e2050" : "none" }}>
                   <div style={{ display:"flex", justifyContent:"space-between", fontSize:14, fontWeight:600, gap:8 }}>
                     <span style={{ minWidth:0, overflow:"hidden", textOverflow:"ellipsis" }}>{item.name} × {item.qty}</span>
-                    <span style={{ color:"#c9a84c", flexShrink:0 }}>GHS {item.price * item.qty}</span>
+                    <span style={{ color:"#c9a84c", flexShrink:0 }}>GHC {item.price * item.qty}</span>
                   </div>
                   {item.opts?.length > 0 && (
                       <div style={{ fontSize:12, color:"#a78bfa", marginTop:3, display:"flex", alignItems:"center", gap:4 }}>
@@ -191,7 +191,7 @@ function OrderDetailModal({ order, onClose, onUpdateStatus }) {
             <div style={{ display:"flex", justifyContent:"space-between", fontWeight:700, fontSize:16,
               paddingTop:10, borderTop:"1px solid #2e2050" }}>
               <span style={{ color:"#7a6a90" }}>Total</span>
-              <span style={{ color:"#c9a84c" }}>GHS {order.total}</span>
+              <span style={{ color:"#c9a84c" }}>GHC {order.total}</span>
             </div>
           </div>
 
@@ -277,7 +277,7 @@ function CustomerOrdersPage({ tableNo }) {
   const visible = myOrders.filter(o => {
     if (o.status !== "Delivered") return true;
     const updated = new Date(o.updated_at || o.created_at);
-    return (now - updated.getTime()) < ONE_HOUR_MS;
+    return (now - updated.getTime()) < THREE_HOURS_MS;
   });
 
   if (!visible.length) return (
@@ -334,7 +334,7 @@ function CustomerOrdersPage({ tableNo }) {
                       {new Date(order.created_at).toLocaleTimeString([], { hour:"2-digit", minute:"2-digit" })}
                       {" · "}{order.items.length} item{order.items.length !== 1 ? "s" : ""}
                     </div>
-                    <div style={{ fontWeight:700, color:"#c9a84c", fontSize:17 }}>GHS {order.total}</div>
+                    <div style={{ fontWeight:700, color:"#c9a84c", fontSize:17 }}>GHC {order.total}</div>
                   </div>
                   <div style={{ display:"flex", alignItems:"center", gap:8, flexShrink:0 }}>
                 <span style={{ padding:"4px 12px", borderRadius:20, fontSize:11, fontWeight:700,
@@ -386,7 +386,7 @@ function CustomerOrdersPage({ tableNo }) {
                           <div key={i} style={{ marginBottom:10 }}>
                             <div style={{ display:"flex", justifyContent:"space-between", fontSize:14, fontWeight:600, gap:8 }}>
                               <span style={{ minWidth:0, overflow:"hidden", textOverflow:"ellipsis", whiteSpace:"nowrap" }}>{item.name} × {item.qty}</span>
-                              <span style={{ color:"#c9a84c", flexShrink:0 }}>GHS {item.price * item.qty}</span>
+                              <span style={{ color:"#c9a84c", flexShrink:0 }}>GHC {item.price * item.qty}</span>
                             </div>
                             {item.opts?.length > 0 && (
                                 <div style={{ fontSize:12, color:"#a78bfa", marginTop:2, display:"flex", alignItems:"center", gap:4 }}>
@@ -705,7 +705,7 @@ export default function App() {
                               {item.description}
                             </div>
                             <div style={{ display:"flex", alignItems:"center", gap:8, flexWrap:"wrap" }}>
-                              <span style={{ color:"#c9a84c", fontWeight:600, fontSize:15 }}>GHS {item.price}</span>
+                              <span style={{ color:"#c9a84c", fontWeight:600, fontSize:15 }}>GHC {item.price}</span>
                               {item.customizable && (
                                   <span style={{ fontSize:10, background:"#2e2050", color:"#a78bfa",
                                     padding:"2px 8px", borderRadius:10,
@@ -773,7 +773,7 @@ export default function App() {
                     {item.name}{item.opts?.length ? ` (${item.opts.join(", ")})` : ""} × {item.qty}
                   </span>
                         <div style={{ display:"flex", alignItems:"center", gap:5, flexShrink:0 }}>
-                          <span style={{ color:"#c9a84c", fontSize:13 }}>GHS {item.price * item.qty}</span>
+                          <span style={{ color:"#c9a84c", fontSize:13 }}>GHC {item.price * item.qty}</span>
                           <QtyBtn small onClick={() => changeQty(item._key, -1)}><FontAwesomeIcon icon={faMinus} /></QtyBtn>
                           <QtyBtn small accent onClick={() => changeQty(item._key, 1)}><FontAwesomeIcon icon={faPlus} /></QtyBtn>
                         </div>
@@ -783,7 +783,7 @@ export default function App() {
                 <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", gap:10 }}>
                   <div>
                     <span style={{ color:"#7a6a90", fontSize:12 }}>{cartCount} item{cartCount!==1?"s":""} · </span>
-                    <span style={{ color:"#c9a84c", fontWeight:700, fontSize:16 }}>GHS {cartTotal}</span>
+                    <span style={{ color:"#c9a84c", fontWeight:700, fontSize:16 }}>GHC {cartTotal}</span>
                   </div>
                   <button onClick={submitOrder} disabled={submitting}
                           style={{ padding:"12px 20px", borderRadius:12,
@@ -813,7 +813,7 @@ export default function App() {
                 <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:14 }}>
                   <div>
                     <div style={{ fontWeight:700, fontSize:17 }}>{customizeItem.name}</div>
-                    <div style={{ color:"#c9a84c", fontWeight:600, marginTop:2, fontSize:15 }}>GHS {customizeItem.price}</div>
+                    <div style={{ color:"#c9a84c", fontWeight:600, marginTop:2, fontSize:15 }}>GHC {customizeItem.price}</div>
                   </div>
                   <button onClick={() => setCustomizeItem(null)}
                           style={{ background:"#2e2050", border:"none", color:"#a78bfa",
@@ -1011,7 +1011,7 @@ export default function App() {
                     {historyOrders.length > 0 && (
                         <div style={{ marginTop:10, display:"flex", gap:10, flexWrap:"wrap" }}>
                           <Chip label="Orders" value={historyOrders.length} />
-                          <Chip label="Revenue" value={`GHS ${historyTotal.toFixed(2)}`} gold />
+                          <Chip label="Revenue" value={`GHC ${historyTotal.toFixed(2)}`} gold />
                         </div>
                     )}
                   </div>
@@ -1080,7 +1080,7 @@ export default function App() {
                           textOverflow:"ellipsis", whiteSpace:"nowrap" }}>
                           {item.name} × {item.qty}
                         </span>
-                                  <span style={{ color:"#c9a84c", flexShrink:0 }}>GHS {item.price * item.qty}</span>
+                                  <span style={{ color:"#c9a84c", flexShrink:0 }}>GHC {item.price * item.qty}</span>
                                 </div>
                             ))}
                             {order.items.length > 2 && (
@@ -1093,7 +1093,7 @@ export default function App() {
                           {/* Footer */}
                           <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center",
                             borderTop:"1px solid #2e2050", paddingTop:10, gap:8, flexWrap:"wrap" }}>
-                            <span style={{ fontWeight:700, color:"#c9a84c", fontSize:15 }}>GHS {order.total}</span>
+                            <span style={{ fontWeight:700, color:"#c9a84c", fontSize:15 }}>GHC {order.total}</span>
                             {STATUS_NEXT[order.status] && (
                                 <button onClick={e => { e.stopPropagation(); updateStatus(order.id, STATUS_NEXT[order.status]); }}
                                         style={{ padding:"7px 14px", borderRadius:10, border:"none", cursor:"pointer",
