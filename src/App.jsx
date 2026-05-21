@@ -434,7 +434,8 @@ export default function App() {
   const [selectedOrder, setSelectedOrder]   = useState(null);
   const [historyDateFrom, setHistoryDateFrom] = useState("");
   const [historyDateTo,   setHistoryDateTo]   = useState("");
-  const [showFilters, setShowFilters]         = useState(false);
+  const [showFilters, setShowFilters]           = useState(false);
+  const [historySearch, setHistorySearch]       = useState("");
   const { toasts, add: addToast } = useToasts();
 
   /* ── fetch & realtime ── */
@@ -535,6 +536,14 @@ export default function App() {
     const d = new Date(o.created_at);
     if (historyDateFrom) { const f = new Date(historyDateFrom); f.setHours(0,0,0,0); if (d < f) return false; }
     if (historyDateTo)   { const t = new Date(historyDateTo);   t.setHours(23,59,59,999); if (d > t) return false; }
+    if (historySearch.trim()) {
+      const q = historySearch.trim().toLowerCase();
+      const matchTable = o.table_no?.toLowerCase().includes(q);
+      const matchGuest = o.guest_name?.toLowerCase().includes(q);
+      const matchItem  = o.items?.some(i => i.name?.toLowerCase().includes(q));
+      const matchTotal = String(o.total).includes(q);
+      if (!matchTable && !matchGuest && !matchItem && !matchTotal) return false;
+    }
     return true;
   });
   const historyTotal = historyOrders.reduce((s, o) => s + Number(o.total), 0);
@@ -560,6 +569,8 @@ export default function App() {
         input[type="date"]::-webkit-calendar-picker-indicator { filter:invert(0.5); cursor:pointer; }
         ::-webkit-scrollbar { display:none; }
         button { -webkit-tap-highlight-color:transparent; touch-action:manipulation; font-family:inherit; }
+        @keyframes blink { 0%,100% { opacity:1; transform:scale(1); } 50% { opacity:0.3; transform:scale(0.7); } }
+        .live-dot { animation:blink 1.2s ease-in-out infinite; }
         .ocard { transition:border-color 0.15s, transform 0.1s; cursor:pointer; }
         .ocard:active { transform:scale(0.985); }
         .stat-card { transition:border-color 0.15s, transform 0.1s, box-shadow 0.15s; cursor:pointer; }
@@ -929,6 +940,7 @@ export default function App() {
                               background:  bartenderTab===t.key ? "#c9a84c18" : "transparent",
                               color:       bartenderTab===t.key ? "#c9a84c" : "#7a6a90" }}>
                       <FontAwesomeIcon icon={t.icon}
+                                       className={t.key==="live" ? "live-dot" : ""}
                                        style={{ fontSize: t.key==="live" ? 8 : 12,
                                          color: t.key==="live" ? "#ef4444" : undefined }} />
                       {t.label} ({t.count})
@@ -1007,6 +1019,27 @@ export default function App() {
                           )}
                         </div>
                     )}
+
+                    {/* Search */}
+                    <div style={{ marginTop:10, position:"relative" }}>
+                <span style={{ position:"absolute", left:12, top:"50%", transform:"translateY(-50%)",
+                  color:"#4a3a60", fontSize:13, pointerEvents:"none" }}>🔍</span>
+                      <input
+                          type="text"
+                          placeholder="Search table, guest, item…"
+                          value={historySearch}
+                          onChange={e => setHistorySearch(e.target.value)}
+                          style={{ width:"100%", padding:"11px 12px 11px 34px" }}
+                      />
+                      {historySearch && (
+                          <button onClick={() => setHistorySearch("")}
+                                  style={{ position:"absolute", right:10, top:"50%", transform:"translateY(-50%)",
+                                    background:"transparent", border:"none", cursor:"pointer",
+                                    color:"#7a6a90", fontSize:14, padding:0, lineHeight:1 }}>
+                            ✕
+                          </button>
+                      )}
+                    </div>
 
                     {historyOrders.length > 0 && (
                         <div style={{ marginTop:10, display:"flex", gap:10, flexWrap:"wrap" }}>
