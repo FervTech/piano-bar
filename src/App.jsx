@@ -651,11 +651,16 @@ export default function App() {
             <div style={{ maxWidth:580, margin:"0 auto", padding:"16px 12px 200px" }}>
 
               {/* Name + table */}
-              <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:8, marginBottom:12 }}>
+              {/* Responsive input row — stacked on mobile, side-by-side on tablet/desktop */}
+              <style>{`
+            .input-row { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:12px; }
+            @media (max-width: 520px) { .input-row { grid-template-columns:1fr; } }
+          `}</style>
+              <div className="input-row">
                 <input type="text" placeholder="Your name (optional)" value={guestName}
-                       onChange={e => setGuestName(e.target.value)} style={{ padding:"12px" }} />
+                       onChange={e => setGuestName(e.target.value)} style={{ padding:"12px", width:"100%" }} />
                 <input type="text" placeholder="Table number *" value={tableNo}
-                       inputMode="numeric" onChange={e => setTableNo(e.target.value)} style={{ padding:"12px" }} />
+                       inputMode="numeric" onChange={e => setTableNo(e.target.value)} style={{ padding:"12px", width:"100%" }} />
               </div>
 
               {tableNo && (
@@ -1106,6 +1111,16 @@ export default function App() {
               )}
             </div>
         )}
+        {/* ── Footer copyright ── */}
+        <footer style={{
+          textAlign:"center", padding:"20px 16px",
+          borderTop:"1px solid #1e1a35",
+          marginTop:8,
+        }}>
+          <p style={{ margin:0, fontSize:11, color:"#3a2a5e", letterSpacing:1 }}>
+            &copy; {new Date().getFullYear()} <span style={{ color:"#5a4a7e", fontWeight:600 }}>FervTech</span>. All rights reserved.
+          </p>
+        </footer>
       </div>
   );
 }
