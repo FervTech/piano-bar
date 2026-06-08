@@ -139,96 +139,8 @@ const CATEGORIES = [
                     { id: "f3", name: "Spring Rolls",   price: 45, description: "4 pcs, sweet chili dip",   customizable: false, options: [] },
                     { id: "f4", name: "Cheese Platter", price: 85, description: "3 cheeses, crackers, fruit", customizable: false, options: [] },
                 ]},
-            { id: "chicken", label: "Chicken Dishes", icon: faDrumstickBite, items: [
-                    {
-                        id: "P070",
-                        name: "Grilled Chicken Drumsticks",
-                        price: 80,                           // lowest price shown as "from"
-                        description: "Juicy grilled drumsticks, choice of sauce",
-                        customizable: true,
-                        options: ["BBQ","Hot sauce","Lemon pepper","Peri-peri"],
-                        variants: [
-                            { label: "P070",  price: 80  },
-                            { label: "P070A", price: 120 },
-                        ],
-                    },
-                    {
-                        id: "P071",
-                        name: "Grilled Chicken Wings",
-                        price: 80,                           // lowest price shown as "from"
-                        description: "Juicy grilled wings, choice of sauce",
-                        customizable: true,
-                        options: ["BBQ","Hot sauce","Lemon pepper","Peri-peri"],
-                        variants: [
-                            { label: "P071",  price: 80  },
-                            { label: "P071A", price: 120 },
-                        ],
-                    },
-                    {
-                        id: "P072",
-                        name: "Chicken Stir Fried Noodles",
-                        price: 80,                           // lowest price shown as "from"
-                        description: "Juicy grilled drumsticks, choice of sauce",
-                        customizable: true,
-                        options: ["BBQ","Hot sauce","Lemon pepper","Peri-peri"],
-                        variants: [
-                            { label: "P072",  price: 80  },
-                            { label: "P072A", price: 120 },
-                        ],
-                    },
-                    {
-                        id: "P073",
-                        name: "Chicken Veggie Sauce",
-                        price: 80,                           // lowest price shown as "from"
-                        description: "Juicy grilled drumsticks, choice of sauce",
-                        customizable: true,
-                        options: ["BBQ","Hot sauce","Lemon pepper","Peri-peri"],
-                        variants: [
-                            { label: "P073",  price: 80  },
-                            { label: "P073A", price: 120 },
-                        ],
-                    },
-                    {
-                        id: "P074",
-                        name: "Chicken Veggie Stew",
-                        price: 80,                           // lowest price shown as "from"
-                        description: "Juicy grilled drumsticks, choice of sauce",
-                        customizable: true,
-                        options: ["BBQ","Hot sauce","Lemon pepper","Peri-peri"],
-                        variants: [
-                            { label: "P074",  price: 80  },
-                            { label: "P074A", price: 120 },
-                        ],
-                    },
 
 
-                    { id: "P075", name: "Chicken Khebab/Skewer",   price: 50, description: "3 pcs, sweet chili dip",   customizable: false, options: [] },
-                    {
-                        id: "P076",
-                        name: "Chicken Fried Rice",
-                        price: 80,                           // lowest price shown as "from"
-                        description: "Juicy grilled drumsticks, choice of sauce",
-                        customizable: true,
-                        options: ["BBQ","Hot sauce","Lemon pepper","Peri-peri"],
-                        variants: [
-                            { label: "P076",  price: 80  },
-                            { label: "P076A", price: 120 },
-                        ],
-                    },
-                    { id: "P212", name: "Grilled Chicken Drumsticks", price: 50, description: "3 pcs, sweet chili dip", customizable: false, options: [] },
-                    {
-                        id: "P270",
-                        name: "Grilled Chicken Breast",
-                        price: 80,                           // lowest price shown as "from"
-                        description: "Juicy grilled drumsticks, choice of sauce",
-                        customizable: true,
-                        options: ["BBQ","Hot sauce","Lemon pepper","Peri-peri"],
-                        variants: [
-                            { label: "P076",  price: 80  },
-                            { label: "P076A", price: 120 },
-                        ],
-                    },
-                ]},
         ],
     },
     {
@@ -361,15 +273,28 @@ const CATEGORIES = [
         ],
     },
     {
-        id: "local",
-        label: "Local Drinks",
+        id: "extras",
+        label: "Extras",
         icon: faBeer,
         subcategories: [
-            { id: "beers", label: "Beers", icon: faBeer, items: [
-                    { id: "b1", name: "Heineken 330ml",  price: 35, description: "Premium lager",       customizable: false, options: [] },
-                    { id: "b2", name: "Club Beer Large", price: 25, description: "Local favourite",     customizable: false, options: [] },
-                    { id: "b3", name: "Guinness",        price: 38, description: "Irish dry stout",     customizable: false, options: [] },
-                    { id: "b4", name: "Savanna Dry",     price: 35, description: "South African cider", customizable: false, options: [] },
+            { id: "extras", label: "Extras", icon: faBeer, items: [
+                    { id: "P419", name: "Salmon",  price: 30, description: "Nicely Done",       customizable: false, options: [] },
+                    { id: "P420", name: "Tuna", price: 30, description: "Nicely Done",     customizable: false, options: [] },
+                    { id: "P421", name: "Dry Fish",        price: 30, description: "Nicely Done",     customizable: false, options: [] },
+                    { id: "P422", name: "Beef", price: 30, description: "Nicely Done", customizable: false, options: [] },
+                    { id: "P423", name: "Goat", price: 30, description: "Nicely Done", customizable: false, options: [] },
+
+                ]},
+
+            { id: "packs", label: "The Happy Chicken Packs", icon: faChampagneGlasses, items: [
+                    { id: "P080", name: "Piano Happy Chicken Drumsticks 6/Pk",  price: 90, description: "Nicely Done",       customizable: false, options: [] },
+                    { id: "P081", name: "Piano Happy Chicken Drumsticks 12/Pk", price: 160, description: "Nicely Done",     customizable: false, options: [] },
+                    { id: "P082", name: "Piano Happy Chicken Drumsticks 15/Pk", price: 190, description: "Nicely Done",     customizable: false, options: [] },
+                    { id: "P083", name: "Piano Happy Chicken Drumsticks 20/Pk", price: 250, description: "Nicely Done", customizable: false, options: [] },
+                    { id: "P084", name: "Piano Happy Chicken Wings 5/Pk 500G Yam chips", price: 120, description: "Nicely Done", customizable: false, options: [] },
+                    { id: "P085", name: "Piano Happy Chicken Wings 12/Pk", price: 170, description: "Nicely Done", customizable: false, options: [] },
+                    { id: "P086", name: "Piano Happy Chicken Wings 20/Pk", price: 250, description: "Nicely Done", customizable: false, options: [] },
+
                 ]},
         ],
     },
