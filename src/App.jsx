@@ -60,8 +60,8 @@ const CATEGORIES = [
 
                 ]},
             { id: "whisky", label: "Whisky", icon: faWhiskeyGlass, items: [
-                    { id: "wh1", name: "red label 20cl",  price: 130, description: "Premium lager",       customizable: false, options: [] },
-                    { id: "wh2", name: "black label 20cl", price: 25, description: "Local favourite",     customizable: false, options: [] },
+                    { id: "wh1", name: "Red label 20cl",  price: 130, description: "Premium lager",       customizable: false, options: [] },
+                    { id: "wh2", name: "Black label 20cl", price: 25, description: "Local favourite",     customizable: false, options: [] },
                     { id: "wh3", name: "Smirnoff Vodka",        price: 90, description: "Irish dry stout",     customizable: false, options: [] },
                      ]},
             { id: "liqueur", label: "Liqueur", icon: faWineBottle, items: [
