@@ -13,7 +13,7 @@ import {
     faRightFromBracket, faCircle, faClockRotateLeft, faPlus, faMinus, faMartiniGlass,faGlassWater,
     faXmark, faArrowRight, faPaperPlane, faSpinner, faSlidersH, faNoteSticky,faMartiniGlassCitrus,
     faChevronDown, faChevronUp, faFilter, faCalendarDays, faTimesCircle,faShrimp,faWandMagicSparkles,
-    faReceipt, faChevronRight, faListUl, faHourglassHalf, faCog, faCheckDouble,
+    faReceipt, faChevronRight, faListUl, faHourglassHalf, faCog, faCheckDouble,faPizzaSlice,
     faChevronLeft, faDrumstickBite, faTag,faBowlFood,faBacon,faFireFlameCurved,
 } from "@fortawesome/free-solid-svg-icons";
 import logo from "./assets/logo.svg";
@@ -274,7 +274,7 @@ const CATEGORIES = [
                             { label: "P065A", price: 120 },
                         ] },
                 ]},
-            { id: "porkDishes", label: "B13-Chicken Dishes", icon: faBowlFood, items: [
+            { id: "chickenDishes", label: "B13-Chicken Dishes", icon: faBowlFood, items: [
                     { id: "P070", name: "Grilled Chicken Drumsticks",  price: 80, description: "",   customizable: true,  options: [], variants: [
                             { label: "P060",  price: 80  },
                             { label: "P060A", price: 120 },
@@ -305,6 +305,18 @@ const CATEGORIES = [
                             { label: "P065",  price: 80  },
                             { label: "P065A", price: 120 },
                         ] },
+
+                ]},
+            { id: "pizza", label: "Pizza", icon: faPizzaSlice, items: [
+                    { id: "P090", name: "Seafood Pizza",  price: 140, description: "",   customizable: false,  options: [] },
+                    { id: "P091", name: "Beef Pizza",  price: 120, description: "",   customizable: false,  options: [] },
+                    { id: "P092", name: "Chicken Pizza",  price: 100, description: "",   customizable: false,  options: []},
+                    { id: "P093", name: "Special Chicken & Beef Pizza",  price: 120, description: "",   customizable: false,  options: [] },
+                    { id: "P094", name: "Sausage Pizza",  price: 100, description: "",   customizable: false,  options: [] },
+                    { id: "P095", name: "Gizzard Pizza",  price: 100, description: "",   customizable: false,  options: []},
+                    { id: "P096", name: "Pepperoni Pizza",  price: 150, description: "",   customizable: false,  options: []  },
+                    { id: "P097", name: "Tuna Pizza",  price: 100, description: "",   customizable: false,  options: []},
+                    { id: "P210", name: "Pork Pizza",  price: 100, description: "",   customizable: false,  options: []},
 
                 ]},
 
