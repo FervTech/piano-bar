@@ -10,7 +10,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
     faBeer, faWineBottle, faChampagneGlasses, faBurger,faBottleDroplet,
     faLock, faLocationDot, faCircleCheck, faRotateRight,faWineGlassEmpty,faWhiskeyGlass,
-    faRightFromBracket, faCircle, faClockRotateLeft, faPlus, faMinus, faMartiniGlass,faGlassWater,faBottleWater,
+    faRightFromBracket, faCircle, faClockRotateLeft, faPlus, faMinus,faBottleWater,
     faXmark, faArrowRight, faPaperPlane, faSpinner, faSlidersH, faNoteSticky,faMartiniGlassCitrus,
     faChevronDown, faChevronUp, faFilter, faCalendarDays, faTimesCircle,faShrimp,faWandMagicSparkles,
     faReceipt, faChevronRight, faListUl, faHourglassHalf, faCog, faCheckDouble,faPizzaSlice,
