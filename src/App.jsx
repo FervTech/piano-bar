@@ -12,9 +12,9 @@ import {
     faLock, faLocationDot, faCircleCheck, faRotateRight,faWineGlassEmpty,faWhiskeyGlass,
     faRightFromBracket, faCircle, faClockRotateLeft, faPlus, faMinus, faMartiniGlass,faGlassWater,
     faXmark, faArrowRight, faPaperPlane, faSpinner, faSlidersH, faNoteSticky,faMartiniGlassCitrus,
-    faChevronDown, faChevronUp, faFilter, faCalendarDays, faTimesCircle,
+    faChevronDown, faChevronUp, faFilter, faCalendarDays, faTimesCircle,faShrimp,faWandMagicSparkles,
     faReceipt, faChevronRight, faListUl, faHourglassHalf, faCog, faCheckDouble,
-    faChevronLeft, faDrumstickBite, faTag,
+    faChevronLeft, faDrumstickBite, faTag,faBowlFood,faBacon,faFireFlameCurved,
 } from "@fortawesome/free-solid-svg-icons";
 import logo from "./assets/logo.svg";
 
@@ -125,28 +125,131 @@ const CATEGORIES = [
     {
         id: "food",
         label: "Food & Bites",
-        icon: faBurger,
+        icon: faBowlFood,
         subcategories: [
-            { id: "bites", label: "Bites", icon: faBurger, items: [
-                    { id: "f1", name: "Chicken Wings",  price: 65, description: "6 pcs, choice of sauce",   customizable: true,  options: ["BBQ","Hot sauce","Lemon pepper","Peri-peri"] },
-                    { id: "f2", name: "Loaded Fries",   price: 55, description: "Cheese, bacon, jalapeño",  customizable: true,  options: ["Extra cheese","No jalapeño","Add fried egg"] },
-                    { id: "f3", name: "Spring Rolls",   price: 45, description: "4 pcs, sweet chili dip",   customizable: false, options: [] },
-                    { id: "f4", name: "Cheese Platter", price: 85, description: "3 cheeses, crackers, fruit", customizable: false, options: [] },
+            { id: "goatDishes", label: "B37A-Goat Dishes", icon: faBowlFood, items: [
+                    { id: "P016", name: "Goat Stew",  price: 95, description: "",   customizable: true,  options: [], variants: [
+                            { label: "P016",  price: 95  },
+                            { label: "P016A", price: 140 },
+                        ] },
+                    { id: "P017", name: "Goat Kebab Only",  price: 95, description: "",   customizable: false,  options: []},
+                    { id: "P009", name: "Goat Jollof Rice Special",  price: 95, description: "6 pcs, choice of sauce",   customizable: true,  options: ["BBQ","Hot sauce","Lemon pepper","Peri-peri"], variants: [
+                            { label: "P009",  price: 95  },
+                            { label: "P009A", price: 140 },
+                        ] },
+                    { id: "P008", name: "Goat Fried Rice Special",  price: 95, description: "6 pcs, choice of sauce",   customizable: true,  options: ["BBQ","Hot sauce","Lemon pepper","Peri-peri"], variants: [
+                            { label: "P008",  price: 95  },
+                            { label: "P008A", price: 140 },
+                        ] },
+                    { id: "P020", name: "Goat Stir Fry Noodles",  price: 95, description: "6 pcs, choice of sauce",   customizable: true,  options: ["BBQ","Hot sauce","Lemon pepper","Peri-peri"], variants: [
+                            { label: "P020",  price: 95  },
+                            { label: "P020A", price: 140 },
+                        ] },
+                   ]},
+            { id: "gizzardDishes", label: "A15-Gizzard Dishes", icon: faBowlFood, items: [
+                    { id: "P021", name: "Gizzard Stew",  price: 80, description: "",   customizable: true,  options: [], variants: [
+                            { label: "P021",  price: 80  },
+                            { label: "P021A", price: 120 },
+                        ] },
+                    { id: "P022", name: "Gizzard Kebab Only",  price: 40, description: "",   customizable: false,  options: []},
+                    { id: "P023", name: "Gizzard Jollof Rice Special ",  price: 80, description: "6 pcs, choice of sauce",   customizable: true,  options: ["BBQ","Hot sauce","Lemon pepper","Peri-peri"], variants: [
+                            { label: "P023",  price: 80  },
+                            { label: "P023A", price: 120 },
+                        ] },
+                    { id: "P024", name: "Gizzard Fried Rice Special",  price: 80, description: "6 pcs, choice of sauce",   customizable: true,  options: ["BBQ","Hot sauce","Lemon pepper","Peri-peri"], variants: [
+                            { label: "P024",  price: 80  },
+                            { label: "P024A", price: 120 },
+                        ] },
+                    { id: "P025", name: "Gizzard Stir Fry Noodles",  price: 78, description: "6 pcs, choice of sauce",   customizable: true,  options: ["BBQ","Hot sauce","Lemon pepper","Peri-peri"], variants: [
+                            { label: "P025",  price: 78  },
+                            { label: "P025A", price: 120 },
+                        ] },
                 ]},
-            { id: "bites", label: "Bites", icon: faBurger, items: [
-                    { id: "f1", name: "Chicken Wings",  price: 65, description: "6 pcs, choice of sauce",   customizable: true,  options: ["BBQ","Hot sauce","Lemon pepper","Peri-peri"] },
-                    { id: "f2", name: "Loaded Fries",   price: 55, description: "Cheese, bacon, jalapeño",  customizable: true,  options: ["Extra cheese","No jalapeño","Add fried egg"] },
-                    { id: "f3", name: "Spring Rolls",   price: 45, description: "4 pcs, sweet chili dip",   customizable: false, options: [] },
-                    { id: "f4", name: "Cheese Platter", price: 85, description: "3 cheeses, crackers, fruit", customizable: false, options: [] },
+            { id: "tilapia", label: "B27-Fish/SeadFood Dishes (Tilapia)", icon: faBowlFood, items: [
+                    { id: "P028", name: "Grilled Tilapia (550-700g)",  price: 95, description: "",   customizable: false,  options: []},
+                    { id: "P029", name: "Grilled Tilapia (700-800g)",  price: 95, description: "",   customizable: false,  options: []},
+                    { id: "P030", name: "Grilled Tilapia (800-900g)",  price: 95, description: "",   customizable: false,  options: ["BBQ","Hot sauce","Lemon pepper","Peri-peri"],  },
+                    { id: "P031", name: "Grilled Tilapia (900-1000g)",  price: 95, description: "",   customizable: false,  options: ["BBQ","Hot sauce","Lemon pepper","Peri-peri"]},
+                    { id: "P032", name: "Grilled Tilapia (1000-1500g)",  price: 95, description: "",   customizable: false,  options: ["BBQ","Hot sauce","Lemon pepper","Peri-peri" ] },
                 ]},
+            { id: "snapper", label: "B27-Fish/SeadFood Dishes (Snapper)", icon: faBowlFood, items: [
+                    { id: "P034", name: "Fried Red Snapper",  price: 85, description: "",   customizable: false,  options: []},
+                    { id: "P203", name: "Fried Red Snapper only 1pc",  price: 70, description: "",   customizable: false,  options: []},
+                    { id: "P035", name: "Fried Red Snapper Veggie Stew",  price: 95, description: "",   customizable: false,  options: [],  },
+                    { id: "P036", name: "Red Snapper Soup",  price: 95, description: "",   customizable: false,  options: []},
+                    { id: "PG36", name: "Red Snapper Groundnut Soup",  price: 95, description: "",   customizable: false,  options: [] },
+                ]},
+            { id: "tigerPrawns", label: "B80-Tiger Prawns", icon: faBowlFood, items: [
+                    { id: "P040", name: "Prawns Veggie Stew",  price: 180, description: "",   customizable: true,  options: [], variants: [
+                            { label: "P040",  price: 180  },
+                            { label: "P040A", price: 200 },
+                        ] },
+                    { id: "P041", name: "Prawns Kebab Only 4pc",  price: 120, description: "",   customizable: false,  options: []},
+                    { id: "P042", name: "Grilled Prawns with side dish ",  price: 180, description: "6 pcs, choice of sauce",   customizable: true,  options: ["BBQ","Hot sauce","Lemon pepper","Peri-peri"], variants: [
+                            { label: "P042",  price: 180  },
+                            { label: "P042A", price: 200 },
+                        ] },
+                    { id: "P006", name: "Prawn Fried Rice Special",  price: 180, description: "6 pcs, choice of sauce",   customizable: true,  options: ["BBQ","Hot sauce","Lemon pepper","Peri-peri"], variants: [
+                            { label: "P006",  price: 180  },
+                            { label: "P006A", price: 200 },
+                        ] },
 
+                ]},
+            { id: "grouperDishes", label: "B70Grouper Dishes", icon: faBowlFood, items: [
+                    { id: "P044", name: "Grouper Veggie Stew",  price: 120, description: "",   customizable: false,  options: [] },
+                    { id: "P045", name: "Grouper Kebab Only",  price: 90, description: "",   customizable: false,  options: []},
+                    { id: "P046", name: "Grilled Grouper With Side Dish",  price: 120, description: "",   customizable: false,  options: []},
+                    { id: "P047", name: "Grouper Veggie Sauce ",  price: 120, description: "",   customizable: false,  options: []},
+                    { id: "P048", name: "Grouper Fried Rice Special",  price: 120, description: "",   customizable: false,  options: []},
+                    { id: "PG41", name: "Grouper Jollof Rice Special",  price: 120, description: "",   customizable: false,  options: []},
+                    { id: "PG40", name: "Okro Stew Special",  price: 120, description: "",   customizable: false,  options: []},
+
+                ]},
+            { id: "sausageDishes", label: "B60Sausage Dishes", icon: faBowlFood, items: [
+                    { id: "P049", name: "Sausage Veggie Stew",  price: 80, description: "",   customizable: true,  options: [], variants: [
+                            { label: "P049",  price: 80  },
+                            { label: "P049A", price: 120 },
+                        ] },
+                    { id: "P050", name: "Sausage Kebab Only 4pc",  price: 40, description: "",   customizable: false,  options: []},
+                    { id: "P051", name: "Sausage Jollof Rice Special ",  price: 80, description: "6 pcs, choice of sauce",   customizable: true,  options: ["BBQ","Hot sauce","Lemon pepper","Peri-peri"], variants: [
+                            { label: "P051",  price: 80  },
+                            { label: "P051A", price: 120 },
+                        ] },
+                    { id: "P052", name: "Sausage Fried Rice Special",  price: 80, description: "6 pcs, choice of sauce",   customizable: true,  options: ["BBQ","Hot sauce","Lemon pepper","Peri-peri"], variants: [
+                            { label: "P052",  price: 80  },
+                            { label: "P052A", price: 120 },
+                        ] },
+                    { id: "P053", name: "Sausage Stir Fry Noodles",  price: 78, description: "6 pcs, choice of sauce",   customizable: true,  options: ["BBQ","Hot sauce","Lemon pepper","Peri-peri"], variants: [
+                            { label: "P053",  price: 80  },
+                            { label: "P053A", price: 120 },
+                        ] },
+                ]},
+            { id: "beefDishes", label: "B24-Beef Dishes", icon: faBowlFood, items: [
+                    { id: "P054", name: "Sausage Veggie Stew",  price: 80, description: "",   customizable: true,  options: [], variants: [
+                            { label: "P054",  price: 80  },
+                            { label: "P054A", price: 120 },
+                        ] },
+                    { id: "P055", name: "Sausage Kebab Only 4pc",  price: 40, description: "",   customizable: false,  options: []},
+                    { id: "P056", name: "Sausage Jollof Rice Special ",  price: 80, description: "",   customizable: true,  options: ["BBQ","Hot sauce","Lemon pepper","Peri-peri"], variants: [
+                            { label: "P056",  price: 80  },
+                            { label: "P056A", price: 120 },
+                        ] },
+                    { id: "P057", name: "Sausage Fried Rice Special",  price: 80, description: "",   customizable: true,  options: ["BBQ","Hot sauce","Lemon pepper","Peri-peri"], variants: [
+                            { label: "P057",  price: 80  },
+                            { label: "P057A", price: 120 },
+                        ] },
+                    { id: "P058", name: "Sausage Stir Fry Noodles",  price: 80, description: "",   customizable: true,  options: ["BBQ","Hot sauce","Lemon pepper","Peri-peri"], variants: [
+                            { label: "P058",  price: 80  },
+                            { label: "P058A", price: 120 },
+                        ] },
+                ]},
 
         ],
     },
     {
         id: "specials",
         label: "Specials",
-        icon: faChampagneGlasses,
+        icon: faFireFlameCurved,
         subcategories: [
             { id: "pianoBarSpecial", label: "Piano Bar Specials", icon: faChampagneGlasses, items: [
                     { id: "P001", name: "Piano Assorted Fried Rice",   price: 80, description: "House special, tropical mix", customizable: true,  options: ["Chicken","Beef", "Fried egg"],  variants: [
@@ -184,7 +287,7 @@ const CATEGORIES = [
                             { label: "P053A", price: 130 },
                         ] },
                 ]},
-            { id: "seaFoodSpecial", label: "Seafood Specials", icon: faChampagneGlasses, items: [
+            { id: "seaFoodSpecial", label: "Seafood Specials", icon: faShrimp, items: [
                     { id: "P003", name: "Seafood Special Fried Rice",   price: 100, description: "House special, tropical mix", customizable: true,  options: ["Shrimps","Octopus", "Fish"],  variants: [
                             { label: "P003",  price: 100  },
                             { label: "P003A", price: 130 },
@@ -226,7 +329,7 @@ const CATEGORIES = [
 
 
                 ]},
-            { id: "porkSpecial", label: "Pork Specials", icon: faChampagneGlasses, items: [
+            { id: "porkSpecial", label: "Pork Specials", icon: faBacon, items: [
                     { id: "P010", name: "Piano Pork Fried Rice Special",   price: 95, description: "House special, tropical mix", customizable: false,  options: [],  variants: [
                             { label: "P008",  price: 95  },
                             { label: "P008A", price: 140 },
@@ -238,7 +341,7 @@ const CATEGORIES = [
 
 
                 ]},
-            { id: "ghanaianSpecial", label: "Ghanaian Specials", icon: faChampagneGlasses, items: [
+            { id: "ghanaianSpecial", label: "Ghanaian Specials", icon: faBowlFood, items: [
                     { id: "P430", name: "Light Soup",   price: 95, description: "House special, tropical mix", customizable: false,  options: [],  variants: [
                             { label: "P430 3pc Goat",  price: 95  },
                             { label: "P431 2pc Dry Fish", price: 120 },
@@ -275,7 +378,7 @@ const CATEGORIES = [
     {
         id: "extras",
         label: "Extras",
-        icon: faBeer,
+        icon: faWandMagicSparkles,
         subcategories: [
             { id: "extras", label: "Extras", icon: faBeer, items: [
                     { id: "P419", name: "Salmon",  price: 30, description: "Nicely Done",       customizable: false, options: [] },
@@ -286,7 +389,7 @@ const CATEGORIES = [
 
                 ]},
 
-            { id: "packs", label: "The Happy Chicken Packs", icon: faChampagneGlasses, items: [
+            { id: "packs", label: "The Happy Chicken Packs", icon: faDrumstickBite, items: [
                     { id: "P080", name: "Piano Happy Chicken Drumsticks 6/Pk",  price: 90, description: "Nicely Done",       customizable: false, options: [] },
                     { id: "P081", name: "Piano Happy Chicken Drumsticks 12/Pk", price: 160, description: "Nicely Done",     customizable: false, options: [] },
                     { id: "P082", name: "Piano Happy Chicken Drumsticks 15/Pk", price: 190, description: "Nicely Done",     customizable: false, options: [] },
