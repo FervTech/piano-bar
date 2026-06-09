@@ -195,7 +195,7 @@ const CATEGORIES = [
                         ] },
 
                 ]},
-            { id: "grouperDishes", label: "B70Grouper Dishes", icon: faBowlFood, items: [
+            { id: "grouperDishes", label: "B70-Grouper Dishes", icon: faBowlFood, items: [
                     { id: "P044", name: "Grouper Veggie Stew",  price: 120, description: "",   customizable: false,  options: [] },
                     { id: "P045", name: "Grouper Kebab Only",  price: 90, description: "",   customizable: false,  options: []},
                     { id: "P046", name: "Grilled Grouper With Side Dish",  price: 120, description: "",   customizable: false,  options: []},
@@ -205,7 +205,7 @@ const CATEGORIES = [
                     { id: "PG40", name: "Okro Stew Special",  price: 120, description: "",   customizable: false,  options: []},
 
                 ]},
-            { id: "sausageDishes", label: "B60Sausage Dishes", icon: faBowlFood, items: [
+            { id: "sausageDishes", label: "B60-Sausage Dishes", icon: faBowlFood, items: [
                     { id: "P049", name: "Sausage Veggie Stew",  price: 80, description: "",   customizable: true,  options: [], variants: [
                             { label: "P049",  price: 80  },
                             { label: "P049A", price: 120 },
@@ -243,6 +243,71 @@ const CATEGORIES = [
                             { label: "P058A", price: 120 },
                         ] },
                 ]},
+            { id: "porkDishes", label: "B4-Pork Dishes", icon: faBowlFood, items: [
+                    { id: "P060", name: "Grilled Pork",  price: 95, description: "",   customizable: true,  options: [], variants: [
+                            { label: "P060",  price: 95  },
+                            { label: "P060A", price: 120 },
+                        ] },
+                    { id: "P061", name: "Pork Stir-Fry Noodles",  price: 95, description: "",   customizable: true,  options: [], variants: [
+                            { label: "P061",  price: 95  },
+                            { label: "P061A", price: 120 },
+                        ] },
+                    { id: "P062", name: "Pork Sauce",  price: 95, description: "",   customizable: true,  options: [], variants: [
+                            { label: "P054",  price: 95  },
+                            { label: "P054A", price: 120 },
+                        ] },
+                    { id: "P063", name: "Pork Stew",  price: 95, description: "",   customizable: true,  options: [], variants: [
+                            { label: "P063",  price: 95  },
+                            { label: "P063A", price: 120 },
+                        ] },
+                    { id: "P064", name: "Pork Khebab/Skewer Only ",  price: 60, description: "",   customizable: false,  options: []},
+                    { id: "P010", name: "Pork Jollof Rice Special ",  price: 95, description: "",   customizable: true,  options: ["BBQ","Hot sauce","Lemon pepper","Peri-peri"], variants: [
+                            { label: "P010",  price: 95  },
+                            { label: "P010A", price: 120 },
+                        ] },
+                    { id: "P410", name: "Pork Fried Rice Special",  price: 95, description: "",   customizable: true,  options: ["BBQ","Hot sauce","Lemon pepper","Peri-peri"], variants: [
+                            { label: "P410",  price: 95  },
+                            { label: "P410A", price: 120 },
+                        ] },
+                    { id: "P065", name: "Sausage Stir Fry Noodles",  price: 95, description: "",   customizable: true,  options: ["BBQ","Hot sauce","Lemon pepper","Peri-peri"], variants: [
+                            { label: "P065",  price: 95  },
+                            { label: "P065A", price: 120 },
+                        ] },
+                ]},
+            { id: "porkDishes", label: "B13-Chicken Dishes", icon: faBowlFood, items: [
+                    { id: "P070", name: "Grilled Chicken Drumsticks",  price: 80, description: "",   customizable: true,  options: [], variants: [
+                            { label: "P060",  price: 80  },
+                            { label: "P060A", price: 120 },
+                        ] },
+                    { id: "P071", name: "Grilled Chicken Wings",  price: 80, description: "",   customizable: true,  options: [], variants: [
+                            { label: "P071",  price: 80  },
+                            { label: "P071A", price: 120 },
+                        ] },
+                    { id: "P072", name: "Grilled Chicken Breast",  price: 80, description: "",   customizable: true,  options: [], variants: [
+                            { label: "P072",  price: 80  },
+                            { label: "P072A", price: 120 },
+                        ] },
+                    { id: "P073", name: "Chicken Veggie Sauce",  price: 80, description: "",   customizable: true,  options: [], variants: [
+                            { label: "P073",  price: 80 },
+                            { label: "P073A", price: 120 },
+                        ] },
+                    { id: "P074", name: "Chicken Veggie Stew",  price: 80, description: "",   customizable: true,  options: [], variants: [
+                            { label: "P074",  price: 80  },
+                            { label: "P074A", price: 120 },
+                        ] },
+                    { id: "P075", name: "Chicken Khebab/Skewer 3pcs ",  price: 50, description: "",   customizable: false,  options: []},
+                    { id: "P076", name: "Chicken Fried Rice Special",  price: 80, description: "",   customizable: true,  options: ["BBQ","Hot sauce","Lemon pepper","Peri-peri"], variants: [
+                            { label: "P076",  price: 80  },
+                            { label: "P076A", price: 120 },
+                        ] },
+                    { id: "P212", name: "Grilled Chicken Drumsticks only 3pcs",  price: 50, description: "",   customizable: false,  options: []},
+                    { id: "P270", name: "Chicken Stir Fry Noodles",  price: 80, description: "",   customizable: true,  options: ["BBQ","Hot sauce","Lemon pepper","Peri-peri"], variants: [
+                            { label: "P065",  price: 80  },
+                            { label: "P065A", price: 120 },
+                        ] },
+
+                ]},
+
 
         ],
     },
