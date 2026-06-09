@@ -8,13 +8,13 @@ import { createClient } from "@supabase/supabase-js";
 import bcrypt from "bcryptjs";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-    faGlassMartiniAlt, faBeer, faWineBottle, faChampagneGlasses, faBurger,faBottleDroplet,
+    faBeer, faWineBottle, faChampagneGlasses, faBurger,faBottleDroplet,
     faLock, faLocationDot, faCircleCheck, faRotateRight,faWineGlassEmpty,faWhiskeyGlass,
-    faRightFromBracket, faCircle, faClockRotateLeft, faPlus, faMinus, faMartiniGlass,faGlassWater,
+    faRightFromBracket, faCircle, faClockRotateLeft, faPlus, faMinus, faMartiniGlass,faGlassWater,faBottleWater,
     faXmark, faArrowRight, faPaperPlane, faSpinner, faSlidersH, faNoteSticky,faMartiniGlassCitrus,
     faChevronDown, faChevronUp, faFilter, faCalendarDays, faTimesCircle,faShrimp,faWandMagicSparkles,
     faReceipt, faChevronRight, faListUl, faHourglassHalf, faCog, faCheckDouble,faPizzaSlice,
-    faChevronLeft, faDrumstickBite, faTag,faBowlFood,faBacon,faFireFlameCurved,
+    faChevronLeft, faDrumstickBite, faTag,faBowlFood,faBacon,faFireFlameCurved,faBolt, faLeaf, faStar, faFish, faSeedling, faUtensils
 } from "@fortawesome/free-solid-svg-icons";
 import logo from "./assets/logo.svg";
 
@@ -40,86 +40,118 @@ const CATEGORIES = [
         icon: faMartiniGlassCitrus,
         subcategories: [
 
+            {
+                id: "beers", label: "Beers", icon: faBeer, items: [
+                    { id: "b1", name: "Heineken 330ml",  price: 35, description: "Dutch premium lager, 5% ABV",           customizable: false, options: [] },
+                    { id: "b2", name: "Club Beer mini",  price: 18, description: "Ghana's favourite lager, small bottle",  customizable: false, options: [] },
+                    { id: "b3", name: "Club Beer Large", price: 25, description: "Ghana's favourite lager, large bottle",  customizable: false, options: [] },
+                    { id: "b4", name: "Guinness",        price: 18, description: "Rich Irish dry stout, creamy head",      customizable: false, options: [] },
+                    { id: "b5", name: "Club Shandy",     price: 20, description: "Light lager blended with lemonade",      customizable: false, options: [] },
+                    { id: "b6", name: "Origin Beer",     price: 20, description: "Crisp African-brewed lager",             customizable: false, options: [] },
+                    { id: "b7", name: "Faxe/Kiss",       price: 28, description: "Strong Danish lager, 500ml can",         customizable: false, options: [] },
+                ]
+            },
 
-            { id: "beers", label: "Beers", icon: faBeer, items: [
-                    { id: "b1", name: "Heineken 330ml",  price: 35, description: "Premium lager",       customizable: false, options: [] },
-                    { id: "b2", name: "Club Beer mini", price: 18, description: "Local favourite",     customizable: false, options: [] },
-                    { id: "b3", name: "Club Beer Large", price: 25, description: "Local favourite",     customizable: false, options: [] },
-                    { id: "b4", name: "Guinness",        price: 18, description: "Irish dry stout",     customizable: false, options: [] },
-                    { id: "b2", name: "Club shandy", price: 20, description: "Local favourite",     customizable: false, options: [] },
-                    { id: "b2", name: "Origin beer", price: 20, description: "Local favourite",     customizable: false, options: [] },
-                    { id: "b5", name: "Faxe/Kiss",     price: 28, description: "South African cider", customizable: false, options: [] },
-                ]},
+            {
+                id: "energy", label: "Coolers / Energy", icon: faBolt, items: [
+                    { id: "e1", name: "Savanna",       price: 35, description: "South African dry cider, crisp & fruity",    customizable: false, options: [] },
+                    { id: "e2", name: "Hunters",       price: 35, description: "Smooth South African apple cider",           customizable: false, options: [] },
+                    { id: "e3", name: "Red Bull",      price: 35, description: "Energy drink with taurine & caffeine",       customizable: false, options: [] },
+                    { id: "e4", name: "Smirnoff Ice",  price: 28, description: "Vodka-based lemon cooler, lightly sparkling", customizable: false, options: [] },
+                    { id: "e5", name: "Vodi",          price: 28, description: "Chilled vodka-based cooler",                 customizable: false, options: [] },
+                ]
+            },
 
-            { id: "energy", label: "Coolers/Energy", icon: faWhiskeyGlass, items: [
-                    { id: "e1", name: "Savanna",  price: 35, description: "Premium lager",       customizable: false, options: [] },
-                    { id: "e2", name: "Hunters", price: 35, description: "Local favourite",     customizable: false, options: [] },
-                    { id: "e3", name: "Red Bull",        price: 35, description: "Irish dry stout",     customizable: false, options: [] },
-                    { id: "e4", name: "Smirnoff Ice", price: 28, description: "Local favourite",     customizable: false, options: [] },
-                    { id: "e5", name: "Vodi",        price: 28, description: "Irish dry stout",     customizable: false, options: [] },
+            {
+                id: "whisky", label: "Whisky", icon: faWhiskeyGlass, items: [
+                    { id: "wh1", name: "Red Label 20cl",   price: 130, description: "Johnnie Walker Red, blended Scotch whisky",   customizable: false, options: [] },
+                    { id: "wh2", name: "Black Label 20cl", price: 250, description: "Johnnie Walker Black, 12-year aged Scotch",   customizable: false, options: [] },
+                    { id: "wh3", name: "Smirnoff Vodka",   price: 90,  description: "Triple-distilled premium Russian vodka",      customizable: false, options: [] },
+                ]
+            },
 
-                ]},
-            { id: "whisky", label: "Whisky", icon: faWhiskeyGlass, items: [
-                    { id: "wh1", name: "Red label 20cl",  price: 130, description: "Premium lager",       customizable: false, options: [] },
-                    { id: "wh2", name: "Black label 20cl", price: 25, description: "Local favourite",     customizable: false, options: [] },
-                    { id: "wh3", name: "Smirnoff Vodka",        price: 90, description: "Irish dry stout",     customizable: false, options: [] },
-                     ]},
-            { id: "liqueur", label: "Liqueur", icon: faWineBottle, items: [
-                    { id: "l1", name: "Campari 20cl",   price: 90, description: "20cl", customizable: true, options: ["Neat","On the rocks","With water","With soda"] },
-                    { id: "l2", name: "Baileys 20cl", price: 150, description: "20cl",  customizable: true, options: ["Neat","On the rocks","With water","With soda"] },
-                    { id: "l3", name: "Jagermeister shot",   price: 20, description: "fire",          customizable: true, options: ["Neat","On the rocks","With ginger ale"] },
-                ]},
-            { id: "wine", label: "Wine", icon: faWineGlassEmpty, items: [
-                    { id: "w1", name: "Alcoholic",      price: 140, description: "Brut, chilled",            customizable: false, options: [] },
-                    { id: "w2", name: "Non-Alcoholic ", price: 80,  description: "Sparkling , chilled", customizable: false, options: [] },
-                ]},
-            { id: "brandy", label: "Brandy/Cognac", icon: faMartiniGlass, items: [
-                    { id: "bd1", name: "Hennessey VS 75cl",  price: 650, description: "Premium lager",       customizable: false, options: [] },
-                    { id: "bd2", name: "Hennessey VSOP 75cl", price: 1700, description: "Local favourite",     customizable: false, options: [] },
-                    { id: "bd3", name: "Hennessey VSOP 75cl",        price: 200, description: "Irish dry stout",     customizable: false, options: [] },
-                ]},
-            { id: "champagne", label: "Champagne", icon: faChampagneGlasses, items: [
-                    { id: "ch1", name: "Alcoholic",       price: 140, description: "Brut, chilled",            customizable: false, options: [] },
-                    { id: "ch2", name: "Non-Alcoholic ", price: 80,  description: "Sparkling grape, chilled", customizable: false, options: [] },
-                ]},
-            { id: "minerals", label: "Minerals", icon: faBottleDroplet, items: [
-                    { id: "m1", name: "Minerals",  price: 35, description: "Premium lager",       customizable: false, options: [],
+            {
+                id: "liqueur", label: "Liqueur", icon: faWineBottle, items: [
+                    { id: "l1", name: "Campari 20cl",       price: 90,  description: "Italian bitter aperitif, vibrant red",        customizable: true, options: ["Neat", "On the rocks", "With water", "With soda"] },
+                    { id: "l2", name: "Baileys 20cl",       price: 150, description: "Irish cream liqueur, rich & smooth",          customizable: true, options: ["Neat", "On the rocks", "With water", "With soda"] },
+                    { id: "l3", name: "Jagermeister Shot",  price: 20,  description: "German herbal digestif, 56 botanicals",       customizable: true, options: ["Neat", "On the rocks", "With ginger ale"] },
+                ]
+            },
+
+            {
+                id: "wine", label: "Wine", icon: faWineGlassEmpty, items: [
+                    { id: "w1", name: "Alcoholic Wine",     price: 140, description: "Chilled red or white, house selection",       customizable: false, options: [] },
+                    { id: "w2", name: "Non-Alcoholic Wine", price: 80,  description: "Sparkling grape juice, chilled",              customizable: false, options: [] },
+                ]
+            },
+
+            {
+                id: "brandy", label: "Brandy / Cognac", icon: faWhiskeyGlass, items: [
+                    { id: "bd1", name: "Hennessy VS 75cl",    price: 650,  description: "Very Special cognac, smooth & fruity",        customizable: false, options: [] },
+                    { id: "bd2", name: "Hennessy VSOP 75cl",  price: 1700, description: "Very Superior Old Pale, aged 4–8 years",      customizable: false, options: [] },
+                    { id: "bd3", name: "Hennessy VS 20cl",    price: 200,  description: "Very Special cognac, serving bottle",         customizable: false, options: [] },
+                ]
+            },
+
+            {
+                id: "champagne", label: "Champagne", icon: faChampagneGlasses, items: [
+                    { id: "ch1", name: "Alcoholic Champagne",     price: 140, description: "Brut sparkling wine, chilled & crisp",      customizable: false, options: [] },
+                    { id: "ch2", name: "Non-Alcoholic Champagne", price: 80,  description: "Sparkling grape, alcohol-free, chilled",    customizable: false, options: [] },
+                ]
+            },
+
+            {
+                id: "minerals", label: "Minerals", icon: faBottleDroplet, items: [
+                    {
+                        id: "m1", name: "Soft Drink", price: 15, description: "Chilled carbonated soft drink",
+                        customizable: false, options: [],
                         variants: [
-                            { label: "Fanta",  price: 15  },
-                            { label: "Coke", price: 15 },
-                        ]},
-                    { id: "m2", name: "BB cocktail", price: 18, description: "Local favourite",     customizable: false, options: [] },
-                    { id: "m3", name: "Malt",        price: 38, description: "Irish dry stout",     customizable: false, options: [], variants: [
-                            { label: "Malt Bottle",  price: 15  },
-                            { label: "Malt Can", price: 20 },
-                        ] },
-                    { id: "m4", name: "Alvaro",     price: 15, description: "South African cider", customizable: false, options: [] },
-                ]},
+                            { label: "Fanta",  price: 15 },
+                            { label: "Coke",   price: 15 },
+                        ]
+                    },
+                    { id: "m2", name: "BB Cocktail", price: 18, description: "Chilled non-alcoholic cocktail mix",       customizable: false, options: [] },
+                    {
+                        id: "m3", name: "Malt", price: 15, description: "Non-alcoholic barley malt drink",
+                        customizable: false, options: [],
+                        variants: [
+                            { label: "Malt Bottle", price: 15 },
+                            { label: "Malt Can",    price: 20 },
+                        ]
+                    },
+                    { id: "m4", name: "Alvaro",      price: 15, description: "Chilled non-alcoholic drink", customizable: false, options: [] },
+                ]
+            },
 
-            { id: "water", label: "Water", icon: faGlassWater, items: [
-                     { id: "wt1", name: "water 500ml",     price: 4, description: "Irish dry stout",     customizable: false, options: [] },
-                    { id: "wt2", name: "water 750ml",     price: 6, description: "South African cider", customizable: false, options: [] },
-                ]},
+            {
+                id: "water", label: "Water", icon: faBottleWater, items: [
+                    { id: "wt1", name: "Still Water 500ml", price: 4, description: "Chilled purified still water",        customizable: false, options: [] },
+                    { id: "wt2", name: "Still Water 750ml", price: 6, description: "Chilled purified still water, large", customizable: false, options: [] },
+                ]
+            },
 
-            { id: "fruit", label: "fruit Juice", icon: faGlassWater, items: [
-                    { id: "fj1", name: "Ceres various ",     price: 50, description: "Irish dry stout",     customizable: false, options: [] },
-                    { id: "fj2", name: "Don Simon",     price: 45, description: "South African cider", customizable: false, options: [] },
-                ]},
+            {
+                id: "fruit", label: "Fruit Juice", icon: faSeedling, items: [
+                    { id: "fj1", name: "Ceres (various)",  price: 50, description: "100% pure fruit juice, South African",  customizable: false, options: [] },
+                    { id: "fj2", name: "Don Simon",        price: 45, description: "Spanish chilled fruit juice blend",      customizable: false, options: [] },
+                ]
+            },
 
-            { id: "locals", label: "Locals", icon: faGlassWater, items: [
-                    { id: "lc1", name: "Kasapreko Alomo",  price: 7, description: "Premium lager",       customizable: false, options: [] },
-                    { id: "lc2", name: "Herb Afrik", price: 7, description: "Local favourite",     customizable: false, options: [] },
-                    { id: "lc3", name: "Castle Bridge",        price: 7, description: "Irish dry stout",     customizable: false, options: [] },
-                    { id: "lc4", name: "Orijin Bitters",     price: 7, description: "South African cider", customizable: false, options: [] },
-                    { id: "lc5", name: "Madingo",  price: 7, description: "Premium lager",       customizable: false, options: [] },
-                    { id: "lc6", name: "Palm Wine", price: 30, description: "Local favourite",     customizable: false, options: [] },
-                    { id: "lc7", name: "Sobolo",        price: 10, description: "Irish dry stout",     customizable: false, options: [] },
-                    { id: "lc8", name: "Pito",     price: 10, description: "South African cider", customizable: false, options: [] },
-                    { id: "lc9", name: "Kalahari",     price: 7, description: "South African cider", customizable: false, options: [] },
-                ]},
+            {
+                id: "locals", label: "Locals", icon: faLeaf, items: [
+                    { id: "lc1", name: "Kasapreko Alomo",  price: 7,  description: "Ghanaian herbal bitters, classic",        customizable: false, options: [] },
+                    { id: "lc2", name: "Herb Afrik",       price: 7,  description: "Local herbal spirit blend",               customizable: false, options: [] },
+                    { id: "lc3", name: "Castle Bridge",    price: 7,  description: "Smooth local spirit",                     customizable: false, options: [] },
+                    { id: "lc4", name: "Orijin Bitters",   price: 7,  description: "African bitters with herbs & fruits",     customizable: false, options: [] },
+                    { id: "lc5", name: "Madingo",          price: 7,  description: "Spiced local bitters",                    customizable: false, options: [] },
+                    { id: "lc6", name: "Palm Wine",        price: 30, description: "Freshly tapped sweet palm sap",           customizable: false, options: [] },
+                    { id: "lc7", name: "Sobolo",           price: 10, description: "Chilled hibiscus drink, lightly spiced",  customizable: false, options: [] },
+                    { id: "lc8", name: "Pito",             price: 10, description: "Traditional fermented millet/sorghum",    customizable: false, options: [] },
+                    { id: "lc9", name: "Kalahari",         price: 7,  description: "Local herbal tonic drink",                customizable: false, options: [] },
+                ]
+            },
+
         ],
-
-
     },
 
     {
@@ -127,355 +159,239 @@ const CATEGORIES = [
         label: "Food & Bites",
         icon: faBowlFood,
         subcategories: [
-            { id: "goatDishes", label: "B37A-Goat Dishes", icon: faBowlFood, items: [
-                    { id: "P016", name: "Goat Stew",  price: 95, description: "",   customizable: true,  options: [], variants: [
-                            { label: "P016",  price: 95  },
-                            { label: "P016A", price: 140 },
-                        ] },
-                    { id: "P017", name: "Goat Kebab Only",  price: 95, description: "",   customizable: false,  options: []},
-                    { id: "P009", name: "Goat Jollof Rice Special",  price: 95, description: "6 pcs, choice of sauce",   customizable: true,  options: ["BBQ","Hot sauce","Lemon pepper","Peri-peri"], variants: [
-                            { label: "P009",  price: 95  },
-                            { label: "P009A", price: 140 },
-                        ] },
-                    { id: "P008", name: "Goat Fried Rice Special",  price: 95, description: "6 pcs, choice of sauce",   customizable: true,  options: ["BBQ","Hot sauce","Lemon pepper","Peri-peri"], variants: [
-                            { label: "P008",  price: 95  },
-                            { label: "P008A", price: 140 },
-                        ] },
-                    { id: "P020", name: "Goat Stir Fry Noodles",  price: 95, description: "6 pcs, choice of sauce",   customizable: true,  options: ["BBQ","Hot sauce","Lemon pepper","Peri-peri"], variants: [
-                            { label: "P020",  price: 95  },
-                            { label: "P020A", price: 140 },
-                        ] },
-                   ]},
-            { id: "gizzardDishes", label: "A15-Gizzard Dishes", icon: faBowlFood, items: [
-                    { id: "P021", name: "Gizzard Stew",  price: 80, description: "",   customizable: true,  options: [], variants: [
-                            { label: "P021",  price: 80  },
-                            { label: "P021A", price: 120 },
-                        ] },
-                    { id: "P022", name: "Gizzard Kebab Only",  price: 40, description: "",   customizable: false,  options: []},
-                    { id: "P023", name: "Gizzard Jollof Rice Special ",  price: 80, description: "6 pcs, choice of sauce",   customizable: true,  options: ["BBQ","Hot sauce","Lemon pepper","Peri-peri"], variants: [
-                            { label: "P023",  price: 80  },
-                            { label: "P023A", price: 120 },
-                        ] },
-                    { id: "P024", name: "Gizzard Fried Rice Special",  price: 80, description: "6 pcs, choice of sauce",   customizable: true,  options: ["BBQ","Hot sauce","Lemon pepper","Peri-peri"], variants: [
-                            { label: "P024",  price: 80  },
-                            { label: "P024A", price: 120 },
-                        ] },
-                    { id: "P025", name: "Gizzard Stir Fry Noodles",  price: 78, description: "6 pcs, choice of sauce",   customizable: true,  options: ["BBQ","Hot sauce","Lemon pepper","Peri-peri"], variants: [
-                            { label: "P025",  price: 78  },
-                            { label: "P025A", price: 120 },
-                        ] },
-                ]},
-            { id: "tilapia", label: "B27-Fish/SeadFood Dishes (Tilapia)", icon: faBowlFood, items: [
-                    { id: "P028", name: "Grilled Tilapia (550-700g)",  price: 95, description: "",   customizable: false,  options: []},
-                    { id: "P029", name: "Grilled Tilapia (700-800g)",  price: 95, description: "",   customizable: false,  options: []},
-                    { id: "P030", name: "Grilled Tilapia (800-900g)",  price: 95, description: "",   customizable: false,  options: ["BBQ","Hot sauce","Lemon pepper","Peri-peri"],  },
-                    { id: "P031", name: "Grilled Tilapia (900-1000g)",  price: 95, description: "",   customizable: false,  options: ["BBQ","Hot sauce","Lemon pepper","Peri-peri"]},
-                    { id: "P032", name: "Grilled Tilapia (1000-1500g)",  price: 95, description: "",   customizable: false,  options: ["BBQ","Hot sauce","Lemon pepper","Peri-peri" ] },
-                ]},
-            { id: "snapper", label: "B27-Fish/SeadFood Dishes (Snapper)", icon: faBowlFood, items: [
-                    { id: "P034", name: "Fried Red Snapper",  price: 85, description: "",   customizable: false,  options: []},
-                    { id: "P203", name: "Fried Red Snapper only 1pc",  price: 70, description: "",   customizable: false,  options: []},
-                    { id: "P035", name: "Fried Red Snapper Veggie Stew",  price: 95, description: "",   customizable: false,  options: [],  },
-                    { id: "P036", name: "Red Snapper Soup",  price: 95, description: "",   customizable: false,  options: []},
-                    { id: "PG36", name: "Red Snapper Groundnut Soup",  price: 95, description: "",   customizable: false,  options: [] },
-                ]},
-            { id: "tigerPrawns", label: "B80-Tiger Prawns", icon: faBowlFood, items: [
-                    { id: "P040", name: "Prawns Veggie Stew",  price: 180, description: "",   customizable: true,  options: [], variants: [
-                            { label: "P040",  price: 180  },
-                            { label: "P040A", price: 200 },
-                        ] },
-                    { id: "P041", name: "Prawns Kebab Only 4pc",  price: 120, description: "",   customizable: false,  options: []},
-                    { id: "P042", name: "Grilled Prawns with side dish ",  price: 180, description: "6 pcs, choice of sauce",   customizable: true,  options: ["BBQ","Hot sauce","Lemon pepper","Peri-peri"], variants: [
-                            { label: "P042",  price: 180  },
-                            { label: "P042A", price: 200 },
-                        ] },
-                    { id: "P006", name: "Prawn Fried Rice Special",  price: 180, description: "6 pcs, choice of sauce",   customizable: true,  options: ["BBQ","Hot sauce","Lemon pepper","Peri-peri"], variants: [
-                            { label: "P006",  price: 180  },
-                            { label: "P006A", price: 200 },
-                        ] },
 
-                ]},
-            { id: "grouperDishes", label: "B70-Grouper Dishes", icon: faBowlFood, items: [
-                    { id: "P044", name: "Grouper Veggie Stew",  price: 120, description: "",   customizable: false,  options: [] },
-                    { id: "P045", name: "Grouper Kebab Only",  price: 90, description: "",   customizable: false,  options: []},
-                    { id: "P046", name: "Grilled Grouper With Side Dish",  price: 120, description: "",   customizable: false,  options: []},
-                    { id: "P047", name: "Grouper Veggie Sauce ",  price: 120, description: "",   customizable: false,  options: []},
-                    { id: "P048", name: "Grouper Fried Rice Special",  price: 120, description: "",   customizable: false,  options: []},
-                    { id: "PG41", name: "Grouper Jollof Rice Special",  price: 120, description: "",   customizable: false,  options: []},
-                    { id: "PG40", name: "Okro Stew Special",  price: 120, description: "",   customizable: false,  options: []},
+            {
+                id: "goatDishes", label: "B37A – Goat Dishes", icon: faUtensils, items: [
+                    { id: "P016", name: "Goat Stew", price: 95, description: "Tender goat slow-cooked in rich spiced stew", customizable: true, options: [], variants: [{ label: "P016", price: 95 }, { label: "P016A", price: 140 }] },
+                    { id: "P017", name: "Goat Kebab Only", price: 95, description: "Grilled goat skewers, no side", customizable: false, options: [] },
+                    { id: "P009", name: "Goat Jollof Rice Special", price: 95, description: "Jollof rice topped with seasoned goat, choice of sauce", customizable: true, options: ["BBQ", "Hot sauce", "Lemon pepper", "Peri-peri"], variants: [{ label: "P009", price: 95 }, { label: "P009A", price: 140 }] },
+                    { id: "P008", name: "Goat Fried Rice Special", price: 95, description: "Wok-fried rice with seasoned goat, choice of sauce", customizable: true, options: ["BBQ", "Hot sauce", "Lemon pepper", "Peri-peri"], variants: [{ label: "P008", price: 95 }, { label: "P008A", price: 140 }] },
+                    { id: "P020", name: "Goat Stir Fry Noodles", price: 95, description: "Wok-tossed noodles with tender goat pieces", customizable: true, options: ["BBQ", "Hot sauce", "Lemon pepper", "Peri-peri"], variants: [{ label: "P020", price: 95 }, { label: "P020A", price: 140 }] },
+                ]
+            },
 
-                ]},
-            { id: "sausageDishes", label: "B60-Sausage Dishes", icon: faBowlFood, items: [
-                    { id: "P049", name: "Sausage Veggie Stew",  price: 80, description: "",   customizable: true,  options: [], variants: [
-                            { label: "P049",  price: 80  },
-                            { label: "P049A", price: 120 },
-                        ] },
-                    { id: "P050", name: "Sausage Kebab Only 4pc",  price: 40, description: "",   customizable: false,  options: []},
-                    { id: "P051", name: "Sausage Jollof Rice Special ",  price: 80, description: "6 pcs, choice of sauce",   customizable: true,  options: ["BBQ","Hot sauce","Lemon pepper","Peri-peri"], variants: [
-                            { label: "P051",  price: 80  },
-                            { label: "P051A", price: 120 },
-                        ] },
-                    { id: "P052", name: "Sausage Fried Rice Special",  price: 80, description: "6 pcs, choice of sauce",   customizable: true,  options: ["BBQ","Hot sauce","Lemon pepper","Peri-peri"], variants: [
-                            { label: "P052",  price: 80  },
-                            { label: "P052A", price: 120 },
-                        ] },
-                    { id: "P053", name: "Sausage Stir Fry Noodles",  price: 78, description: "6 pcs, choice of sauce",   customizable: true,  options: ["BBQ","Hot sauce","Lemon pepper","Peri-peri"], variants: [
-                            { label: "P053",  price: 80  },
-                            { label: "P053A", price: 120 },
-                        ] },
-                ]},
-            { id: "beefDishes", label: "B24-Beef Dishes", icon: faBowlFood, items: [
-                    { id: "P054", name: "Sausage Veggie Stew",  price: 80, description: "",   customizable: true,  options: [], variants: [
-                            { label: "P054",  price: 80  },
-                            { label: "P054A", price: 120 },
-                        ] },
-                    { id: "P055", name: "Sausage Kebab Only 4pc",  price: 40, description: "",   customizable: false,  options: []},
-                    { id: "P056", name: "Sausage Jollof Rice Special ",  price: 80, description: "",   customizable: true,  options: ["BBQ","Hot sauce","Lemon pepper","Peri-peri"], variants: [
-                            { label: "P056",  price: 80  },
-                            { label: "P056A", price: 120 },
-                        ] },
-                    { id: "P057", name: "Sausage Fried Rice Special",  price: 80, description: "",   customizable: true,  options: ["BBQ","Hot sauce","Lemon pepper","Peri-peri"], variants: [
-                            { label: "P057",  price: 80  },
-                            { label: "P057A", price: 120 },
-                        ] },
-                    { id: "P058", name: "Sausage Stir Fry Noodles",  price: 80, description: "",   customizable: true,  options: ["BBQ","Hot sauce","Lemon pepper","Peri-peri"], variants: [
-                            { label: "P058",  price: 80  },
-                            { label: "P058A", price: 120 },
-                        ] },
-                ]},
-            { id: "porkDishes", label: "B4-Pork Dishes", icon: faBowlFood, items: [
-                    { id: "P060", name: "Grilled Pork",  price: 95, description: "",   customizable: true,  options: [], variants: [
-                            { label: "P060",  price: 95  },
-                            { label: "P060A", price: 120 },
-                        ] },
-                    { id: "P061", name: "Pork Stir-Fry Noodles",  price: 95, description: "",   customizable: true,  options: [], variants: [
-                            { label: "P061",  price: 95  },
-                            { label: "P061A", price: 120 },
-                        ] },
-                    { id: "P062", name: "Pork Sauce",  price: 95, description: "",   customizable: true,  options: [], variants: [
-                            { label: "P054",  price: 95  },
-                            { label: "P054A", price: 120 },
-                        ] },
-                    { id: "P063", name: "Pork Stew",  price: 95, description: "",   customizable: true,  options: [], variants: [
-                            { label: "P063",  price: 95  },
-                            { label: "P063A", price: 120 },
-                        ] },
-                    { id: "P064", name: "Pork Khebab/Skewer Only ",  price: 60, description: "",   customizable: false,  options: []},
-                    { id: "P010", name: "Pork Jollof Rice Special ",  price: 95, description: "",   customizable: true,  options: ["BBQ","Hot sauce","Lemon pepper","Peri-peri"], variants: [
-                            { label: "P010",  price: 95  },
-                            { label: "P010A", price: 120 },
-                        ] },
-                    { id: "P410", name: "Pork Fried Rice Special",  price: 95, description: "",   customizable: true,  options: ["BBQ","Hot sauce","Lemon pepper","Peri-peri"], variants: [
-                            { label: "P410",  price: 95  },
-                            { label: "P410A", price: 120 },
-                        ] },
-                    { id: "P065", name: "Sausage Stir Fry Noodles",  price: 95, description: "",   customizable: true,  options: ["BBQ","Hot sauce","Lemon pepper","Peri-peri"], variants: [
-                            { label: "P065",  price: 95  },
-                            { label: "P065A", price: 120 },
-                        ] },
-                ]},
-            { id: "chickenDishes", label: "B13-Chicken Dishes", icon: faBowlFood, items: [
-                    { id: "P070", name: "Grilled Chicken Drumsticks",  price: 80, description: "",   customizable: true,  options: [], variants: [
-                            { label: "P060",  price: 80  },
-                            { label: "P060A", price: 120 },
-                        ] },
-                    { id: "P071", name: "Grilled Chicken Wings",  price: 80, description: "",   customizable: true,  options: [], variants: [
-                            { label: "P071",  price: 80  },
-                            { label: "P071A", price: 120 },
-                        ] },
-                    { id: "P072", name: "Grilled Chicken Breast",  price: 80, description: "",   customizable: true,  options: [], variants: [
-                            { label: "P072",  price: 80  },
-                            { label: "P072A", price: 120 },
-                        ] },
-                    { id: "P073", name: "Chicken Veggie Sauce",  price: 80, description: "",   customizable: true,  options: [], variants: [
-                            { label: "P073",  price: 80 },
-                            { label: "P073A", price: 120 },
-                        ] },
-                    { id: "P074", name: "Chicken Veggie Stew",  price: 80, description: "",   customizable: true,  options: [], variants: [
-                            { label: "P074",  price: 80  },
-                            { label: "P074A", price: 120 },
-                        ] },
-                    { id: "P075", name: "Chicken Khebab/Skewer 3pcs ",  price: 50, description: "",   customizable: false,  options: []},
-                    { id: "P076", name: "Chicken Fried Rice Special",  price: 80, description: "",   customizable: true,  options: ["BBQ","Hot sauce","Lemon pepper","Peri-peri"], variants: [
-                            { label: "P076",  price: 80  },
-                            { label: "P076A", price: 120 },
-                        ] },
-                    { id: "P212", name: "Grilled Chicken Drumsticks only 3pcs",  price: 50, description: "",   customizable: false,  options: []},
-                    { id: "P270", name: "Chicken Stir Fry Noodles",  price: 80, description: "",   customizable: true,  options: ["BBQ","Hot sauce","Lemon pepper","Peri-peri"], variants: [
-                            { label: "P065",  price: 80  },
-                            { label: "P065A", price: 120 },
-                        ] },
+            {
+                id: "gizzardDishes", label: "A15 – Gizzard Dishes", icon: faUtensils, items: [
+                    { id: "P021", name: "Gizzard Stew", price: 80, description: "Braised chicken gizzard in spiced tomato stew", customizable: true, options: [], variants: [{ label: "P021", price: 80 }, { label: "P021A", price: 120 }] },
+                    { id: "P022", name: "Gizzard Kebab Only", price: 40, description: "Grilled gizzard skewers, no side", customizable: false, options: [] },
+                    { id: "P023", name: "Gizzard Jollof Rice Special", price: 80, description: "Jollof rice with grilled gizzard, choice of sauce", customizable: true, options: ["BBQ", "Hot sauce", "Lemon pepper", "Peri-peri"], variants: [{ label: "P023", price: 80 }, { label: "P023A", price: 120 }] },
+                    { id: "P024", name: "Gizzard Fried Rice Special", price: 80, description: "Wok-fried rice with gizzard, choice of sauce", customizable: true, options: ["BBQ", "Hot sauce", "Lemon pepper", "Peri-peri"], variants: [{ label: "P024", price: 80 }, { label: "P024A", price: 120 }] },
+                    { id: "P025", name: "Gizzard Stir Fry Noodles", price: 78, description: "Stir-fried noodles with seasoned gizzard", customizable: true, options: ["BBQ", "Hot sauce", "Lemon pepper", "Peri-peri"], variants: [{ label: "P025", price: 78 }, { label: "P025A", price: 120 }] },
+                ]
+            },
 
-                ]},
-            { id: "pizza", label: "Pizza", icon: faPizzaSlice, items: [
-                    { id: "P090", name: "Seafood Pizza",  price: 140, description: "",   customizable: false,  options: [] },
-                    { id: "P091", name: "Beef Pizza",  price: 120, description: "",   customizable: false,  options: [] },
-                    { id: "P092", name: "Chicken Pizza",  price: 100, description: "",   customizable: false,  options: []},
-                    { id: "P093", name: "Special Chicken & Beef Pizza",  price: 120, description: "",   customizable: false,  options: [] },
-                    { id: "P094", name: "Sausage Pizza",  price: 100, description: "",   customizable: false,  options: [] },
-                    { id: "P095", name: "Gizzard Pizza",  price: 100, description: "",   customizable: false,  options: []},
-                    { id: "P096", name: "Pepperoni Pizza",  price: 150, description: "",   customizable: false,  options: []  },
-                    { id: "P097", name: "Tuna Pizza",  price: 100, description: "",   customizable: false,  options: []},
-                    { id: "P210", name: "Pork Pizza",  price: 100, description: "",   customizable: false,  options: []},
+            {
+                id: "tilapia", label: "B27 – Tilapia", icon: faFish, items: [
+                    { id: "P028", name: "Grilled Tilapia (550–700g)",   price: 95, description: "Whole grilled tilapia with seasoning & side", customizable: false, options: [] },
+                    { id: "P029", name: "Grilled Tilapia (700–800g)",   price: 95, description: "Whole grilled tilapia, medium size",          customizable: false, options: [] },
+                    { id: "P030", name: "Grilled Tilapia (800–900g)",   price: 95, description: "Whole grilled tilapia, large",                customizable: false, options: ["BBQ", "Hot sauce", "Lemon pepper", "Peri-peri"] },
+                    { id: "P031", name: "Grilled Tilapia (900–1000g)",  price: 95, description: "Whole grilled tilapia, extra large",          customizable: false, options: ["BBQ", "Hot sauce", "Lemon pepper", "Peri-peri"] },
+                    { id: "P032", name: "Grilled Tilapia (1000–1500g)", price: 95, description: "Whole grilled tilapia, jumbo size",           customizable: false, options: ["BBQ", "Hot sauce", "Lemon pepper", "Peri-peri"] },
+                ]
+            },
 
-                ]},
+            {
+                id: "snapper", label: "B27 – Red Snapper", icon: faFish, items: [
+                    { id: "P034", name: "Fried Red Snapper",             price: 85, description: "Whole deep-fried red snapper, crispy skin",      customizable: false, options: [] },
+                    { id: "P203", name: "Fried Red Snapper Only (1pc)",  price: 70, description: "Single deep-fried snapper fillet",               customizable: false, options: [] },
+                    { id: "P035", name: "Fried Snapper with Veggie Stew", price: 95, description: "Crispy snapper served with garden vegetable stew", customizable: false, options: [] },
+                    { id: "P036", name: "Red Snapper Soup",              price: 95, description: "Light pepper soup with whole red snapper",        customizable: false, options: [] },
+                    { id: "PG36", name: "Red Snapper Groundnut Soup",    price: 95, description: "Creamy groundnut soup with red snapper",          customizable: false, options: [] },
+                ]
+            },
 
+            {
+                id: "tigerPrawns", label: "B80 – Tiger Prawns", icon: faShrimp, items: [
+                    { id: "P040", name: "Prawns Veggie Stew", price: 180, description: "Tiger prawns in garden vegetable stew with side", customizable: true, options: [], variants: [{ label: "P040", price: 180 }, { label: "P040A", price: 200 }] },
+                    { id: "P041", name: "Prawns Kebab (4pc)", price: 120, description: "Grilled tiger prawn skewers, no side", customizable: false, options: [] },
+                    { id: "P042", name: "Grilled Prawns with Side Dish", price: 180, description: "Grilled tiger prawns with rice or chips, choice of sauce", customizable: true, options: ["BBQ", "Hot sauce", "Lemon pepper", "Peri-peri"], variants: [{ label: "P042", price: 180 }, { label: "P042A", price: 200 }] },
+                    { id: "P006", name: "Prawn Fried Rice Special", price: 180, description: "Wok-fried rice loaded with tiger prawns", customizable: true, options: ["BBQ", "Hot sauce", "Lemon pepper", "Peri-peri"], variants: [{ label: "P006", price: 180 }, { label: "P006A", price: 200 }] },
+                ]
+            },
+
+            {
+                id: "grouperDishes", label: "B70 – Grouper", icon: faFish, items: [
+                    { id: "P044", name: "Grouper Veggie Stew",            price: 120, description: "Grilled grouper in rich garden vegetable stew",       customizable: false, options: [] },
+                    { id: "P045", name: "Grouper Kebab Only",             price: 90,  description: "Grilled grouper skewers, no side dish",               customizable: false, options: [] },
+                    { id: "P046", name: "Grilled Grouper with Side Dish", price: 120, description: "Whole grilled grouper served with rice or chips",      customizable: false, options: [] },
+                    { id: "P047", name: "Grouper Veggie Sauce",           price: 120, description: "Grouper served in a light garden vegetable sauce",     customizable: false, options: [] },
+                    { id: "P048", name: "Grouper Fried Rice Special",     price: 120, description: "Wok-fried rice with seasoned grouper",                 customizable: false, options: [] },
+                    { id: "PG41", name: "Grouper Jollof Rice Special",    price: 120, description: "Jollof rice served with grilled grouper",              customizable: false, options: [] },
+                    { id: "PG40", name: "Okro Stew Special",              price: 120, description: "Grouper in Ghanaian okro stew with side",              customizable: false, options: [] },
+                ]
+            },
+
+            {
+                id: "sausageDishes", label: "B60 – Sausage Dishes", icon: faBacon, items: [
+                    { id: "P049", name: "Sausage Veggie Stew", price: 80, description: "Sliced sausage in spiced vegetable stew", customizable: true, options: [], variants: [{ label: "P049", price: 80 }, { label: "P049A", price: 120 }] },
+                    { id: "P050", name: "Sausage Kebab (4pc)", price: 40, description: "Grilled sausage skewers, no side",        customizable: false, options: [] },
+                    { id: "P051", name: "Sausage Jollof Rice Special", price: 80, description: "Jollof rice with grilled sausage, choice of sauce", customizable: true, options: ["BBQ", "Hot sauce", "Lemon pepper", "Peri-peri"], variants: [{ label: "P051", price: 80 }, { label: "P051A", price: 120 }] },
+                    { id: "P052", name: "Sausage Fried Rice Special", price: 80, description: "Wok-fried rice with sliced sausage, choice of sauce", customizable: true, options: ["BBQ", "Hot sauce", "Lemon pepper", "Peri-peri"], variants: [{ label: "P052", price: 80 }, { label: "P052A", price: 120 }] },
+                    { id: "P053", name: "Sausage Stir Fry Noodles", price: 78, description: "Stir-fried noodles tossed with seasoned sausage", customizable: true, options: ["BBQ", "Hot sauce", "Lemon pepper", "Peri-peri"], variants: [{ label: "P053", price: 80 }, { label: "P053A", price: 120 }] },
+                ]
+            },
+
+            {
+                id: "beefDishes", label: "B24 – Beef Dishes", icon: faBurger, items: [
+                    { id: "P054", name: "Beef Veggie Stew", price: 80, description: "Tender beef in rich spiced vegetable stew", customizable: true, options: [], variants: [{ label: "P054", price: 80 }, { label: "P054A", price: 120 }] },
+                    { id: "P055", name: "Beef Kebab (4pc)", price: 40, description: "Grilled beef skewers, no side",             customizable: false, options: [] },
+                    { id: "P056", name: "Beef Jollof Rice Special", price: 80, description: "Jollof rice served with seasoned beef, choice of sauce", customizable: true, options: ["BBQ", "Hot sauce", "Lemon pepper", "Peri-peri"], variants: [{ label: "P056", price: 80 }, { label: "P056A", price: 120 }] },
+                    { id: "P057", name: "Beef Fried Rice Special", price: 80, description: "Wok-fried rice with tender beef, choice of sauce", customizable: true, options: ["BBQ", "Hot sauce", "Lemon pepper", "Peri-peri"], variants: [{ label: "P057", price: 80 }, { label: "P057A", price: 120 }] },
+                    { id: "P058", name: "Beef Stir Fry Noodles", price: 80, description: "Stir-fried noodles with marinated beef strips", customizable: true, options: ["BBQ", "Hot sauce", "Lemon pepper", "Peri-peri"], variants: [{ label: "P058", price: 80 }, { label: "P058A", price: 120 }] },
+                ]
+            },
+
+            {
+                id: "porkDishes", label: "B4 – Pork Dishes", icon: faBacon, items: [
+                    { id: "P060", name: "Grilled Pork", price: 95, description: "Seasoned pork grilled over open flame", customizable: true, options: [], variants: [{ label: "P060", price: 95 }, { label: "P060A", price: 120 }] },
+                    { id: "P061", name: "Pork Stir-Fry Noodles", price: 95, description: "Wok-tossed noodles with marinated pork strips", customizable: true, options: [], variants: [{ label: "P061", price: 95 }, { label: "P061A", price: 120 }] },
+                    { id: "P062", name: "Pork Sauce", price: 95, description: "Pork in rich West African tomato & pepper sauce", customizable: true, options: [], variants: [{ label: "P062", price: 95 }, { label: "P062A", price: 120 }] },
+                    { id: "P063", name: "Pork Stew", price: 95, description: "Slow-cooked pork in deep spiced stew", customizable: true, options: [], variants: [{ label: "P063", price: 95 }, { label: "P063A", price: 120 }] },
+                    { id: "P064", name: "Pork Kebab / Skewer Only", price: 60, description: "Grilled pork skewers, no side dish", customizable: false, options: [] },
+                    { id: "P010", name: "Pork Jollof Rice Special", price: 95, description: "Jollof rice topped with seasoned pork, choice of sauce", customizable: true, options: ["BBQ", "Hot sauce", "Lemon pepper", "Peri-peri"], variants: [{ label: "P010", price: 95 }, { label: "P010A", price: 120 }] },
+                    { id: "P410", name: "Pork Fried Rice Special", price: 95, description: "Wok-fried rice with seasoned pork, choice of sauce", customizable: true, options: ["BBQ", "Hot sauce", "Lemon pepper", "Peri-peri"], variants: [{ label: "P410", price: 95 }, { label: "P410A", price: 120 }] },
+                    { id: "P065", name: "Pork Stir Fry Noodles", price: 95, description: "Stir-fried noodles loaded with tender pork", customizable: true, options: ["BBQ", "Hot sauce", "Lemon pepper", "Peri-peri"], variants: [{ label: "P065", price: 95 }, { label: "P065A", price: 120 }] },
+                ]
+            },
+
+            {
+                id: "chickenDishes", label: "B13 – Chicken Dishes", icon: faDrumstickBite, items: [
+                    { id: "P070", name: "Grilled Chicken Drumsticks", price: 80, description: "Juicy grilled chicken drumsticks, well-seasoned", customizable: true, options: [], variants: [{ label: "P070", price: 80 }, { label: "P070A", price: 120 }] },
+                    { id: "P071", name: "Grilled Chicken Wings", price: 80, description: "Crispy grilled wings with smoky char", customizable: true, options: [], variants: [{ label: "P071", price: 80 }, { label: "P071A", price: 120 }] },
+                    { id: "P072", name: "Grilled Chicken Breast", price: 80, description: "Lean grilled breast fillet, lightly spiced", customizable: true, options: [], variants: [{ label: "P072", price: 80 }, { label: "P072A", price: 120 }] },
+                    { id: "P073", name: "Chicken Veggie Sauce", price: 80, description: "Chicken in a light garden vegetable sauce", customizable: true, options: [], variants: [{ label: "P073", price: 80 }, { label: "P073A", price: 120 }] },
+                    { id: "P074", name: "Chicken Veggie Stew", price: 80, description: "Chicken pieces slow-cooked in thick vegetable stew", customizable: true, options: [], variants: [{ label: "P074", price: 80 }, { label: "P074A", price: 120 }] },
+                    { id: "P075", name: "Chicken Kebab / Skewer (3pcs)", price: 50, description: "Grilled chicken skewers, no side", customizable: false, options: [] },
+                    { id: "P076", name: "Chicken Fried Rice Special", price: 80, description: "Wok-fried rice with seasoned chicken, choice of sauce", customizable: true, options: ["BBQ", "Hot sauce", "Lemon pepper", "Peri-peri"], variants: [{ label: "P076", price: 80 }, { label: "P076A", price: 120 }] },
+                    { id: "P212", name: "Grilled Drumsticks Only (3pcs)", price: 50, description: "Three grilled drumsticks with no side dish", customizable: false, options: [] },
+                    { id: "P270", name: "Chicken Stir Fry Noodles", price: 80, description: "Stir-fried noodles tossed with tender chicken", customizable: true, options: ["BBQ", "Hot sauce", "Lemon pepper", "Peri-peri"], variants: [{ label: "P270", price: 80 }, { label: "P270A", price: 120 }] },
+                ]
+            },
+
+            {
+                id: "pizza", label: "Pizza", icon: faPizzaSlice, items: [
+                    { id: "P090", name: "Seafood Pizza",                    price: 140, description: "Shrimp, fish & octopus on tomato base",          customizable: false, options: [] },
+                    { id: "P091", name: "Beef Pizza",                       price: 120, description: "Seasoned beef strips on rich tomato sauce",       customizable: false, options: [] },
+                    { id: "P092", name: "Chicken Pizza",                    price: 100, description: "Grilled chicken pieces on classic tomato base",   customizable: false, options: [] },
+                    { id: "P093", name: "Special Chicken & Beef Pizza",     price: 120, description: "Loaded with both chicken and beef, house special", customizable: false, options: [] },
+                    { id: "P094", name: "Sausage Pizza",                    price: 100, description: "Sliced sausage on tomato & cheese base",          customizable: false, options: [] },
+                    { id: "P095", name: "Gizzard Pizza",                    price: 100, description: "Seasoned chicken gizzard on tomato base",         customizable: false, options: [] },
+                    { id: "P096", name: "Pepperoni Pizza",                  price: 150, description: "Classic spicy pepperoni, Italian-style",          customizable: false, options: [] },
+                    { id: "P097", name: "Tuna Pizza",                       price: 100, description: "Tuna flakes on tomato & cheese base",             customizable: false, options: [] },
+                    { id: "P210", name: "Pork Pizza",                       price: 100, description: "Seasoned pork on classic tomato & cheese base",   customizable: false, options: [] },
+                ]
+            },
 
         ],
     },
+
     {
         id: "specials",
         label: "Specials",
         icon: faFireFlameCurved,
         subcategories: [
-            { id: "pianoBarSpecial", label: "Piano Bar Specials", icon: faChampagneGlasses, items: [
-                    { id: "P001", name: "Piano Assorted Fried Rice",   price: 80, description: "House special, tropical mix", customizable: true,  options: ["Chicken","Beef", "Fried egg"],  variants: [
-                            { label: "P001",  price: 80  },
-                            { label: "P001A", price: 120 },
-                        ] },
-                    { id: "P002", name: "Piano Assorted Jollof",   price: 80, description: "House special, tropical mix", customizable: true,  options: ["Chicken","Beef", "Fried egg"],  variants: [
-                            { label: "P002",  price: 80  },
-                            { label: "P002A", price: 120 },
-                        ] },
-                    { id: "P220", name: "Piano Assorted Veg Sauce with side dish",   price: 90, description: "House special, tropical mix", customizable: true,  options: ["Chicken","Beef"],  variants: [
-                            { label: "P220",  price: 90  },
-                            { label: "P220A", price: 130 },
-                        ] },
-                    { id: "P221", name: "Piano Assorted Veg Stew with side dish",   price: 90, description: "House special, tropical mix", customizable: true,  options: ["Chicken","Beef"],  variants: [
-                            { label: "P221",  price: 90  },
-                            { label: "P221A", price: 130 },
-                        ] },
-                    { id: "P012", name: "Piano Special Noodles (Beef & Chicken)",   price: 80, description: "House special, tropical mix", customizable: false,  options: [],  variants: [
-                            { label: "P012",  price: 80  },
-                            { label: "P012A", price: 120 },
-                        ] },
-                    { id: "P052", name: "Sausage (Chicken type) Fried Rice Special",   price: 80, description: "House special", customizable: true,  options: [],  variants: [
-                            { label: "P052",  price: 80  },
-                            { label: "P052A", price: 100 },
-                        ] },
-                    { id: "P222", name: "Chicken Breast & Sausage Fried Rice Special Mix",   price: 80, description: "House special, tropical mix", customizable: false,  options: []},
-                    { id: "P223", name: "Chicken Breast & Sausage Jollof Rice Special Mix",   price: 80, description: "House special, tropical mix", customizable: false,  options: [],},
-                    { id: "P051", name: "Chicken Sausage Jollof Rice Special",   price: 80, description: "House special", customizable: false,  options: [],  variants: [
-                            { label: "P051",  price: 80  },
-                            { label: "P051A", price: 130 },
-                        ] },
-                    { id: "P053", name: "Chicken Sausage Stir Fry Noodles",   price: 80, description: "House special", customizable: false,  options: [],  variants: [
-                            { label: "P053",  price: 80  },
-                            { label: "P053A", price: 130 },
-                        ] },
-                ]},
-            { id: "seaFoodSpecial", label: "Seafood Specials", icon: faShrimp, items: [
-                    { id: "P003", name: "Seafood Special Fried Rice",   price: 100, description: "House special, tropical mix", customizable: true,  options: ["Shrimps","Octopus", "Fish"],  variants: [
-                            { label: "P003",  price: 100  },
-                            { label: "P003A", price: 130 },
-                        ] },
-                    { id: "P004", name: "Seafood Special Jollof Rice",   price: 100, description: "House special, tropical mix", customizable: true,  options: ["Shrimps","Octopus", "Fish"],  variants: [
-                            { label: "P004",  price: 100  },
-                            { label: "P004A", price: 130 },
-                        ] },
-                    { id: "P005", name: "Seafood Stir Fry Noodles",   price: 100, description: "House special, tropical mix", customizable: true,  options: ["Shrimps","Octopus", "Fish"],  variants: [
-                            { label: "P005",  price: 100  },
-                            { label: "P005A", price: 130 },
-                        ] },
 
-                ]},
-            { id: "prawnSpecial", label: "Prawn Specials", icon: faChampagneGlasses, items: [
-                    { id: "P006", name: "Tiger Prawns Fried Rice",   price: 150, description: "House special, tropical mix", customizable: false,  options: [],  variants: [
-                            { label: "P003",  price: 150  },
-                            { label: "P003A", price: 170 },
-                        ] },
-                    { id: "P007", name: "Tiger Prawns Jollof Rice",   price: 150, description: "House special, tropical mix", customizable: false,  options: [],  variants: [
-                            { label: "P004",  price: 150  },
-                            { label: "P004A", price: 170 },
-                        ] },
-                    { id: "P201", name: "Tiger Prawn Noodles",   price: 150, description: "House special, tropical mix", customizable: false,  options: [],  variants: [
-                            { label: "P201",  price: 150  },
-                            { label: "P201A", price: 170 },
-                        ] },
+            {
+                id: "pianoBarSpecial", label: "Piano Bar Specials", icon: faStar, items: [
+                    { id: "P001", name: "Piano Assorted Fried Rice", price: 80, description: "House special fried rice with assorted meats", customizable: true, options: ["Chicken", "Beef", "Fried egg"], variants: [{ label: "P001", price: 80 }, { label: "P001A", price: 120 }] },
+                    { id: "P002", name: "Piano Assorted Jollof", price: 80, description: "House special jollof rice with assorted meats", customizable: true, options: ["Chicken", "Beef", "Fried egg"], variants: [{ label: "P002", price: 80 }, { label: "P002A", price: 120 }] },
+                    { id: "P220", name: "Piano Assorted Veg Sauce with Side", price: 90, description: "Assorted meats in vegetable sauce, served with a side", customizable: true, options: ["Chicken", "Beef"], variants: [{ label: "P220", price: 90 }, { label: "P220A", price: 130 }] },
+                    { id: "P221", name: "Piano Assorted Veg Stew with Side", price: 90, description: "Assorted meats in thick vegetable stew, served with a side", customizable: true, options: ["Chicken", "Beef"], variants: [{ label: "P221", price: 90 }, { label: "P221A", price: 130 }] },
+                    { id: "P012", name: "Piano Special Noodles (Beef & Chicken)", price: 80, description: "Stir-fried noodles loaded with beef and chicken", customizable: false, options: [], variants: [{ label: "P012", price: 80 }, { label: "P012A", price: 120 }] },
+                    { id: "P052b", name: "Chicken Sausage Fried Rice Special", price: 80, description: "Fried rice with sliced chicken-type sausage", customizable: true, options: [], variants: [{ label: "P052", price: 80 }, { label: "P052A", price: 100 }] },
+                    { id: "P222", name: "Chicken Breast & Sausage Fried Rice Mix", price: 80, description: "Fried rice with chicken breast and sausage blend", customizable: false, options: [] },
+                    { id: "P223", name: "Chicken Breast & Sausage Jollof Rice Mix", price: 80, description: "Jollof rice with chicken breast and sausage blend", customizable: false, options: [] },
+                    { id: "P051b", name: "Chicken Sausage Jollof Rice Special", price: 80, description: "Jollof rice with seasoned chicken sausage", customizable: false, options: [], variants: [{ label: "P051", price: 80 }, { label: "P051A", price: 130 }] },
+                    { id: "P053b", name: "Chicken Sausage Stir Fry Noodles", price: 80, description: "Stir-fried noodles with chicken sausage", customizable: false, options: [], variants: [{ label: "P053", price: 80 }, { label: "P053A", price: 130 }] },
+                ]
+            },
 
-                ]},
-            { id: "goatSpecial", label: "Goat Specials", icon: faChampagneGlasses, items: [
-                    { id: "P008", name: "Piano Goat Fried Rice Special",   price: 95, description: "House special, tropical mix", customizable: false,  options: [],  variants: [
-                            { label: "P008",  price: 95  },
-                            { label: "P008A", price: 140 },
-                        ] },
-                    { id: "P009", name: "Piano Goat Jollof Rice Special",   price: 95, description: "House special, tropical mix", customizable: false,  options: [],  variants: [
-                            { label: "P009",  price: 95  },
-                            { label: "P009A", price: 140 },
-                        ] },
+            {
+                id: "seaFoodSpecial", label: "Seafood Specials", icon: faShrimp, items: [
+                    { id: "P003", name: "Seafood Special Fried Rice", price: 100, description: "Wok-fried rice with mixed seafood, choice of protein", customizable: true, options: ["Shrimps", "Octopus", "Fish"], variants: [{ label: "P003", price: 100 }, { label: "P003A", price: 130 }] },
+                    { id: "P004", name: "Seafood Special Jollof Rice", price: 100, description: "Jollof rice loaded with mixed seafood, choice of protein", customizable: true, options: ["Shrimps", "Octopus", "Fish"], variants: [{ label: "P004", price: 100 }, { label: "P004A", price: 130 }] },
+                    { id: "P005", name: "Seafood Stir Fry Noodles", price: 100, description: "Stir-fried noodles with mixed seafood, choice of protein", customizable: true, options: ["Shrimps", "Octopus", "Fish"], variants: [{ label: "P005", price: 100 }, { label: "P005A", price: 130 }] },
+                ]
+            },
 
+            {
+                id: "prawnSpecial", label: "Prawn Specials", icon: faShrimp, items: [
+                    { id: "P006b", name: "Tiger Prawns Fried Rice", price: 150, description: "Wok-fried rice piled with whole tiger prawns", customizable: false, options: [], variants: [{ label: "P006", price: 150 }, { label: "P006A", price: 170 }] },
+                    { id: "P007",  name: "Tiger Prawns Jollof Rice", price: 150, description: "Smoky jollof rice served with whole tiger prawns", customizable: false, options: [], variants: [{ label: "P007", price: 150 }, { label: "P007A", price: 170 }] },
+                    { id: "P201",  name: "Tiger Prawn Noodles", price: 150, description: "Stir-fried noodles with whole tiger prawns", customizable: false, options: [], variants: [{ label: "P201", price: 150 }, { label: "P201A", price: 170 }] },
+                ]
+            },
 
-                ]},
-            { id: "porkSpecial", label: "Pork Specials", icon: faBacon, items: [
-                    { id: "P010", name: "Piano Pork Fried Rice Special",   price: 95, description: "House special, tropical mix", customizable: false,  options: [],  variants: [
-                            { label: "P008",  price: 95  },
-                            { label: "P008A", price: 140 },
-                        ] },
-                    { id: "P011", name: "Piano Pork Jollof Rice Special",   price: 95, description: "House special, tropical mix", customizable: false,  options: [],  variants: [
-                            { label: "P009",  price: 95  },
-                            { label: "P009A", price: 140 },
-                        ] },
+            {
+                id: "goatSpecial", label: "Goat Specials", icon: faFireFlameCurved, items: [
+                    { id: "P008b", name: "Piano Goat Fried Rice Special", price: 95, description: "House special fried rice with seasoned goat", customizable: false, options: [], variants: [{ label: "P008", price: 95 }, { label: "P008A", price: 140 }] },
+                    { id: "P009b", name: "Piano Goat Jollof Rice Special", price: 95, description: "House special jollof rice with seasoned goat", customizable: false, options: [], variants: [{ label: "P009", price: 95 }, { label: "P009A", price: 140 }] },
+                ]
+            },
 
+            {
+                id: "porkSpecial", label: "Pork Specials", icon: faBacon, items: [
+                    { id: "P010b", name: "Piano Pork Fried Rice Special", price: 95, description: "House special fried rice with seasoned pork", customizable: false, options: [], variants: [{ label: "P010", price: 95 }, { label: "P010A", price: 140 }] },
+                    { id: "P011",  name: "Piano Pork Jollof Rice Special", price: 95, description: "House special jollof rice with seasoned pork", customizable: false, options: [], variants: [{ label: "P011", price: 95 }, { label: "P011A", price: 140 }] },
+                ]
+            },
 
-                ]},
-            { id: "ghanaianSpecial", label: "Ghanaian Specials", icon: faBowlFood, items: [
-                    { id: "P430", name: "Light Soup",   price: 95, description: "House special, tropical mix", customizable: false,  options: [],  variants: [
-                            { label: "P430 3pc Goat",  price: 95  },
-                            { label: "P431 2pc Dry Fish", price: 120 },
-                            { label: "P432 2pc Tuna/Salmon", price: 90 },
-                            { label: "P433 Chicken Thigh", price: 90 },
-                            { label: "P434 2pc 4pc beef", price: 90 },
-                        ] },
-
-                    { id: "P435", name: "Groundnut",   price: 95, description: "House special, tropical mix", customizable: false,  options: [],  variants: [
-                            { label: "P435 3pc Goa",  price: 95  },
-                            { label: "P436 2pc Dry Fish", price: 120 },
-                            { label: "P437 Tuna/Salmon",  price: 90  },
-                            { label: "P438 Chicken Thigh", price: 90 },
-                            { label: "P439 2pc 4pc beef", price: 90 },
-                        ] },
-
-                    { id: "P102", name: "Okro Stew Mix",   price: 85, description: "Mix (Beef, Fish, Crabs & Wele)", customizable: true,  options: []},
-
-                    { id: "P440", name: "Okro Stew",   price: 95, description: "3pc Goat", customizable: true,  options: [] },
-                    { id: "P208", name: "Okro Stew",   price: 95, description: "Pork", customizable: false,  options: [],  variants: [
-                            { label: "P208",  price: 95  },
-                            { label: "P208A", price: 130 },
-                        ] },
-                    { id: "P103", name: "Palava Sauce(Kontomire, tuna & egg)",   price: 85, description: "House special, tropical mix", customizable: true,  options: ["Yam", "Plantain", "Rice"],  variants: [
-                            { label: "P103",  price: 85  },
-                            { label: "P103A", price: 130 },
-                        ] },
-                    { id: "P104", name: "Tilapia Light Soup",   price: 120, description: "House special, tropical mix", customizable: false,  options: [] },
-                    { id: "P101", name: "Light Soup Mixed",   price: 85, description: "House special, tropical mix", customizable: false,  options: [] },
-                ]},
+            {
+                id: "ghanaianSpecial", label: "Ghanaian Specials", icon: faBowlFood, items: [
+                    { id: "P430", name: "Light Soup", price: 95, description: "Spiced clear broth — choose your protein", customizable: false, options: [], variants: [
+                            { label: "P430 – 3pc Goat",       price: 95  },
+                            { label: "P431 – 2pc Dry Fish",   price: 120 },
+                            { label: "P432 – 2pc Tuna/Salmon", price: 90 },
+                            { label: "P433 – Chicken Thigh",  price: 90  },
+                            { label: "P434 – 2–4pc Beef",     price: 90  },
+                        ]},
+                    { id: "P435", name: "Groundnut Soup", price: 95, description: "Rich creamy peanut soup — choose your protein", customizable: false, options: [], variants: [
+                            { label: "P435 – 3pc Goat",        price: 95  },
+                            { label: "P436 – 2pc Dry Fish",    price: 120 },
+                            { label: "P437 – Tuna/Salmon",     price: 90  },
+                            { label: "P438 – Chicken Thigh",   price: 90  },
+                            { label: "P439 – 2–4pc Beef",      price: 90  },
+                        ]},
+                    { id: "P102", name: "Okro Stew Mix",     price: 85, description: "Okro stew with beef, fish, crabs & wele", customizable: true, options: [] },
+                    { id: "P440", name: "Okro Stew (Goat)",  price: 95, description: "Traditional okro stew with 3 pieces of goat", customizable: true, options: [] },
+                    { id: "P208", name: "Okro Stew (Pork)",  price: 95, description: "Traditional okro stew with seasoned pork", customizable: false, options: [], variants: [{ label: "P208", price: 95 }, { label: "P208A", price: 130 }] },
+                    { id: "P103", name: "Palava Sauce (Kontomire, Tuna & Egg)", price: 85, description: "Ghanaian cocoyam leaf stew with tuna and boiled egg", customizable: true, options: ["Yam", "Plantain", "Rice"], variants: [{ label: "P103", price: 85 }, { label: "P103A", price: 130 }] },
+                    { id: "P104", name: "Tilapia Light Soup", price: 120, description: "Spiced light soup with whole fresh tilapia", customizable: false, options: [] },
+                    { id: "P101", name: "Light Soup Mixed",   price: 85,  description: "Spiced clear broth with mixed assorted proteins", customizable: false, options: [] },
+                ]
+            },
 
         ],
     },
+
     {
         id: "extras",
         label: "Extras",
         icon: faWandMagicSparkles,
         subcategories: [
-            { id: "extras", label: "Extras", icon: faBeer, items: [
-                    { id: "P419", name: "Salmon",  price: 30, description: "Nicely Done",       customizable: false, options: [] },
-                    { id: "P420", name: "Tuna", price: 30, description: "Nicely Done",     customizable: false, options: [] },
-                    { id: "P421", name: "Dry Fish",        price: 30, description: "Nicely Done",     customizable: false, options: [] },
-                    { id: "P422", name: "Beef", price: 30, description: "Nicely Done", customizable: false, options: [] },
-                    { id: "P423", name: "Goat", price: 30, description: "Nicely Done", customizable: false, options: [] },
 
-                ]},
+            {
+                id: "extras", label: "Extras", icon: faTag, items: [
+                    { id: "P419", name: "Extra Salmon",   price: 30, description: "Add a salmon portion to your dish",    customizable: false, options: [] },
+                    { id: "P420", name: "Extra Tuna",     price: 30, description: "Add a tuna portion to your dish",      customizable: false, options: [] },
+                    { id: "P421", name: "Extra Dry Fish", price: 30, description: "Add dried fish to your dish",          customizable: false, options: [] },
+                    { id: "P422", name: "Extra Beef",     price: 30, description: "Add a beef portion to your dish",      customizable: false, options: [] },
+                    { id: "P423", name: "Extra Goat",     price: 30, description: "Add a goat portion to your dish",      customizable: false, options: [] },
+                ]
+            },
 
-            { id: "packs", label: "The Happy Chicken Packs", icon: faDrumstickBite, items: [
-                    { id: "P080", name: "Piano Happy Chicken Drumsticks 6/Pk",  price: 90, description: "Nicely Done",       customizable: false, options: [] },
-                    { id: "P081", name: "Piano Happy Chicken Drumsticks 12/Pk", price: 160, description: "Nicely Done",     customizable: false, options: [] },
-                    { id: "P082", name: "Piano Happy Chicken Drumsticks 15/Pk", price: 190, description: "Nicely Done",     customizable: false, options: [] },
-                    { id: "P083", name: "Piano Happy Chicken Drumsticks 20/Pk", price: 250, description: "Nicely Done", customizable: false, options: [] },
-                    { id: "P084", name: "Piano Happy Chicken Wings 5/Pk 500G Yam chips", price: 120, description: "Nicely Done", customizable: false, options: [] },
-                    { id: "P085", name: "Piano Happy Chicken Wings 12/Pk", price: 170, description: "Nicely Done", customizable: false, options: [] },
-                    { id: "P086", name: "Piano Happy Chicken Wings 20/Pk", price: 250, description: "Nicely Done", customizable: false, options: [] },
+            {
+                id: "packs", label: "The Happy Chicken Packs", icon: faDrumstickBite, items: [
+                    { id: "P080", name: "Happy Chicken Drumsticks 6/Pk",             price: 90,  description: "6 grilled chicken drumsticks, party pack",              customizable: false, options: [] },
+                    { id: "P081", name: "Happy Chicken Drumsticks 12/Pk",            price: 160, description: "12 grilled chicken drumsticks, sharing pack",            customizable: false, options: [] },
+                    { id: "P082", name: "Happy Chicken Drumsticks 15/Pk",            price: 190, description: "15 grilled chicken drumsticks, large sharing pack",      customizable: false, options: [] },
+                    { id: "P083", name: "Happy Chicken Drumsticks 20/Pk",            price: 250, description: "20 grilled chicken drumsticks, crowd pack",              customizable: false, options: [] },
+                    { id: "P084", name: "Happy Chicken Wings 5/Pk + 500g Yam Chips", price: 120, description: "5 grilled wings served with crispy yam chips",           customizable: false, options: [] },
+                    { id: "P085", name: "Happy Chicken Wings 12/Pk",                price: 170, description: "12 grilled chicken wings, sharing pack",                 customizable: false, options: [] },
+                    { id: "P086", name: "Happy Chicken Wings 20/Pk",                price: 250, description: "20 grilled chicken wings, crowd pack",                   customizable: false, options: [] },
+                ]
+            },
 
-                ]},
         ],
     },
 ];
