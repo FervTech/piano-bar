@@ -15,7 +15,7 @@ import {
     faChevronDown, faChevronUp, faFilter, faCalendarDays, faTimesCircle,faShrimp,faWandMagicSparkles,
     faReceipt, faChevronRight, faListUl, faHourglassHalf, faCog, faCheckDouble,faPizzaSlice,
     faChevronLeft, faDrumstickBite, faTag,faBowlFood,faBacon,faFireFlameCurved,faBolt, faLeaf, faStar, faFish, faSeedling, faUtensils,
-    faBan, faTriangleExclamation, faSun, faMoon
+    faBan, faTriangleExclamation,
 } from "@fortawesome/free-solid-svg-icons";
 import logo from "./assets/logo.svg";
 
@@ -52,17 +52,15 @@ const CATEGORIES = [
                     { id: "b4", name: "Guinness",        price: 18, description: "Rich Irish dry stout, creamy head",      customizable: false, options: [] },
                     { id: "b5", name: "Club Shandy",     price: 20, description: "Light lager blended with lemonade",      customizable: false, options: [] },
                     { id: "b6", name: "Origin Beer",     price: 20, description: "Crisp African-brewed lager",             customizable: false, options: [] },
-                    { id: "b7", name: "Faxe",       price: 28, description: "Strong Danish lager, 500ml can",         customizable: false, options: [] },
-                    { id: "b8", name: "Kiss",       price: 29, description: "Strong Danish lager, 500ml can",         customizable: false, options: [] },
-
+                    { id: "b7", name: "Faxe/Kiss",       price: 28, description: "Strong Danish lager, 500ml can",         customizable: false, options: [] },
                 ]
             },
 
             {
                 id: "energy", label: "Coolers / Energy", icon: faBolt, items: [
-                    { id: "e1", name: "Savanna",       price: 36, description: "South African dry cider, crisp & fruity",    customizable: false, options: [] },
-                    { id: "e2", name: "Hunters",       price: 36, description: "Smooth South African apple cider",           customizable: false, options: [] },
-                    { id: "e3", name: "Red Bull",      price: 38, description: "Energy drink with taurine & caffeine",       customizable: false, options: [] },
+                    { id: "e1", name: "Savanna",       price: 35, description: "South African dry cider, crisp & fruity",    customizable: false, options: [] },
+                    { id: "e2", name: "Hunters",       price: 35, description: "Smooth South African apple cider",           customizable: false, options: [] },
+                    { id: "e3", name: "Red Bull",      price: 35, description: "Energy drink with taurine & caffeine",       customizable: false, options: [] },
                     { id: "e4", name: "Smirnoff Ice",  price: 28, description: "Vodka-based lemon cooler, lightly sparkling", customizable: false, options: [] },
                     { id: "e5", name: "Vodi",          price: 28, description: "Chilled vodka-based cooler",                 customizable: false, options: [] },
                 ]
@@ -71,7 +69,7 @@ const CATEGORIES = [
             {
                 id: "whisky", label: "Whisky", icon: faWhiskeyGlass, items: [
                     { id: "wh1", name: "Red Label 20cl",   price: 130, description: "Johnnie Walker Red, blended Scotch whisky",   customizable: false, options: [] },
-                    { id: "wh2", name: "Black Label 20cl", price: 180, description: "Johnnie Walker Black, 12-year aged Scotch",   customizable: false, options: [] },
+                    { id: "wh2", name: "Black Label 20cl", price: 250, description: "Johnnie Walker Black, 12-year aged Scotch",   customizable: false, options: [] },
                     { id: "wh3", name: "Smirnoff Vodka",   price: 90,  description: "Triple-distilled premium Russian vodka",      customizable: false, options: [] },
                 ]
             },
@@ -182,19 +180,17 @@ const CATEGORIES = [
                     { id: "P022", name: "Gizzard Kebab Only", price: 40, description: "Grilled gizzard skewers, no side", customizable: false, options: [] },
                     { id: "P023", name: "Gizzard Jollof Rice Special", price: 80, description: "Jollof rice with grilled gizzard, choice of sauce", customizable: true, options: ["BBQ", "Hot sauce", "Lemon pepper", "Peri-peri"], variants: [{ label: "P023", price: 80 }, { label: "P023A", price: 120 }] },
                     { id: "P024", name: "Gizzard Fried Rice Special", price: 80, description: "Wok-fried rice with gizzard, choice of sauce", customizable: true, options: ["BBQ", "Hot sauce", "Lemon pepper", "Peri-peri"], variants: [{ label: "P024", price: 80 }, { label: "P024A", price: 120 }] },
-                    { id: "P025", name: "Gizzard Stir Fry Noodles", price: 80, description: "Stir-fried noodles with seasoned gizzard", customizable: true, options: ["BBQ", "Hot sauce", "Lemon pepper", "Peri-peri"], variants: [{ label: "P025", price: 78 }, { label: "P025A", price: 120 }] },
+                    { id: "P025", name: "Gizzard Stir Fry Noodles", price: 78, description: "Stir-fried noodles with seasoned gizzard", customizable: true, options: ["BBQ", "Hot sauce", "Lemon pepper", "Peri-peri"], variants: [{ label: "P025", price: 78 }, { label: "P025A", price: 120 }] },
                 ]
             },
 
             {
                 id: "tilapia", label: "B27 – Tilapia", icon: faFish, items: [
-                    { id: "P028", name: "Grilled Tilapia (550–700g)",   price: 120, description: "Whole grilled tilapia with seasoning & side", customizable: false, options: [] },
-                    { id: "P029", name: "Grilled Tilapia (700–800g)",   price: 140, description: "Whole grilled tilapia, medium size",          customizable: false, options: [] },
-                    { id: "P030", name: "Grilled Tilapia (800–900g)",   price: 150, description: "Whole grilled tilapia, large",                customizable: false, options: ["BBQ", "Hot sauce", "Lemon pepper", "Peri-peri"] },
-                    { id: "P031", name: "Grilled Tilapia (900–1000g)",  price: 180, description: "Whole grilled tilapia, extra large",          customizable: false, options: ["BBQ", "Hot sauce", "Lemon pepper", "Peri-peri"] },
-                    { id: "P032", name: "Grilled Tilapia (1000–1500g)", price: 220, description: "Whole grilled tilapia, jumbo size",           customizable: false, options: ["BBQ", "Hot sauce", "Lemon pepper", "Peri-peri"] },
-                    { id: "P033", name: "Grilled Tilapia (1500g-2000g)", price: 250, description: "Whole grilled tilapia, jumbo size",           customizable: false, options: ["BBQ", "Hot sauce", "Lemon pepper", "Peri-peri"] },
-
+                    { id: "P028", name: "Grilled Tilapia (550–700g)",   price: 95, description: "Whole grilled tilapia with seasoning & side", customizable: false, options: [] },
+                    { id: "P029", name: "Grilled Tilapia (700–800g)",   price: 95, description: "Whole grilled tilapia, medium size",          customizable: false, options: [] },
+                    { id: "P030", name: "Grilled Tilapia (800–900g)",   price: 95, description: "Whole grilled tilapia, large",                customizable: false, options: ["BBQ", "Hot sauce", "Lemon pepper", "Peri-peri"] },
+                    { id: "P031", name: "Grilled Tilapia (900–1000g)",  price: 95, description: "Whole grilled tilapia, extra large",          customizable: false, options: ["BBQ", "Hot sauce", "Lemon pepper", "Peri-peri"] },
+                    { id: "P032", name: "Grilled Tilapia (1000–1500g)", price: 95, description: "Whole grilled tilapia, jumbo size",           customizable: false, options: ["BBQ", "Hot sauce", "Lemon pepper", "Peri-peri"] },
                 ]
             },
 
@@ -280,13 +276,13 @@ const CATEGORIES = [
                 id: "pizza", label: "Pizza", icon: faPizzaSlice, items: [
                     { id: "P090", name: "Seafood Pizza",                    price: 140, description: "Shrimp, fish & octopus on tomato base",          customizable: false, options: [] },
                     { id: "P091", name: "Beef Pizza",                       price: 120, description: "Seasoned beef strips on rich tomato sauce",       customizable: false, options: [] },
-                    { id: "P092", name: "Chicken Pizza",                    price: 120, description: "Grilled chicken pieces on classic tomato base",   customizable: false, options: [] },
+                    { id: "P092", name: "Chicken Pizza",                    price: 100, description: "Grilled chicken pieces on classic tomato base",   customizable: false, options: [] },
                     { id: "P093", name: "Special Chicken & Beef Pizza",     price: 120, description: "Loaded with both chicken and beef, house special", customizable: false, options: [] },
-                    { id: "P094", name: "Sausage Pizza",                    price: 120, description: "Sliced sausage on tomato & cheese base",          customizable: false, options: [] },
-                    { id: "P095", name: "Gizzard Pizza",                    price: 120, description: "Seasoned chicken gizzard on tomato base",         customizable: false, options: [] },
-                    { id: "P096", name: "Pepperoni Pizza",                  price: 120, description: "Classic spicy pepperoni, Italian-style",          customizable: false, options: [] },
-                    { id: "P097", name: "Tuna Pizza",                       price: 120, description: "Tuna flakes on tomato & cheese base",             customizable: false, options: [] },
-                    { id: "P210", name: "Pork Pizza",                       price: 120, description: "Seasoned pork on classic tomato & cheese base",   customizable: false, options: [] },
+                    { id: "P094", name: "Sausage Pizza",                    price: 100, description: "Sliced sausage on tomato & cheese base",          customizable: false, options: [] },
+                    { id: "P095", name: "Gizzard Pizza",                    price: 100, description: "Seasoned chicken gizzard on tomato base",         customizable: false, options: [] },
+                    { id: "P096", name: "Pepperoni Pizza",                  price: 150, description: "Classic spicy pepperoni, Italian-style",          customizable: false, options: [] },
+                    { id: "P097", name: "Tuna Pizza",                       price: 100, description: "Tuna flakes on tomato & cheese base",             customizable: false, options: [] },
+                    { id: "P210", name: "Pork Pizza",                       price: 100, description: "Seasoned pork on classic tomato & cheese base",   customizable: false, options: [] },
                 ]
             },
 
@@ -787,8 +783,6 @@ export default function App() {
     const [restaurant, setRestaurant]         = useState(null);
     const [restaurantLoading, setRestaurantLoading] = useState(true);
 
-    const [theme, setTheme] = useState("dark"); // dark | light
-    const isDark = theme === "dark";
     const { toasts, add: addToast } = useToasts();
 
     /* ── open customize/variant modal ── */
@@ -1111,55 +1105,7 @@ export default function App() {
 
     /* ════════════════════════════ RENDER ══════════════════════════════ */
     return (
-        <div style={{ fontFamily:"system-ui,-apple-system,sans-serif", background:"#0c0c10", minHeight:"100vh", color:"#f5f0e8" }} className={isDark ? "bar-dark" : "bar-light"}>
-            {!isDark && (
-                <style>{`
-              .bar-light { background:#f0f4f8 !important; color:#1a1625 !important; }
-              .bar-light nav { background:#ffffff !important; border-bottom-color:#e2e8f0 !important; }
-              /* Cards and dark backgrounds */
-              .bar-light div[style*="background:#1a1625"],
-              .bar-light div[style*="background: #1a1625"] { background:#ffffff !important; border-color:#e2e8f0 !important; }
-              .bar-light div[style*="background:#13111e"],
-              .bar-light div[style*="background: #13111e"] { background:#f8fafc !important; }
-              .bar-light div[style*="background:#0c0c10"],
-              .bar-light div[style*="background: #0c0c10"] { background:#f0f4f8 !important; }
-              .bar-light div[style*="background:#1a1a2e"],
-              .bar-light div[style*="background: #1a1a2e"] { background:#eef2ff !important; border-color:#c7d2fe !important; }
-              .bar-light div[style*="background:#1a1020"],
-              .bar-light div[style*="background: #1a1020"] { background:#f8fafc !important; }
-              .bar-light div[style*="background:#2e2050"],
-              .bar-light div[style*="background: #2e2050"] { background:#e2e8f0 !important; }
-              /* Floating cart bar */
-              .bar-light div[style*="position:\"fixed\""][style*="bottom:0"] { background:#ffffff !important; border-top-color:#e2e8f0 !important; }
-              /* Borders */
-              .bar-light div[style*="borderTop:"1px solid #2e2050""],
-              .bar-light div[style*="border:"1px solid #2e2050""],
-              .bar-light div[style*="border:"1.5px solid #2e2050""],
-              .bar-light div[style*="border:"1px solid #1e1a35""] { border-color:#e2e8f0 !important; }
-              /* Text */
-              .bar-light div[style*="color:#f5f0e8"],
-              .bar-light span[style*="color:#f5f0e8"] { color:#1a1625 !important; }
-              .bar-light div[style*="color:#a09abf"],
-              .bar-light span[style*="color:#a09abf"] { color:#475569 !important; }
-              .bar-light div[style*="color:#7a6a90"],
-              .bar-light span[style*="color:#7a6a90"] { color:#64748b !important; }
-              .bar-light div[style*="color:#6b6080"],
-              .bar-light span[style*="color:#6b6080"] { color:#64748b !important; }
-              .bar-light div[style*="color:#4a3a60"],
-              .bar-light span[style*="color:#4a3a60"] { color:#94a3b8 !important; }
-              .bar-light div[style*="color:#3a2a5e"],
-              .bar-light span[style*="color:#3a2a5e"] { color:#94a3b8 !important; }
-              .bar-light div[style*="color:#6b5a90"],
-              .bar-light span[style*="color:#6b5a90"] { color:#64748b !important; }
-              /* Inputs */
-              .bar-light input, .bar-light textarea, .bar-light select {
-                background:#ffffff !important; border-color:#cbd5e1 !important; color:#1a1625 !important;
-              }
-              .bar-light input::placeholder, .bar-light textarea::placeholder { color:#94a3b8 !important; }
-              /* Footer */
-              .bar-light footer { background:#ffffff !important; border-top-color:#e2e8f0 !important; }
-            `}</style>
-            )}
+        <div style={{ fontFamily:"system-ui,-apple-system,sans-serif", background:"#0c0c10", minHeight:"100vh", color:"#f5f0e8" }}>
             <style>{`
                 *, *::before, *::after { box-sizing: border-box; }
                 html, body { margin:0; padding:0; overscroll-behavior:none; -webkit-tap-highlight-color:transparent; }
@@ -1222,14 +1168,7 @@ export default function App() {
                         <div style={{ fontSize:9, color:"#6b5a90", letterSpacing:2, marginTop:1 }}>SCAN · ORDER · RELAX</div>
                     </div>
                 </div>
-                <div style={{ display:"flex", gap:5, flexShrink:0, marginLeft:8, alignItems:"center" }}>
-                    <button onClick={() => setTheme(t => t === "dark" ? "light" : "dark")}
-                            title={isDark ? "Light mode" : "Dark mode"}
-                            style={{ padding:"5px 10px", borderRadius:20, border:"1px solid #2e2050",
-                                background:"transparent", color:"#7a6a90", cursor:"pointer",
-                                fontSize:11, flexShrink:0 }}>
-                        <FontAwesomeIcon icon={isDark ? faSun : faMoon} style={{ fontSize:12 }} />
-                    </button>
+                <div style={{ display:"flex", gap:5, flexShrink:0, marginLeft:8 }}>
                     <NavBtn label="Menu" active={scene==="customer"} onClick={() => { setScene("customer"); setMenuView("categories"); }} />
                     <NavBtn label="Orders" active={scene==="orders"} onClick={() => setScene("orders")} />
                     <NavBtn
