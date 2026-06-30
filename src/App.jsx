@@ -24,26 +24,14 @@ const supabase = createClient(
     import.meta.env.VITE_SUPABASE_ANON_KEY
 );
 
-/* ─────────────────────────── RESTAURANT CONFIG ──────────────────────── */
 const RESTAURANT_SLUG = import.meta.env.VITE_RESTAURANT_SLUG || "piano-bar";
 
-/* ─────────────────────────── MENU DATA ── */
-/*
-  items can have an optional `variants` array:
-  variants: [
-    { label: "Small (6 pcs)", price: 80 },
-    { label: "Large (12 pcs)", price: 120 },
-  ]
-  When variants exist, the item shows an inline size picker before Add.
-  The `price` on the item itself is used only as a fallback display.
-*/
 const CATEGORIES = [
     {
         id: "massal",
         label: "Massal Bar",
         icon: faMartiniGlassCitrus,
         subcategories: [
-
             {
                 id: "beers", label: "Beers", icon: faBeer, items: [
                     { id: "b1", name: "Heineken 330ml",  price: 35, description: "Dutch premium lager, 5% ABV",           customizable: false, options: [] },
@@ -52,140 +40,110 @@ const CATEGORIES = [
                     { id: "b4", name: "Guinness",        price: 18, description: "Rich Irish dry stout, creamy head",      customizable: false, options: [] },
                     { id: "b5", name: "Club Shandy",     price: 20, description: "Light lager blended with lemonade",      customizable: false, options: [] },
                     { id: "b6", name: "Origin Beer",     price: 20, description: "Crisp African-brewed lager",             customizable: false, options: [] },
-                    { id: "b7", name: "Faxe",       price: 28, description: "Strong Danish lager, 500ml can",         customizable: false, options: [] },
-                    { id: "b8", name: "Kiss",       price: 29, description: "Strong Danish lager, 500ml can",         customizable: false, options: [] },
-
+                    { id: "b7", name: "Faxe",            price: 28, description: "Strong Danish lager, 500ml can",        customizable: false, options: [] },
+                    { id: "b8", name: "Kiss",            price: 29, description: "Strong Danish lager, 500ml can",        customizable: false, options: [] },
                 ]
             },
-
             {
                 id: "energy", label: "Coolers / Energy", icon: faBolt, items: [
-                    { id: "e1", name: "Savanna",       price: 36, description: "South African dry cider, crisp & fruity",    customizable: false, options: [] },
-                    { id: "e2", name: "Hunters",       price: 36, description: "Smooth South African apple cider",           customizable: false, options: [] },
-                    { id: "e3", name: "Red Bull",      price: 38, description: "Energy drink with taurine & caffeine",       customizable: false, options: [] },
+                    { id: "e1", name: "Savanna",       price: 36, description: "South African dry cider, crisp & fruity",     customizable: false, options: [] },
+                    { id: "e2", name: "Hunters",       price: 36, description: "Smooth South African apple cider",            customizable: false, options: [] },
+                    { id: "e3", name: "Red Bull",      price: 38, description: "Energy drink with taurine & caffeine",        customizable: false, options: [] },
                     { id: "e4", name: "Smirnoff Ice",  price: 28, description: "Vodka-based lemon cooler, lightly sparkling", customizable: false, options: [] },
-                    { id: "e5", name: "Vodi",          price: 28, description: "Chilled vodka-based cooler",                 customizable: false, options: [] },
+                    { id: "e5", name: "Vodi",          price: 28, description: "Chilled vodka-based cooler",                  customizable: false, options: [] },
                 ]
             },
-
             {
                 id: "whisky", label: "Whisky", icon: faWhiskeyGlass, items: [
-                    { id: "wh1", name: "Red Label 20cl",   price: 130, description: "Johnnie Walker Red, blended Scotch whisky",   customizable: false, options: [] },
-                    { id: "wh2", name: "Black Label 20cl", price: 180, description: "Johnnie Walker Black, 12-year aged Scotch",   customizable: false, options: [] },
-                    { id: "wh3", name: "Smirnoff Vodka",   price: 90,  description: "Triple-distilled premium Russian vodka",      customizable: false, options: [] },
+                    { id: "wh1", name: "Red Label 20cl",   price: 130, description: "Johnnie Walker Red, blended Scotch whisky", customizable: false, options: [] },
+                    { id: "wh2", name: "Black Label 20cl", price: 180, description: "Johnnie Walker Black, 12-year aged Scotch",  customizable: false, options: [] },
+                    { id: "wh3", name: "Smirnoff Vodka",   price: 90,  description: "Triple-distilled premium Russian vodka",     customizable: false, options: [] },
                 ]
             },
-
             {
                 id: "liqueur", label: "Liqueur", icon: faWineBottle, items: [
-                    { id: "l1", name: "Campari 20cl",       price: 90,  description: "Italian bitter aperitif, vibrant red",        customizable: true, options: ["Neat", "On the rocks", "With water", "With soda"] },
-                    { id: "l2", name: "Baileys 20cl",       price: 150, description: "Irish cream liqueur, rich & smooth",          customizable: true, options: ["Neat", "On the rocks", "With water", "With soda"] },
-                    { id: "l3", name: "Jagermeister Shot",  price: 20,  description: "German herbal digestif, 56 botanicals",       customizable: true, options: ["Neat", "On the rocks", "With ginger ale"] },
+                    { id: "l1", name: "Campari 20cl",      price: 90,  description: "Italian bitter aperitif, vibrant red",   customizable: true, options: ["Neat", "On the rocks", "With water", "With soda"] },
+                    { id: "l2", name: "Baileys 20cl",      price: 150, description: "Irish cream liqueur, rich & smooth",     customizable: true, options: ["Neat", "On the rocks", "With water", "With soda"] },
+                    { id: "l3", name: "Jagermeister Shot", price: 20,  description: "German herbal digestif, 56 botanicals",  customizable: true, options: ["Neat", "On the rocks", "With ginger ale"] },
                 ]
             },
-
             {
                 id: "wine", label: "Wine", icon: faWineGlassEmpty, items: [
-                    { id: "w1", name: "Alcoholic Wine",     price: 140, description: "Chilled red or white, house selection",       customizable: false, options: [] },
-                    { id: "w2", name: "Non-Alcoholic Wine", price: 80,  description: "Sparkling grape juice, chilled",              customizable: false, options: [] },
+                    { id: "w1", name: "Alcoholic Wine",     price: 140, description: "Chilled red or white, house selection", customizable: false, options: [] },
+                    { id: "w2", name: "Non-Alcoholic Wine", price: 80,  description: "Sparkling grape juice, chilled",        customizable: false, options: [] },
                 ]
             },
-
             {
                 id: "brandy", label: "Brandy / Cognac", icon: faWhiskeyGlass, items: [
-                    { id: "bd1", name: "Hennessy VS 75cl",    price: 650,  description: "Very Special cognac, smooth & fruity",        customizable: false, options: [] },
-                    { id: "bd2", name: "Hennessy VSOP 75cl",  price: 1700, description: "Very Superior Old Pale, aged 4–8 years",      customizable: false, options: [] },
-                    { id: "bd3", name: "Hennessy VS 20cl",    price: 200,  description: "Very Special cognac, serving bottle",         customizable: false, options: [] },
+                    { id: "bd1", name: "Hennessy VS 75cl",   price: 650,  description: "Very Special cognac, smooth & fruity",   customizable: false, options: [] },
+                    { id: "bd2", name: "Hennessy VSOP 75cl", price: 1700, description: "Very Superior Old Pale, aged 4–8 years", customizable: false, options: [] },
+                    { id: "bd3", name: "Hennessy VS 20cl",   price: 200,  description: "Very Special cognac, serving bottle",    customizable: false, options: [] },
                 ]
             },
-
             {
                 id: "champagne", label: "Champagne", icon: faChampagneGlasses, items: [
-                    { id: "ch1", name: "Alcoholic Champagne",     price: 140, description: "Brut sparkling wine, chilled & crisp",      customizable: false, options: [] },
-                    { id: "ch2", name: "Non-Alcoholic Champagne", price: 80,  description: "Sparkling grape, alcohol-free, chilled",    customizable: false, options: [] },
+                    { id: "ch1", name: "Alcoholic Champagne",     price: 140, description: "Brut sparkling wine, chilled & crisp",   customizable: false, options: [] },
+                    { id: "ch2", name: "Non-Alcoholic Champagne", price: 80,  description: "Sparkling grape, alcohol-free, chilled", customizable: false, options: [] },
                 ]
             },
-
             {
                 id: "minerals", label: "Minerals", icon: faBottleDroplet, items: [
-                    {
-                        id: "m1", name: "Soft Drink", price: 15, description: "Chilled carbonated soft drink",
-                        customizable: false, options: [],
-                        variants: [
-                            { label: "Fanta",  price: 15 },
-                            { label: "Coke",   price: 15 },
-                        ]
-                    },
-                    { id: "m2", name: "BB Cocktail", price: 18, description: "Chilled non-alcoholic cocktail mix",       customizable: false, options: [] },
-                    {
-                        id: "m3", name: "Malt", price: 15, description: "Non-alcoholic barley malt drink",
-                        customizable: false, options: [],
-                        variants: [
-                            { label: "Malt Bottle", price: 15 },
-                            { label: "Malt Can",    price: 20 },
-                        ]
-                    },
-                    { id: "m4", name: "Alvaro",      price: 15, description: "Chilled non-alcoholic drink", customizable: false, options: [] },
+                    { id: "m1", name: "Soft Drink",  price: 15, description: "Chilled carbonated soft drink",      customizable: false, options: [], variants: [{ label: "Fanta", price: 15 }, { label: "Coke", price: 15 }] },
+                    { id: "m2", name: "BB Cocktail", price: 18, description: "Chilled non-alcoholic cocktail mix", customizable: false, options: [] },
+                    { id: "m3", name: "Malt",        price: 15, description: "Non-alcoholic barley malt drink",   customizable: false, options: [], variants: [{ label: "Malt Bottle", price: 15 }, { label: "Malt Can", price: 20 }] },
+                    { id: "m4", name: "Alvaro",      price: 15, description: "Chilled non-alcoholic drink",       customizable: false, options: [] },
                 ]
             },
-
             {
                 id: "water", label: "Water", icon: faBottleWater, items: [
                     { id: "wt1", name: "Still Water 500ml", price: 4, description: "Chilled purified still water",        customizable: false, options: [] },
                     { id: "wt2", name: "Still Water 750ml", price: 6, description: "Chilled purified still water, large", customizable: false, options: [] },
                 ]
             },
-
             {
                 id: "fruit", label: "Fruit Juice", icon: faSeedling, items: [
-                    { id: "fj1", name: "Ceres (various)",  price: 50, description: "100% pure fruit juice, South African",  customizable: false, options: [] },
-                    { id: "fj2", name: "Don Simon",        price: 45, description: "Spanish chilled fruit juice blend",      customizable: false, options: [] },
+                    { id: "fj1", name: "Ceres (various)", price: 50, description: "100% pure fruit juice, South African", customizable: false, options: [] },
+                    { id: "fj2", name: "Don Simon",       price: 45, description: "Spanish chilled fruit juice blend",    customizable: false, options: [] },
                 ]
             },
-
             {
                 id: "locals", label: "Locals", icon: faLeaf, items: [
-                    { id: "lc1", name: "Kasapreko Alomo",  price: 7,  description: "Ghanaian herbal bitters, classic",        customizable: false, options: [] },
-                    { id: "lc2", name: "Herb Afrik",       price: 7,  description: "Local herbal spirit blend",               customizable: false, options: [] },
-                    { id: "lc3", name: "Castle Bridge",    price: 7,  description: "Smooth local spirit",                     customizable: false, options: [] },
-                    { id: "lc4", name: "Orijin Bitters",   price: 7,  description: "African bitters with herbs & fruits",     customizable: false, options: [] },
-                    { id: "lc5", name: "Madingo",          price: 7,  description: "Spiced local bitters",                    customizable: false, options: [] },
-                    { id: "lc6", name: "Palm Wine",        price: 30, description: "Freshly tapped sweet palm sap",           customizable: false, options: [] },
-                    { id: "lc7", name: "Sobolo",           price: 10, description: "Chilled hibiscus drink, lightly spiced",  customizable: false, options: [] },
-                    { id: "lc8", name: "Pito",             price: 10, description: "Traditional fermented millet/sorghum",    customizable: false, options: [] },
-                    { id: "lc9", name: "Kalahari",         price: 7,  description: "Local herbal tonic drink",                customizable: false, options: [] },
+                    { id: "lc1", name: "Kasapreko Alomo", price: 7,  description: "Ghanaian herbal bitters, classic",       customizable: false, options: [] },
+                    { id: "lc2", name: "Herb Afrik",      price: 7,  description: "Local herbal spirit blend",              customizable: false, options: [] },
+                    { id: "lc3", name: "Castle Bridge",   price: 7,  description: "Smooth local spirit",                    customizable: false, options: [] },
+                    { id: "lc4", name: "Orijin Bitters",  price: 7,  description: "African bitters with herbs & fruits",    customizable: false, options: [] },
+                    { id: "lc5", name: "Madingo",         price: 7,  description: "Spiced local bitters",                   customizable: false, options: [] },
+                    { id: "lc6", name: "Palm Wine",       price: 30, description: "Freshly tapped sweet palm sap",          customizable: false, options: [] },
+                    { id: "lc7", name: "Sobolo",          price: 10, description: "Chilled hibiscus drink, lightly spiced", customizable: false, options: [] },
+                    { id: "lc8", name: "Pito",            price: 10, description: "Traditional fermented millet/sorghum",   customizable: false, options: [] },
+                    { id: "lc9", name: "Kalahari",        price: 7,  description: "Local herbal tonic drink",               customizable: false, options: [] },
                 ]
             },
-
         ],
     },
-
     {
         id: "food",
         label: "Food & Bites",
         icon: faBowlFood,
         subcategories: [
-
             {
                 id: "goatDishes", label: "B37A – Goat Dishes", icon: faUtensils, items: [
-                    { id: "P016", name: "Goat Stew", price: 95, description: "Tender goat slow-cooked in rich spiced stew", customizable: true, options: [], variants: [{ label: "P016", price: 95 }, { label: "P016A", price: 140 }] },
-                    { id: "P017", name: "Goat Kebab Only", price: 95, description: "Grilled goat skewers, no side", customizable: false, options: [] },
-                    { id: "P009", name: "Goat Jollof Rice Special", price: 95, description: "Jollof rice topped with seasoned goat, choice of sauce", customizable: true, options: ["BBQ", "Hot sauce", "Lemon pepper", "Peri-peri"], variants: [{ label: "P009", price: 95 }, { label: "P009A", price: 140 }] },
-                    { id: "P008", name: "Goat Fried Rice Special", price: 95, description: "Wok-fried rice with seasoned goat, choice of sauce", customizable: true, options: ["BBQ", "Hot sauce", "Lemon pepper", "Peri-peri"], variants: [{ label: "P008", price: 95 }, { label: "P008A", price: 140 }] },
-                    { id: "P020", name: "Goat Stir Fry Noodles", price: 95, description: "Wok-tossed noodles with tender goat pieces", customizable: true, options: ["BBQ", "Hot sauce", "Lemon pepper", "Peri-peri"], variants: [{ label: "P020", price: 95 }, { label: "P020A", price: 140 }] },
+                    { id: "P016", name: "Goat Stew",               price: 95, description: "Tender goat slow-cooked in rich spiced stew",              customizable: true,  options: [],                                                    variants: [{ label: "P016", price: 95 }, { label: "P016A", price: 140 }] },
+                    { id: "P017", name: "Goat Kebab Only",         price: 95, description: "Grilled goat skewers, no side",                            customizable: false, options: [] },
+                    { id: "P009", name: "Goat Jollof Rice Special",price: 95, description: "Jollof rice topped with seasoned goat, choice of sauce",   customizable: true,  options: ["BBQ", "Hot sauce", "Lemon pepper", "Peri-peri"],     variants: [{ label: "P009", price: 95 }, { label: "P009A", price: 140 }] },
+                    { id: "P008", name: "Goat Fried Rice Special", price: 95, description: "Wok-fried rice with seasoned goat, choice of sauce",       customizable: true,  options: ["BBQ", "Hot sauce", "Lemon pepper", "Peri-peri"],     variants: [{ label: "P008", price: 95 }, { label: "P008A", price: 140 }] },
+                    { id: "P020", name: "Goat Stir Fry Noodles",  price: 95, description: "Wok-tossed noodles with tender goat pieces",               customizable: true,  options: ["BBQ", "Hot sauce", "Lemon pepper", "Peri-peri"],     variants: [{ label: "P020", price: 95 }, { label: "P020A", price: 140 }] },
                 ]
             },
-
             {
                 id: "gizzardDishes", label: "A15 – Gizzard Dishes", icon: faUtensils, items: [
-                    { id: "P021", name: "Gizzard Stew", price: 80, description: "Braised chicken gizzard in spiced tomato stew", customizable: true, options: [], variants: [{ label: "P021", price: 80 }, { label: "P021A", price: 120 }] },
-                    { id: "P022", name: "Gizzard Kebab Only", price: 40, description: "Grilled gizzard skewers, no side", customizable: false, options: [] },
-                    { id: "P023", name: "Gizzard Jollof Rice Special", price: 80, description: "Jollof rice with grilled gizzard, choice of sauce", customizable: true, options: ["BBQ", "Hot sauce", "Lemon pepper", "Peri-peri"], variants: [{ label: "P023", price: 80 }, { label: "P023A", price: 120 }] },
-                    { id: "P024", name: "Gizzard Fried Rice Special", price: 80, description: "Wok-fried rice with gizzard, choice of sauce", customizable: true, options: ["BBQ", "Hot sauce", "Lemon pepper", "Peri-peri"], variants: [{ label: "P024", price: 80 }, { label: "P024A", price: 120 }] },
-                    { id: "P025", name: "Gizzard Stir Fry Noodles", price: 80, description: "Stir-fried noodles with seasoned gizzard", customizable: true, options: ["BBQ", "Hot sauce", "Lemon pepper", "Peri-peri"], variants: [{ label: "P025", price: 78 }, { label: "P025A", price: 120 }] },
+                    { id: "P021", name: "Gizzard Stew",               price: 80, description: "Braised chicken gizzard in spiced tomato stew",          customizable: true,  options: [],                                                variants: [{ label: "P021", price: 80 }, { label: "P021A", price: 120 }] },
+                    { id: "P022", name: "Gizzard Kebab Only",         price: 40, description: "Grilled gizzard skewers, no side",                      customizable: false, options: [] },
+                    { id: "P023", name: "Gizzard Jollof Rice Special",price: 80, description: "Jollof rice with grilled gizzard, choice of sauce",     customizable: true,  options: ["BBQ", "Hot sauce", "Lemon pepper", "Peri-peri"], variants: [{ label: "P023", price: 80 }, { label: "P023A", price: 120 }] },
+                    { id: "P024", name: "Gizzard Fried Rice Special", price: 80, description: "Wok-fried rice with gizzard, choice of sauce",          customizable: true,  options: ["BBQ", "Hot sauce", "Lemon pepper", "Peri-peri"], variants: [{ label: "P024", price: 80 }, { label: "P024A", price: 120 }] },
+                    { id: "P025", name: "Gizzard Stir Fry Noodles",  price: 80, description: "Stir-fried noodles with seasoned gizzard",              customizable: true,  options: ["BBQ", "Hot sauce", "Lemon pepper", "Peri-peri"], variants: [{ label: "P025", price: 78 }, { label: "P025A", price: 120 }] },
                 ]
             },
-
             {
                 id: "tilapia", label: "B27 – Tilapia", icon: faFish, items: [
                     { id: "P028", name: "Grilled Tilapia (550–700g)",   price: 120, description: "Whole grilled tilapia with seasoning & side", customizable: false, options: [] },
@@ -193,213 +151,179 @@ const CATEGORIES = [
                     { id: "P030", name: "Grilled Tilapia (800–900g)",   price: 150, description: "Whole grilled tilapia, large",                customizable: false, options: ["BBQ", "Hot sauce", "Lemon pepper", "Peri-peri"] },
                     { id: "P031", name: "Grilled Tilapia (900–1000g)",  price: 180, description: "Whole grilled tilapia, extra large",          customizable: false, options: ["BBQ", "Hot sauce", "Lemon pepper", "Peri-peri"] },
                     { id: "P032", name: "Grilled Tilapia (1000–1500g)", price: 220, description: "Whole grilled tilapia, jumbo size",           customizable: false, options: ["BBQ", "Hot sauce", "Lemon pepper", "Peri-peri"] },
-                    { id: "P033", name: "Grilled Tilapia (1500g-2000g)", price: 250, description: "Whole grilled tilapia, jumbo size",           customizable: false, options: ["BBQ", "Hot sauce", "Lemon pepper", "Peri-peri"] },
-
+                    { id: "P033", name: "Grilled Tilapia (1500g-2000g)",price: 250, description: "Whole grilled tilapia, jumbo size",           customizable: false, options: ["BBQ", "Hot sauce", "Lemon pepper", "Peri-peri"] },
                 ]
             },
-
             {
                 id: "snapper", label: "B27 – Red Snapper", icon: faFish, items: [
-                    { id: "P034", name: "Fried Red Snapper",             price: 85, description: "Whole deep-fried red snapper, crispy skin",      customizable: false, options: [] },
-                    { id: "P203", name: "Fried Red Snapper Only (1pc)",  price: 70, description: "Single deep-fried snapper fillet",               customizable: false, options: [] },
+                    { id: "P034", name: "Fried Red Snapper",              price: 85, description: "Whole deep-fried red snapper, crispy skin",        customizable: false, options: [] },
+                    { id: "P203", name: "Fried Red Snapper Only (1pc)",   price: 70, description: "Single deep-fried snapper fillet",                 customizable: false, options: [] },
                     { id: "P035", name: "Fried Snapper with Veggie Stew", price: 95, description: "Crispy snapper served with garden vegetable stew", customizable: false, options: [] },
-                    { id: "P036", name: "Red Snapper Soup",              price: 95, description: "Light pepper soup with whole red snapper",        customizable: false, options: [] },
-                    { id: "PG36", name: "Red Snapper Groundnut Soup",    price: 95, description: "Creamy groundnut soup with red snapper",          customizable: false, options: [] },
+                    { id: "P036", name: "Red Snapper Soup",               price: 95, description: "Light pepper soup with whole red snapper",         customizable: false, options: [] },
+                    { id: "PG36", name: "Red Snapper Groundnut Soup",     price: 95, description: "Creamy groundnut soup with red snapper",           customizable: false, options: [] },
                 ]
             },
-
             {
                 id: "tigerPrawns", label: "B80 – Tiger Prawns", icon: faShrimp, items: [
-                    { id: "P040", name: "Prawns Veggie Stew", price: 180, description: "Tiger prawns in garden vegetable stew with side", customizable: true, options: [], variants: [{ label: "P040", price: 180 }, { label: "P040A", price: 200 }] },
-                    { id: "P041", name: "Prawns Kebab (4pc)", price: 120, description: "Grilled tiger prawn skewers, no side", customizable: false, options: [] },
-                    { id: "P042", name: "Grilled Prawns with Side Dish", price: 180, description: "Grilled tiger prawns with rice or chips, choice of sauce", customizable: true, options: ["BBQ", "Hot sauce", "Lemon pepper", "Peri-peri"], variants: [{ label: "P042", price: 180 }, { label: "P042A", price: 200 }] },
-                    { id: "P006", name: "Prawn Fried Rice Special", price: 180, description: "Wok-fried rice loaded with tiger prawns", customizable: true, options: ["BBQ", "Hot sauce", "Lemon pepper", "Peri-peri"], variants: [{ label: "P006", price: 180 }, { label: "P006A", price: 200 }] },
+                    { id: "P040", name: "Prawns Veggie Stew",            price: 180, description: "Tiger prawns in garden vegetable stew with side",             customizable: true,  options: [],                                                variants: [{ label: "P040", price: 180 }, { label: "P040A", price: 200 }] },
+                    { id: "P041", name: "Prawns Kebab (4pc)",            price: 120, description: "Grilled tiger prawn skewers, no side",                        customizable: false, options: [] },
+                    { id: "P042", name: "Grilled Prawns with Side Dish", price: 180, description: "Grilled tiger prawns with rice or chips, choice of sauce",    customizable: true,  options: ["BBQ", "Hot sauce", "Lemon pepper", "Peri-peri"], variants: [{ label: "P042", price: 180 }, { label: "P042A", price: 200 }] },
+                    { id: "P006", name: "Prawn Fried Rice Special",      price: 180, description: "Wok-fried rice loaded with tiger prawns",                     customizable: true,  options: ["BBQ", "Hot sauce", "Lemon pepper", "Peri-peri"], variants: [{ label: "P006", price: 180 }, { label: "P006A", price: 200 }] },
                 ]
             },
-
             {
                 id: "grouperDishes", label: "B70 – Grouper", icon: faFish, items: [
-                    { id: "P044", name: "Grouper Veggie Stew",            price: 120, description: "Grilled grouper in rich garden vegetable stew",       customizable: false, options: [] },
-                    { id: "P045", name: "Grouper Kebab Only",             price: 90,  description: "Grilled grouper skewers, no side dish",               customizable: false, options: [] },
-                    { id: "P046", name: "Grilled Grouper with Side Dish", price: 120, description: "Whole grilled grouper served with rice or chips",      customizable: false, options: [] },
-                    { id: "P047", name: "Grouper Veggie Sauce",           price: 120, description: "Grouper served in a light garden vegetable sauce",     customizable: false, options: [] },
-                    { id: "P048", name: "Grouper Fried Rice Special",     price: 120, description: "Wok-fried rice with seasoned grouper",                 customizable: false, options: [] },
-                    { id: "PG41", name: "Grouper Jollof Rice Special",    price: 120, description: "Jollof rice served with grilled grouper",              customizable: false, options: [] },
-                    { id: "PG40", name: "Okro Stew Special",              price: 120, description: "Grouper in Ghanaian okro stew with side",              customizable: false, options: [] },
+                    { id: "P044", name: "Grouper Veggie Stew",            price: 120, description: "Grilled grouper in rich garden vegetable stew",    customizable: false, options: [] },
+                    { id: "P045", name: "Grouper Kebab Only",             price: 90,  description: "Grilled grouper skewers, no side dish",            customizable: false, options: [] },
+                    { id: "P046", name: "Grilled Grouper with Side Dish", price: 120, description: "Whole grilled grouper served with rice or chips",  customizable: false, options: [] },
+                    { id: "P047", name: "Grouper Veggie Sauce",           price: 120, description: "Grouper served in a light garden vegetable sauce", customizable: false, options: [] },
+                    { id: "P048", name: "Grouper Fried Rice Special",     price: 120, description: "Wok-fried rice with seasoned grouper",             customizable: false, options: [] },
+                    { id: "PG41", name: "Grouper Jollof Rice Special",    price: 120, description: "Jollof rice served with grilled grouper",          customizable: false, options: [] },
+                    { id: "PG40", name: "Okro Stew Special",              price: 120, description: "Grouper in Ghanaian okro stew with side",          customizable: false, options: [] },
                 ]
             },
-
             {
                 id: "sausageDishes", label: "B60 – Sausage Dishes", icon: faBacon, items: [
-                    { id: "P049", name: "Sausage Veggie Stew", price: 80, description: "Sliced sausage in spiced vegetable stew", customizable: true, options: [], variants: [{ label: "P049", price: 80 }, { label: "P049A", price: 120 }] },
-                    { id: "P050", name: "Sausage Kebab (4pc)", price: 40, description: "Grilled sausage skewers, no side",        customizable: false, options: [] },
-                    { id: "P051", name: "Sausage Jollof Rice Special", price: 80, description: "Jollof rice with grilled sausage, choice of sauce", customizable: true, options: ["BBQ", "Hot sauce", "Lemon pepper", "Peri-peri"], variants: [{ label: "P051", price: 80 }, { label: "P051A", price: 120 }] },
-                    { id: "P052", name: "Sausage Fried Rice Special", price: 80, description: "Wok-fried rice with sliced sausage, choice of sauce", customizable: true, options: ["BBQ", "Hot sauce", "Lemon pepper", "Peri-peri"], variants: [{ label: "P052", price: 80 }, { label: "P052A", price: 120 }] },
-                    { id: "P053", name: "Sausage Stir Fry Noodles", price: 78, description: "Stir-fried noodles tossed with seasoned sausage", customizable: true, options: ["BBQ", "Hot sauce", "Lemon pepper", "Peri-peri"], variants: [{ label: "P053", price: 80 }, { label: "P053A", price: 120 }] },
+                    { id: "P049", name: "Sausage Veggie Stew",         price: 80, description: "Sliced sausage in spiced vegetable stew",              customizable: true,  options: [],                                                variants: [{ label: "P049", price: 80 }, { label: "P049A", price: 120 }] },
+                    { id: "P050", name: "Sausage Kebab (4pc)",         price: 40, description: "Grilled sausage skewers, no side",                    customizable: false, options: [] },
+                    { id: "P051", name: "Sausage Jollof Rice Special", price: 80, description: "Jollof rice with grilled sausage, choice of sauce",   customizable: true,  options: ["BBQ", "Hot sauce", "Lemon pepper", "Peri-peri"], variants: [{ label: "P051", price: 80 }, { label: "P051A", price: 120 }] },
+                    { id: "P052", name: "Sausage Fried Rice Special",  price: 80, description: "Wok-fried rice with sliced sausage, choice of sauce", customizable: true,  options: ["BBQ", "Hot sauce", "Lemon pepper", "Peri-peri"], variants: [{ label: "P052", price: 80 }, { label: "P052A", price: 120 }] },
+                    { id: "P053", name: "Sausage Stir Fry Noodles",   price: 78, description: "Stir-fried noodles tossed with seasoned sausage",     customizable: true,  options: ["BBQ", "Hot sauce", "Lemon pepper", "Peri-peri"], variants: [{ label: "P053", price: 80 }, { label: "P053A", price: 120 }] },
                 ]
             },
-
             {
                 id: "beefDishes", label: "B24 – Beef Dishes", icon: faBurger, items: [
-                    { id: "P054", name: "Beef Veggie Stew", price: 80, description: "Tender beef in rich spiced vegetable stew", customizable: true, options: [], variants: [{ label: "P054", price: 80 }, { label: "P054A", price: 120 }] },
-                    { id: "P055", name: "Beef Kebab (4pc)", price: 40, description: "Grilled beef skewers, no side",             customizable: false, options: [] },
-                    { id: "P056", name: "Beef Jollof Rice Special", price: 80, description: "Jollof rice served with seasoned beef, choice of sauce", customizable: true, options: ["BBQ", "Hot sauce", "Lemon pepper", "Peri-peri"], variants: [{ label: "P056", price: 80 }, { label: "P056A", price: 120 }] },
-                    { id: "P057", name: "Beef Fried Rice Special", price: 80, description: "Wok-fried rice with tender beef, choice of sauce", customizable: true, options: ["BBQ", "Hot sauce", "Lemon pepper", "Peri-peri"], variants: [{ label: "P057", price: 80 }, { label: "P057A", price: 120 }] },
-                    { id: "P058", name: "Beef Stir Fry Noodles", price: 80, description: "Stir-fried noodles with marinated beef strips", customizable: true, options: ["BBQ", "Hot sauce", "Lemon pepper", "Peri-peri"], variants: [{ label: "P058", price: 80 }, { label: "P058A", price: 120 }] },
+                    { id: "P054", name: "Beef Veggie Stew",         price: 80, description: "Tender beef in rich spiced vegetable stew",              customizable: true,  options: [],                                                variants: [{ label: "P054", price: 80 }, { label: "P054A", price: 120 }] },
+                    { id: "P055", name: "Beef Kebab (4pc)",         price: 40, description: "Grilled beef skewers, no side",                         customizable: false, options: [] },
+                    { id: "P056", name: "Beef Jollof Rice Special", price: 80, description: "Jollof rice served with seasoned beef, choice of sauce", customizable: true,  options: ["BBQ", "Hot sauce", "Lemon pepper", "Peri-peri"], variants: [{ label: "P056", price: 80 }, { label: "P056A", price: 120 }] },
+                    { id: "P057", name: "Beef Fried Rice Special",  price: 80, description: "Wok-fried rice with tender beef, choice of sauce",       customizable: true,  options: ["BBQ", "Hot sauce", "Lemon pepper", "Peri-peri"], variants: [{ label: "P057", price: 80 }, { label: "P057A", price: 120 }] },
+                    { id: "P058", name: "Beef Stir Fry Noodles",   price: 80, description: "Stir-fried noodles with marinated beef strips",          customizable: true,  options: ["BBQ", "Hot sauce", "Lemon pepper", "Peri-peri"], variants: [{ label: "P058", price: 80 }, { label: "P058A", price: 120 }] },
                 ]
             },
-
             {
                 id: "porkDishes", label: "B4 – Pork Dishes", icon: faBacon, items: [
-                    { id: "P060", name: "Grilled Pork", price: 95, description: "Seasoned pork grilled over open flame", customizable: true, options: [], variants: [{ label: "P060", price: 95 }, { label: "P060A", price: 120 }] },
-                    { id: "P061", name: "Pork Stir-Fry Noodles", price: 95, description: "Wok-tossed noodles with marinated pork strips", customizable: true, options: [], variants: [{ label: "P061", price: 95 }, { label: "P061A", price: 120 }] },
-                    { id: "P062", name: "Pork Sauce", price: 95, description: "Pork in rich West African tomato & pepper sauce", customizable: true, options: [], variants: [{ label: "P062", price: 95 }, { label: "P062A", price: 120 }] },
-                    { id: "P063", name: "Pork Stew", price: 95, description: "Slow-cooked pork in deep spiced stew", customizable: true, options: [], variants: [{ label: "P063", price: 95 }, { label: "P063A", price: 120 }] },
-                    { id: "P064", name: "Pork Kebab / Skewer Only", price: 60, description: "Grilled pork skewers, no side dish", customizable: false, options: [] },
-                    { id: "P010", name: "Pork Jollof Rice Special", price: 95, description: "Jollof rice topped with seasoned pork, choice of sauce", customizable: true, options: ["BBQ", "Hot sauce", "Lemon pepper", "Peri-peri"], variants: [{ label: "P010", price: 95 }, { label: "P010A", price: 120 }] },
-                    { id: "P410", name: "Pork Fried Rice Special", price: 95, description: "Wok-fried rice with seasoned pork, choice of sauce", customizable: true, options: ["BBQ", "Hot sauce", "Lemon pepper", "Peri-peri"], variants: [{ label: "P410", price: 95 }, { label: "P410A", price: 120 }] },
-                    { id: "P065", name: "Pork Stir Fry Noodles", price: 95, description: "Stir-fried noodles loaded with tender pork", customizable: true, options: ["BBQ", "Hot sauce", "Lemon pepper", "Peri-peri"], variants: [{ label: "P065", price: 95 }, { label: "P065A", price: 120 }] },
+                    { id: "P060", name: "Grilled Pork",             price: 95, description: "Seasoned pork grilled over open flame",                      customizable: true, options: [], variants: [{ label: "P060", price: 95 }, { label: "P060A", price: 120 }] },
+                    { id: "P061", name: "Pork Stir-Fry Noodles",   price: 95, description: "Wok-tossed noodles with marinated pork strips",             customizable: true, options: [], variants: [{ label: "P061", price: 95 }, { label: "P061A", price: 120 }] },
+                    { id: "P062", name: "Pork Sauce",               price: 95, description: "Pork in rich West African tomato & pepper sauce",           customizable: true, options: [], variants: [{ label: "P062", price: 95 }, { label: "P062A", price: 120 }] },
+                    { id: "P063", name: "Pork Stew",                price: 95, description: "Slow-cooked pork in deep spiced stew",                      customizable: true, options: [], variants: [{ label: "P063", price: 95 }, { label: "P063A", price: 120 }] },
+                    { id: "P064", name: "Pork Kebab / Skewer Only", price: 60, description: "Grilled pork skewers, no side dish",                        customizable: false, options: [] },
+                    { id: "P010", name: "Pork Jollof Rice Special", price: 95, description: "Jollof rice topped with seasoned pork, choice of sauce",    customizable: true, options: ["BBQ", "Hot sauce", "Lemon pepper", "Peri-peri"], variants: [{ label: "P010", price: 95 }, { label: "P010A", price: 120 }] },
+                    { id: "P410", name: "Pork Fried Rice Special",  price: 95, description: "Wok-fried rice with seasoned pork, choice of sauce",        customizable: true, options: ["BBQ", "Hot sauce", "Lemon pepper", "Peri-peri"], variants: [{ label: "P410", price: 95 }, { label: "P410A", price: 120 }] },
+                    { id: "P065", name: "Pork Stir Fry Noodles",   price: 95, description: "Stir-fried noodles loaded with tender pork",                customizable: true, options: ["BBQ", "Hot sauce", "Lemon pepper", "Peri-peri"], variants: [{ label: "P065", price: 95 }, { label: "P065A", price: 120 }] },
                 ]
             },
-
             {
                 id: "chickenDishes", label: "B13 – Chicken Dishes", icon: faDrumstickBite, items: [
-                    { id: "P070", name: "Grilled Chicken Drumsticks", price: 80, description: "Juicy grilled chicken drumsticks, well-seasoned", customizable: true, options: [], variants: [{ label: "P070", price: 80 }, { label: "P070A", price: 120 }] },
-                    { id: "P071", name: "Grilled Chicken Wings", price: 80, description: "Crispy grilled wings with smoky char", customizable: true, options: [], variants: [{ label: "P071", price: 80 }, { label: "P071A", price: 120 }] },
-                    { id: "P072", name: "Grilled Chicken Breast", price: 80, description: "Lean grilled breast fillet, lightly spiced", customizable: true, options: [], variants: [{ label: "P072", price: 80 }, { label: "P072A", price: 120 }] },
-                    { id: "P073", name: "Chicken Veggie Sauce", price: 80, description: "Chicken in a light garden vegetable sauce", customizable: true, options: [], variants: [{ label: "P073", price: 80 }, { label: "P073A", price: 120 }] },
-                    { id: "P074", name: "Chicken Veggie Stew", price: 80, description: "Chicken pieces slow-cooked in thick vegetable stew", customizable: true, options: [], variants: [{ label: "P074", price: 80 }, { label: "P074A", price: 120 }] },
-                    { id: "P075", name: "Chicken Kebab / Skewer (3pcs)", price: 50, description: "Grilled chicken skewers, no side", customizable: false, options: [] },
-                    { id: "P076", name: "Chicken Fried Rice Special", price: 80, description: "Wok-fried rice with seasoned chicken, choice of sauce", customizable: true, options: ["BBQ", "Hot sauce", "Lemon pepper", "Peri-peri"], variants: [{ label: "P076", price: 80 }, { label: "P076A", price: 120 }] },
-                    { id: "P212", name: "Grilled Drumsticks Only (3pcs)", price: 50, description: "Three grilled drumsticks with no side dish", customizable: false, options: [] },
-                    { id: "P270", name: "Chicken Stir Fry Noodles", price: 80, description: "Stir-fried noodles tossed with tender chicken", customizable: true, options: ["BBQ", "Hot sauce", "Lemon pepper", "Peri-peri"], variants: [{ label: "P270", price: 80 }, { label: "P270A", price: 120 }] },
+                    { id: "P070", name: "Grilled Chicken Drumsticks",    price: 80, description: "Juicy grilled chicken drumsticks, well-seasoned",       customizable: true,  options: [], variants: [{ label: "P070", price: 80 }, { label: "P070A", price: 120 }] },
+                    { id: "P071", name: "Grilled Chicken Wings",         price: 80, description: "Crispy grilled wings with smoky char",                  customizable: true,  options: [], variants: [{ label: "P071", price: 80 }, { label: "P071A", price: 120 }] },
+                    { id: "P072", name: "Grilled Chicken Breast",        price: 80, description: "Lean grilled breast fillet, lightly spiced",            customizable: true,  options: [], variants: [{ label: "P072", price: 80 }, { label: "P072A", price: 120 }] },
+                    { id: "P073", name: "Chicken Veggie Sauce",          price: 80, description: "Chicken in a light garden vegetable sauce",             customizable: true,  options: [], variants: [{ label: "P073", price: 80 }, { label: "P073A", price: 120 }] },
+                    { id: "P074", name: "Chicken Veggie Stew",           price: 80, description: "Chicken pieces slow-cooked in thick vegetable stew",    customizable: true,  options: [], variants: [{ label: "P074", price: 80 }, { label: "P074A", price: 120 }] },
+                    { id: "P075", name: "Chicken Kebab / Skewer (3pcs)", price: 50, description: "Grilled chicken skewers, no side",                      customizable: false, options: [] },
+                    { id: "P076", name: "Chicken Fried Rice Special",    price: 80, description: "Wok-fried rice with seasoned chicken, choice of sauce", customizable: true,  options: ["BBQ", "Hot sauce", "Lemon pepper", "Peri-peri"], variants: [{ label: "P076", price: 80 }, { label: "P076A", price: 120 }] },
+                    { id: "P212", name: "Grilled Drumsticks Only (3pcs)",price: 50, description: "Three grilled drumsticks with no side dish",            customizable: false, options: [] },
+                    { id: "P270", name: "Chicken Stir Fry Noodles",     price: 80, description: "Stir-fried noodles tossed with tender chicken",         customizable: true,  options: ["BBQ", "Hot sauce", "Lemon pepper", "Peri-peri"], variants: [{ label: "P270", price: 80 }, { label: "P270A", price: 120 }] },
                 ]
             },
-
             {
                 id: "pizza", label: "Pizza", icon: faPizzaSlice, items: [
-                    { id: "P090", name: "Seafood Pizza",                    price: 140, description: "Shrimp, fish & octopus on tomato base",          customizable: false, options: [] },
-                    { id: "P091", name: "Beef Pizza",                       price: 120, description: "Seasoned beef strips on rich tomato sauce",       customizable: false, options: [] },
-                    { id: "P092", name: "Chicken Pizza",                    price: 120, description: "Grilled chicken pieces on classic tomato base",   customizable: false, options: [] },
-                    { id: "P093", name: "Special Chicken & Beef Pizza",     price: 120, description: "Loaded with both chicken and beef, house special", customizable: false, options: [] },
-                    { id: "P094", name: "Sausage Pizza",                    price: 120, description: "Sliced sausage on tomato & cheese base",          customizable: false, options: [] },
-                    { id: "P095", name: "Gizzard Pizza",                    price: 120, description: "Seasoned chicken gizzard on tomato base",         customizable: false, options: [] },
-                    { id: "P096", name: "Pepperoni Pizza",                  price: 120, description: "Classic spicy pepperoni, Italian-style",          customizable: false, options: [] },
-                    { id: "P097", name: "Tuna Pizza",                       price: 120, description: "Tuna flakes on tomato & cheese base",             customizable: false, options: [] },
-                    { id: "P210", name: "Pork Pizza",                       price: 120, description: "Seasoned pork on classic tomato & cheese base",   customizable: false, options: [] },
+                    { id: "P090", name: "Seafood Pizza",                price: 140, description: "Shrimp, fish & octopus on tomato base",           customizable: false, options: [] },
+                    { id: "P091", name: "Beef Pizza",                   price: 120, description: "Seasoned beef strips on rich tomato sauce",        customizable: false, options: [] },
+                    { id: "P092", name: "Chicken Pizza",                price: 120, description: "Grilled chicken pieces on classic tomato base",    customizable: false, options: [] },
+                    { id: "P093", name: "Special Chicken & Beef Pizza", price: 120, description: "Loaded with both chicken and beef, house special", customizable: false, options: [] },
+                    { id: "P094", name: "Sausage Pizza",                price: 120, description: "Sliced sausage on tomato & cheese base",           customizable: false, options: [] },
+                    { id: "P095", name: "Gizzard Pizza",                price: 120, description: "Seasoned chicken gizzard on tomato base",          customizable: false, options: [] },
+                    { id: "P096", name: "Pepperoni Pizza",              price: 120, description: "Classic spicy pepperoni, Italian-style",           customizable: false, options: [] },
+                    { id: "P097", name: "Tuna Pizza",                   price: 120, description: "Tuna flakes on tomato & cheese base",              customizable: false, options: [] },
+                    { id: "P210", name: "Pork Pizza",                   price: 120, description: "Seasoned pork on classic tomato & cheese base",   customizable: false, options: [] },
                 ]
             },
-
         ],
     },
-
     {
         id: "specials",
         label: "Specials",
         icon: faFireFlameCurved,
         subcategories: [
-
             {
                 id: "pianoBarSpecial", label: "Piano Bar Specials", icon: faStar, items: [
-                    { id: "P001", name: "Piano Assorted Fried Rice", price: 80, description: "House special fried rice with assorted meats", customizable: true, options: ["Chicken", "Beef", "Fried egg"], variants: [{ label: "P001", price: 80 }, { label: "P001A", price: 120 }] },
-                    { id: "P002", name: "Piano Assorted Jollof", price: 80, description: "House special jollof rice with assorted meats", customizable: true, options: ["Chicken", "Beef", "Fried egg"], variants: [{ label: "P002", price: 80 }, { label: "P002A", price: 120 }] },
-                    { id: "P220", name: "Piano Assorted Veg Sauce with Side", price: 90, description: "Assorted meats in vegetable sauce, served with a side", customizable: true, options: ["Chicken", "Beef"], variants: [{ label: "P220", price: 90 }, { label: "P220A", price: 130 }] },
-                    { id: "P221", name: "Piano Assorted Veg Stew with Side", price: 90, description: "Assorted meats in thick vegetable stew, served with a side", customizable: true, options: ["Chicken", "Beef"], variants: [{ label: "P221", price: 90 }, { label: "P221A", price: 130 }] },
-                    { id: "P012", name: "Piano Special Noodles (Beef & Chicken)", price: 80, description: "Stir-fried noodles loaded with beef and chicken", customizable: false, options: [], variants: [{ label: "P012", price: 80 }, { label: "P012A", price: 120 }] },
-                    { id: "P052b", name: "Chicken Sausage Fried Rice Special", price: 80, description: "Fried rice with sliced chicken-type sausage", customizable: true, options: [], variants: [{ label: "P052", price: 80 }, { label: "P052A", price: 100 }] },
-                    { id: "P222", name: "Chicken Breast & Sausage Fried Rice Mix", price: 80, description: "Fried rice with chicken breast and sausage blend", customizable: false, options: [] },
-                    { id: "P223", name: "Chicken Breast & Sausage Jollof Rice Mix", price: 80, description: "Jollof rice with chicken breast and sausage blend", customizable: false, options: [] },
-                    { id: "P051b", name: "Chicken Sausage Jollof Rice Special", price: 80, description: "Jollof rice with seasoned chicken sausage", customizable: false, options: [], variants: [{ label: "P051", price: 80 }, { label: "P051A", price: 130 }] },
-                    { id: "P053b", name: "Chicken Sausage Stir Fry Noodles", price: 80, description: "Stir-fried noodles with chicken sausage", customizable: false, options: [], variants: [{ label: "P053", price: 80 }, { label: "P053A", price: 130 }] },
+                    { id: "P001",  name: "Piano Assorted Fried Rice",              price: 80, description: "House special fried rice with assorted meats",       customizable: true,  options: ["Chicken", "Beef", "Fried egg"], variants: [{ label: "P001", price: 80 }, { label: "P001A", price: 120 }] },
+                    { id: "P002",  name: "Piano Assorted Jollof",                  price: 80, description: "House special jollof rice with assorted meats",       customizable: true,  options: ["Chicken", "Beef", "Fried egg"], variants: [{ label: "P002", price: 80 }, { label: "P002A", price: 120 }] },
+                    { id: "P220",  name: "Piano Assorted Veg Sauce with Side",     price: 90, description: "Assorted meats in vegetable sauce, served with a side",customizable: true,  options: ["Chicken", "Beef"],              variants: [{ label: "P220", price: 90 }, { label: "P220A", price: 130 }] },
+                    { id: "P221",  name: "Piano Assorted Veg Stew with Side",      price: 90, description: "Assorted meats in thick vegetable stew, served with a side", customizable: true, options: ["Chicken", "Beef"],         variants: [{ label: "P221", price: 90 }, { label: "P221A", price: 130 }] },
+                    { id: "P012",  name: "Piano Special Noodles (Beef & Chicken)", price: 80, description: "Stir-fried noodles loaded with beef and chicken",     customizable: false, options: [],                               variants: [{ label: "P012", price: 80 }, { label: "P012A", price: 120 }] },
+                    { id: "P052b", name: "Chicken Sausage Fried Rice Special",     price: 80, description: "Fried rice with sliced chicken-type sausage",          customizable: true,  options: [],                               variants: [{ label: "P052", price: 80 }, { label: "P052A", price: 100 }] },
+                    { id: "P222",  name: "Chicken Breast & Sausage Fried Rice Mix",price: 80, description: "Fried rice with chicken breast and sausage blend",     customizable: false, options: [] },
+                    { id: "P223",  name: "Chicken Breast & Sausage Jollof Rice Mix",price:80, description: "Jollof rice with chicken breast and sausage blend",    customizable: false, options: [] },
+                    { id: "P051b", name: "Chicken Sausage Jollof Rice Special",    price: 80, description: "Jollof rice with seasoned chicken sausage",            customizable: false, options: [],                               variants: [{ label: "P051", price: 80 }, { label: "P051A", price: 130 }] },
+                    { id: "P053b", name: "Chicken Sausage Stir Fry Noodles",       price: 80, description: "Stir-fried noodles with chicken sausage",              customizable: false, options: [],                               variants: [{ label: "P053", price: 80 }, { label: "P053A", price: 130 }] },
                 ]
             },
-
             {
                 id: "seaFoodSpecial", label: "Seafood Specials", icon: faShrimp, items: [
-                    { id: "P003", name: "Seafood Special Fried Rice", price: 100, description: "Wok-fried rice with mixed seafood, choice of protein", customizable: true, options: ["Shrimps", "Octopus", "Fish"], variants: [{ label: "P003", price: 100 }, { label: "P003A", price: 130 }] },
-                    { id: "P004", name: "Seafood Special Jollof Rice", price: 100, description: "Jollof rice loaded with mixed seafood, choice of protein", customizable: true, options: ["Shrimps", "Octopus", "Fish"], variants: [{ label: "P004", price: 100 }, { label: "P004A", price: 130 }] },
-                    { id: "P005", name: "Seafood Stir Fry Noodles", price: 100, description: "Stir-fried noodles with mixed seafood, choice of protein", customizable: true, options: ["Shrimps", "Octopus", "Fish"], variants: [{ label: "P005", price: 100 }, { label: "P005A", price: 130 }] },
+                    { id: "P003", name: "Seafood Special Fried Rice", price: 100, description: "Wok-fried rice with mixed seafood, choice of protein",  customizable: true, options: ["Shrimps", "Octopus", "Fish"], variants: [{ label: "P003", price: 100 }, { label: "P003A", price: 130 }] },
+                    { id: "P004", name: "Seafood Special Jollof Rice",price: 100, description: "Jollof rice loaded with mixed seafood, choice of protein",customizable: true, options: ["Shrimps", "Octopus", "Fish"], variants: [{ label: "P004", price: 100 }, { label: "P004A", price: 130 }] },
+                    { id: "P005", name: "Seafood Stir Fry Noodles",   price: 100, description: "Stir-fried noodles with mixed seafood, choice of protein",customizable: true, options: ["Shrimps", "Octopus", "Fish"], variants: [{ label: "P005", price: 100 }, { label: "P005A", price: 130 }] },
                 ]
             },
-
             {
                 id: "prawnSpecial", label: "Prawn Specials", icon: faShrimp, items: [
-                    { id: "P006b", name: "Tiger Prawns Fried Rice", price: 150, description: "Wok-fried rice piled with whole tiger prawns", customizable: false, options: [], variants: [{ label: "P006", price: 150 }, { label: "P006A", price: 170 }] },
-                    { id: "P007",  name: "Tiger Prawns Jollof Rice", price: 150, description: "Smoky jollof rice served with whole tiger prawns", customizable: false, options: [], variants: [{ label: "P007", price: 150 }, { label: "P007A", price: 170 }] },
-                    { id: "P201",  name: "Tiger Prawn Noodles", price: 150, description: "Stir-fried noodles with whole tiger prawns", customizable: false, options: [], variants: [{ label: "P201", price: 150 }, { label: "P201A", price: 170 }] },
+                    { id: "P006b", name: "Tiger Prawns Fried Rice", price: 150, description: "Wok-fried rice piled with whole tiger prawns",    customizable: false, options: [], variants: [{ label: "P006", price: 150 }, { label: "P006A", price: 170 }] },
+                    { id: "P007",  name: "Tiger Prawns Jollof Rice", price: 150, description: "Smoky jollof rice served with whole tiger prawns",customizable: false, options: [], variants: [{ label: "P007", price: 150 }, { label: "P007A", price: 170 }] },
+                    { id: "P201",  name: "Tiger Prawn Noodles",      price: 150, description: "Stir-fried noodles with whole tiger prawns",     customizable: false, options: [], variants: [{ label: "P201", price: 150 }, { label: "P201A", price: 170 }] },
                 ]
             },
-
             {
                 id: "goatSpecial", label: "Goat Specials", icon: faFireFlameCurved, items: [
                     { id: "P008b", name: "Piano Goat Fried Rice Special", price: 95, description: "House special fried rice with seasoned goat", customizable: false, options: [], variants: [{ label: "P008", price: 95 }, { label: "P008A", price: 140 }] },
-                    { id: "P009b", name: "Piano Goat Jollof Rice Special", price: 95, description: "House special jollof rice with seasoned goat", customizable: false, options: [], variants: [{ label: "P009", price: 95 }, { label: "P009A", price: 140 }] },
+                    { id: "P009b", name: "Piano Goat Jollof Rice Special",price: 95, description: "House special jollof rice with seasoned goat",customizable: false, options: [], variants: [{ label: "P009", price: 95 }, { label: "P009A", price: 140 }] },
                 ]
             },
-
             {
                 id: "porkSpecial", label: "Pork Specials", icon: faBacon, items: [
                     { id: "P010b", name: "Piano Pork Fried Rice Special", price: 95, description: "House special fried rice with seasoned pork", customizable: false, options: [], variants: [{ label: "P010", price: 95 }, { label: "P010A", price: 140 }] },
-                    { id: "P011",  name: "Piano Pork Jollof Rice Special", price: 95, description: "House special jollof rice with seasoned pork", customizable: false, options: [], variants: [{ label: "P011", price: 95 }, { label: "P011A", price: 140 }] },
+                    { id: "P011",  name: "Piano Pork Jollof Rice Special",price: 95, description: "House special jollof rice with seasoned pork",customizable: false, options: [], variants: [{ label: "P011", price: 95 }, { label: "P011A", price: 140 }] },
                 ]
             },
-
             {
                 id: "ghanaianSpecial", label: "Ghanaian Specials", icon: faBowlFood, items: [
-                    { id: "P430", name: "Light Soup", price: 95, description: "Spiced clear broth — choose your protein", customizable: false, options: [], variants: [
-                            { label: "P430 – 3pc Goat",       price: 95  },
-                            { label: "P431 – 2pc Dry Fish",   price: 120 },
-                            { label: "P432 – 2pc Tuna/Salmon", price: 90 },
-                            { label: "P433 – Chicken Thigh",  price: 90  },
-                            { label: "P434 – 2–4pc Beef",     price: 90  },
-                        ]},
-                    { id: "P435", name: "Groundnut Soup", price: 95, description: "Rich creamy peanut soup — choose your protein", customizable: false, options: [], variants: [
-                            { label: "P435 – 3pc Goat",        price: 95  },
-                            { label: "P436 – 2pc Dry Fish",    price: 120 },
-                            { label: "P437 – Tuna/Salmon",     price: 90  },
-                            { label: "P438 – Chicken Thigh",   price: 90  },
-                            { label: "P439 – 2–4pc Beef",      price: 90  },
-                        ]},
-                    { id: "P102", name: "Okro Stew Mix",     price: 85, description: "Okro stew with beef, fish, crabs & wele", customizable: true, options: [] },
-                    { id: "P440", name: "Okro Stew (Goat)",  price: 95, description: "Traditional okro stew with 3 pieces of goat", customizable: true, options: [] },
-                    { id: "P208", name: "Okro Stew (Pork)",  price: 95, description: "Traditional okro stew with seasoned pork", customizable: false, options: [], variants: [{ label: "P208", price: 95 }, { label: "P208A", price: 130 }] },
-                    { id: "P103", name: "Palava Sauce (Kontomire, Tuna & Egg)", price: 85, description: "Ghanaian cocoyam leaf stew with tuna and boiled egg", customizable: true, options: ["Yam", "Plantain", "Rice"], variants: [{ label: "P103", price: 85 }, { label: "P103A", price: 130 }] },
-                    { id: "P104", name: "Tilapia Light Soup", price: 120, description: "Spiced light soup with whole fresh tilapia", customizable: false, options: [] },
-                    { id: "P101", name: "Light Soup Mixed",   price: 85,  description: "Spiced clear broth with mixed assorted proteins", customizable: false, options: [] },
+                    { id: "P430", name: "Light Soup",      price: 95, description: "Spiced clear broth — choose your protein",    customizable: false, options: [], variants: [{ label: "P430 – 3pc Goat", price: 95 }, { label: "P431 – 2pc Dry Fish", price: 120 }, { label: "P432 – 2pc Tuna/Salmon", price: 90 }, { label: "P433 – Chicken Thigh", price: 90 }, { label: "P434 – 2–4pc Beef", price: 90 }] },
+                    { id: "P435", name: "Groundnut Soup", price: 95, description: "Rich creamy peanut soup — choose your protein", customizable: false, options: [], variants: [{ label: "P435 – 3pc Goat", price: 95 }, { label: "P436 – 2pc Dry Fish", price: 120 }, { label: "P437 – Tuna/Salmon", price: 90 }, { label: "P438 – Chicken Thigh", price: 90 }, { label: "P439 – 2–4pc Beef", price: 90 }] },
+                    { id: "P102", name: "Okro Stew Mix",                        price: 85,  description: "Okro stew with beef, fish, crabs & wele",                      customizable: true,  options: [] },
+                    { id: "P440", name: "Okro Stew (Goat)",                     price: 95,  description: "Traditional okro stew with 3 pieces of goat",                  customizable: true,  options: [] },
+                    { id: "P208", name: "Okro Stew (Pork)",                     price: 95,  description: "Traditional okro stew with seasoned pork",                     customizable: false, options: [], variants: [{ label: "P208", price: 95 }, { label: "P208A", price: 130 }] },
+                    { id: "P103", name: "Palava Sauce (Kontomire, Tuna & Egg)", price: 85,  description: "Ghanaian cocoyam leaf stew with tuna and boiled egg",           customizable: true,  options: ["Yam", "Plantain", "Rice"], variants: [{ label: "P103", price: 85 }, { label: "P103A", price: 130 }] },
+                    { id: "P104", name: "Tilapia Light Soup",                   price: 120, description: "Spiced light soup with whole fresh tilapia",                    customizable: false, options: [] },
+                    { id: "P101", name: "Light Soup Mixed",                     price: 85,  description: "Spiced clear broth with mixed assorted proteins",               customizable: false, options: [] },
                 ]
             },
-
         ],
     },
-
     {
         id: "extras",
         label: "Extras",
         icon: faWandMagicSparkles,
         subcategories: [
-
             {
                 id: "extras", label: "Extras", icon: faTag, items: [
-                    { id: "P419", name: "Extra Salmon",   price: 30, description: "Add a salmon portion to your dish",    customizable: false, options: [] },
-                    { id: "P420", name: "Extra Tuna",     price: 30, description: "Add a tuna portion to your dish",      customizable: false, options: [] },
-                    { id: "P421", name: "Extra Dry Fish", price: 30, description: "Add dried fish to your dish",          customizable: false, options: [] },
-                    { id: "P422", name: "Extra Beef",     price: 30, description: "Add a beef portion to your dish",      customizable: false, options: [] },
-                    { id: "P423", name: "Extra Goat",     price: 30, description: "Add a goat portion to your dish",      customizable: false, options: [] },
+                    { id: "P419", name: "Extra Salmon",   price: 30, description: "Add a salmon portion to your dish", customizable: false, options: [] },
+                    { id: "P420", name: "Extra Tuna",     price: 30, description: "Add a tuna portion to your dish",   customizable: false, options: [] },
+                    { id: "P421", name: "Extra Dry Fish", price: 30, description: "Add dried fish to your dish",       customizable: false, options: [] },
+                    { id: "P422", name: "Extra Beef",     price: 30, description: "Add a beef portion to your dish",   customizable: false, options: [] },
+                    { id: "P423", name: "Extra Goat",     price: 30, description: "Add a goat portion to your dish",   customizable: false, options: [] },
                 ]
             },
-
             {
                 id: "packs", label: "The Happy Chicken Packs", icon: faDrumstickBite, items: [
-                    { id: "P080", name: "Happy Chicken Drumsticks 6/Pk",             price: 90,  description: "6 grilled chicken drumsticks, party pack",              customizable: false, options: [] },
-                    { id: "P081", name: "Happy Chicken Drumsticks 12/Pk",            price: 160, description: "12 grilled chicken drumsticks, sharing pack",            customizable: false, options: [] },
-                    { id: "P082", name: "Happy Chicken Drumsticks 15/Pk",            price: 190, description: "15 grilled chicken drumsticks, large sharing pack",      customizable: false, options: [] },
-                    { id: "P083", name: "Happy Chicken Drumsticks 20/Pk",            price: 250, description: "20 grilled chicken drumsticks, crowd pack",              customizable: false, options: [] },
-                    { id: "P084", name: "Happy Chicken Wings 5/Pk + 500g Yam Chips", price: 120, description: "5 grilled wings served with crispy yam chips",           customizable: false, options: [] },
-                    { id: "P085", name: "Happy Chicken Wings 12/Pk",                price: 170, description: "12 grilled chicken wings, sharing pack",                 customizable: false, options: [] },
-                    { id: "P086", name: "Happy Chicken Wings 20/Pk",                price: 250, description: "20 grilled chicken wings, crowd pack",                   customizable: false, options: [] },
+                    { id: "P080", name: "Happy Chicken Drumsticks 6/Pk",              price: 90,  description: "6 grilled chicken drumsticks, party pack",         customizable: false, options: [] },
+                    { id: "P081", name: "Happy Chicken Drumsticks 12/Pk",             price: 160, description: "12 grilled chicken drumsticks, sharing pack",       customizable: false, options: [] },
+                    { id: "P082", name: "Happy Chicken Drumsticks 15/Pk",             price: 190, description: "15 grilled chicken drumsticks, large sharing pack", customizable: false, options: [] },
+                    { id: "P083", name: "Happy Chicken Drumsticks 20/Pk",             price: 250, description: "20 grilled chicken drumsticks, crowd pack",         customizable: false, options: [] },
+                    { id: "P084", name: "Happy Chicken Wings 5/Pk + 500g Yam Chips",  price: 120, description: "5 grilled wings served with crispy yam chips",      customizable: false, options: [] },
+                    { id: "P085", name: "Happy Chicken Wings 12/Pk",                  price: 170, description: "12 grilled chicken wings, sharing pack",            customizable: false, options: [] },
+                    { id: "P086", name: "Happy Chicken Wings 20/Pk",                  price: 250, description: "20 grilled chicken wings, crowd pack",              customizable: false, options: [] },
                 ]
             },
-
         ],
     },
 ];
@@ -442,7 +366,7 @@ function OrderDetailModal({ order, onClose, onUpdateStatus }) {
         <div onClick={e => e.target === e.currentTarget && onClose()}
              style={{ position:"fixed", inset:0, background:"rgba(0,0,0,0.88)", zIndex:700,
                  display:"flex", alignItems:"center", justifyContent:"center", padding:16 }}>
-            <div style={{ background:"#1a1625", border:"1px solid #3a2a5e", borderRadius:20,
+            <div className="modal-panel" style={{ background:"#1a1625", border:"1px solid #3a2a5e", borderRadius:20,
                 width:"100%", maxWidth:460, maxHeight:"92vh", overflowY:"auto" }}>
 
                 <div style={{ padding:"18px 18px 0", display:"flex", justifyContent:"space-between", alignItems:"flex-start" }}>
@@ -504,7 +428,7 @@ function OrderDetailModal({ order, onClose, onUpdateStatus }) {
                     </div>
                 </div>
 
-                <div style={{ margin:"16px 18px 0", background:"#13111e", borderRadius:14, padding:14 }}>
+                <div className="modal-inner" style={{ margin:"16px 18px 0", background:"#13111e", borderRadius:14, padding:14 }}>
                     <div style={{ fontSize:10, color:"#6b6080", letterSpacing:1, textTransform:"uppercase", marginBottom:10 }}>Items ordered</div>
                     {order.items.map((item, i) => (
                         <div key={i} style={{ marginBottom:10, paddingBottom:10,
@@ -648,14 +572,15 @@ function CustomerOrdersPage({ tableNo }) {
                 const currentIdx = STATUSES.indexOf(order.status);
                 const isReady    = order.status === "Ready";
                 return (
-                    <div key={order.id} style={{
+                    /* ── order-card className added ── */
+                    <div key={order.id} className="order-card" style={{
                         background:"#1a1625",
                         border:`1px solid ${isReady ? "#15803d80" : "#2e2050"}`,
                         borderRadius:16, marginBottom:12, overflow:"hidden",
                         boxShadow: isReady ? "0 0 0 1px #15803d30, 0 4px 20px #15803d18" : "none",
                     }}>
                         {isReady && (
-                            <div style={{ background:"#14532d", padding:"9px 14px",
+                            <div className="ready-banner" style={{ background:"#14532d", padding:"9px 14px",
                                 display:"flex", alignItems:"center", gap:8,
                                 fontSize:13, fontWeight:600, color:"#4ade80" }}>
                                 <FontAwesomeIcon icon={faCircleCheck} /> Your order is ready — come collect it!
@@ -763,9 +688,8 @@ export default function App() {
     });
     const [guestName, setGuestName] = useState("");
 
-    // customize modal (handles both variants + options)
     const [customizeItem, setCustomizeItem] = useState(null);
-    const [chosenVariant, setChosenVariant] = useState(null);   // { label, price }
+    const [chosenVariant, setChosenVariant] = useState(null);
     const [chosenOpts, setChosenOpts]       = useState([]);
     const [itemNote, setItemNote]           = useState("");
 
@@ -784,23 +708,20 @@ export default function App() {
     const [showFilters, setShowFilters]         = useState(false);
     const [historySearch, setHistorySearch]     = useState("");
 
-    const [restaurant, setRestaurant]         = useState(null);
+    const [restaurant, setRestaurant]             = useState(null);
     const [restaurantLoading, setRestaurantLoading] = useState(true);
 
-    const [theme, setTheme] = useState("dark"); // dark | light
+    const [theme, setTheme] = useState("dark");
     const isDark = theme === "dark";
     const { toasts, add: addToast } = useToasts();
 
-    /* ── open customize/variant modal ── */
     const openCustomize = (item) => {
         setCustomizeItem(item);
-        // pre-select first variant if item has them
         setChosenVariant(item.variants ? item.variants[0] : null);
         setChosenOpts([]);
         setItemNote("");
     };
 
-    /* ── category navigation ── */
     const openCategory = (cat) => {
         setActiveCategoryId(cat.id);
         setActiveSubcategory(cat.subcategories[0].id);
@@ -812,7 +733,6 @@ export default function App() {
     };
     const activeCategory = CATEGORIES.find(c => c.id === activeCategoryId);
 
-    /* ── Fetch restaurant record (status/expiry/limits) ── */
     useEffect(() => {
         let cancelled = false;
         (async () => {
@@ -824,8 +744,6 @@ export default function App() {
                 setRestaurantLoading(false);
             }
         })();
-
-        // Realtime: if admin suspends/reactivates while app is open, reflect immediately
         const ch = supabase.channel("restaurant-status-live")
             .on("postgres_changes", { event: "UPDATE", schema: "public", table: "restaurants" }, p => {
                 if (p.new.slug === RESTAURANT_SLUG) setRestaurant(p.new);
@@ -834,13 +752,9 @@ export default function App() {
         return () => { cancelled = true; supabase.removeChannel(ch); };
     }, []);
 
-    /* ── Derived: is this restaurant currently usable? ── */
-    const isExpired = restaurant?.plan_expires_at
-        ? new Date(restaurant.plan_expires_at) < new Date()
-        : false;
+    const isExpired   = restaurant?.plan_expires_at ? new Date(restaurant.plan_expires_at) < new Date() : false;
     const isSuspended = restaurant?.status === "suspended" || isExpired;
 
-    /* ── fetch & realtime ── */
     const fetchOrders = useCallback(async () => {
         if (!restaurant?.id) return;
         setLoadingOrders(true);
@@ -876,26 +790,17 @@ export default function App() {
         return () => { cancelled = true; supabase.removeChannel(ch); };
     }, [scene, restaurant?.id]);
 
-    /* ── cart helpers ── */
     const cartTotal = cart.reduce((s, i) => s + i.price * i.qty, 0);
     const cartCount = cart.reduce((s, i) => s + i.qty, 0);
 
     const addToCart = (item, opts = [], note = "", variant = null) => {
-        // effective price: variant price if chosen, else item default price
         const effectivePrice = variant ? variant.price : item.price;
         const variantLabel   = variant ? variant.label : null;
         setCart(prev => {
-            // key includes variant label so different variants are separate cart lines
             const key = item.id + (variantLabel || "") + opts.join(",");
             const ex  = prev.find(c => c._key === key);
             if (ex) return prev.map(c => c._key === key ? { ...c, qty: c.qty+1 } : c);
-            return [...prev, {
-                ...item,
-                price: effectivePrice,
-                variant: variantLabel,
-                qty: 1, opts, note,
-                _key: key,
-            }];
+            return [...prev, { ...item, price: effectivePrice, variant: variantLabel, qty: 1, opts, note, _key: key }];
         });
     };
 
@@ -904,7 +809,6 @@ export default function App() {
             prev.map(c => c._key === key ? { ...c, qty: c.qty+delta } : c).filter(c => c.qty > 0)
         );
 
-    /* ── submit order ── */
     const submitOrder = async () => {
         if (!tableNo.trim()) { addToast("Please enter your table number.", "error"); return; }
         if (!cart.length)    { addToast("Your cart is empty.", "error"); return; }
@@ -921,16 +825,9 @@ export default function App() {
         setSubmitting(false);
     };
 
-    /* ── PIN login ── */
     const tryPin = async () => {
         if (!pin.trim()) return;
-
-        // Block login entirely if restaurant is suspended or expired
-        if (isSuspended) {
-            setPinErr("This restaurant's account is suspended. Contact your administrator.");
-            return;
-        }
-
+        if (isSuspended) { setPinErr("This restaurant's account is suspended. Contact your administrator."); return; }
         setPinLoading(true); setPinErr("");
         const { data: staffList, error } = await supabase
             .from("staff").select("id, name, role, pin_hash, active")
@@ -943,7 +840,6 @@ export default function App() {
             setStaffUser(matched);
             setScene("bartender");
             setPin("");
-            // Log the login event (Enterprise activity log; harmless no-op for other tiers)
             supabase.rpc("log_activity", {
                 p_restaurant_id: restaurant?.id,
                 p_actor_type: "staff",
@@ -958,13 +854,10 @@ export default function App() {
         setPinLoading(false);
     };
 
-    /* ── update status ── */
     const updateStatus = async (id, status) => {
         const order = orders.find(o => o.id === id);
         const { error } = await supabase.from("orders").update({ status }).eq("id", id);
         if (error) { addToast("Failed to update status.", "error"); return; }
-
-        // Activity log (Enterprise)
         supabase.rpc("log_activity", {
             p_restaurant_id: restaurant?.id,
             p_actor_type: "staff",
@@ -975,7 +868,6 @@ export default function App() {
         }).then(() => {}).catch(() => {});
     };
 
-    /* ── derived lists ── */
     const liveOrders   = orders.filter(o => o.status !== "Delivered");
     const filteredLive = statusFilter ? liveOrders.filter(o => o.status === statusFilter) : liveOrders;
 
@@ -1000,19 +892,16 @@ export default function App() {
     const hasDateFilter = historyDateFrom || historyDateTo;
     const displayList   = bartenderTab === "live" ? filteredLive : historyOrders;
 
-    /* ════════════════════ ITEM CARD (reused in subcategory view) ════════════════════ */
+    /* ════════ ITEM CARD ════════ */
     const ItemCard = ({ item }) => {
         const hasVariants = item.variants?.length > 0;
         const needsModal  = hasVariants || item.customizable;
-
-        // for non-modal items, find a matching cart entry
         const inCart = !needsModal ? cart.find(c => c._key === item.id + "" + (item.opts?.join(",") || "")) : null;
 
         return (
-            <div style={{ background:"#1a1625", border:"1px solid #2e2050", borderRadius:14,
+            /* ── item-card className added ── */
+            <div className="item-card" style={{ background:"#1a1625", border:"1px solid #2e2050", borderRadius:14,
                 padding:"14px", marginBottom:10, display:"flex", flexDirection:"column", gap:10 }}>
-
-                {/* Top row: info + action */}
                 <div style={{ display:"flex", alignItems:"center", gap:12 }}>
                     <div style={{ flex:1, minWidth:0 }}>
                         <div style={{ fontWeight:600, fontSize:15, marginBottom:2,
@@ -1047,7 +936,6 @@ export default function App() {
                             )}
                         </div>
                     </div>
-
                     <div style={{ flexShrink:0 }}>
                         {needsModal ? (
                             <button onClick={() => openCustomize(item)}
@@ -1080,7 +968,7 @@ export default function App() {
         );
     };
 
-    /* ════════════════════════════ SUSPENDED / EXPIRED LOCK SCREEN ══════ */
+    /* ════════ SUSPENDED SCREEN ════════ */
     if (!restaurantLoading && isSuspended) {
         return (
             <div style={{ fontFamily:"system-ui,-apple-system,sans-serif", background:"#0c0c10",
@@ -1091,9 +979,7 @@ export default function App() {
                     <FontAwesomeIcon icon={faBan} style={{ fontSize:40, color:"#ef4444", marginBottom:16 }} />
                     <h2 style={{ color:"#f5f0e8", margin:"0 0 8px", fontSize:19, fontWeight:700 }}>Service unavailable</h2>
                     <p style={{ color:"#a09abf", fontSize:14, lineHeight:1.6, marginBottom:4 }}>
-                        {isExpired
-                            ? "This restaurant's subscription has expired."
-                            : "This restaurant's account has been suspended."}
+                        {isExpired ? "This restaurant's subscription has expired." : "This restaurant's account has been suspended."}
                     </p>
                     <p style={{ color:"#7a6a90", fontSize:13, lineHeight:1.6, marginTop:12 }}>
                         Please contact your administrator to restore access.
@@ -1111,181 +997,156 @@ export default function App() {
 
     /* ════════════════════════════ RENDER ══════════════════════════════ */
     return (
-        <div style={{ fontFamily:"system-ui,-apple-system,sans-serif", background:"#0c0c10", minHeight:"100vh", color:"#f5f0e8" }} className={isDark ? "bar-dark" : "bar-light"}>
+        <div style={{ fontFamily:"system-ui,-apple-system,sans-serif", background:"#0c0c10", minHeight:"100vh", color:"#f5f0e8" }}
+             className={isDark ? "bar-dark" : "bar-light"}>
+
+            {/* ══════════════════════════════════════════
+                LIGHT MODE CSS — class-based selectors
+                so React dynamic styles are covered
+            ══════════════════════════════════════════ */}
             {!isDark && (
                 <style>{`
-    /* ── Page root ── */
-    .bar-light { background:#f0f4f8 !important; color:#1a1625 !important; }
+                    /* Page root */
+                    .bar-light { background:#f0f4f8 !important; color:#1a1625 !important; }
 
-    /* ── Nav ── */
-    .bar-light nav { background:#f8fafc !important; border-bottom-color:#e2e8f0 !important; }
+                    /* Nav */
+                    .bar-light nav { background:#f8fafc !important; border-bottom-color:#e2e8f0 !important; }
 
-    /* ── Footer ── */
-    .bar-light footer { background:#f8fafc !important; border-top-color:#e2e8f0 !important; }
+                    /* Footer */
+                    .bar-light footer { background:#f8fafc !important; border-top-color:#e2e8f0 !important; }
 
-    /* ══════════════════════════════════════
-       CLASS-BASED TARGETS (reliable)
-    ══════════════════════════════════════ */
+                    /* ── CLASS-BASED (reliable for dynamic/ternary backgrounds) ── */
 
-    /* Category cards */
-    .bar-light .cat-card {
-      background:#ffffff !important;
-      border-color:#e2e8f0 !important;
-    }
-    /* Icon circle inside cat-card */
-    .bar-light .cat-card > div:first-child {
-      background:#f1f5f9 !important;
-      border-color:#e2e8f0 !important;
-    }
+                    /* Category cards */
+                    .bar-light .cat-card {
+                        background:#ffffff !important;
+                        border-color:#e2e8f0 !important;
+                    }
+                    .bar-light .cat-card .cat-icon-circle {
+                        background:#f1f5f9 !important;
+                        border-color:#e2e8f0 !important;
+                    }
+                    /* Category name text — force deep/dark color, not light cream */
+                    .bar-light .cat-card [style*="color: #f5f0e8"],
+                    .bar-light .cat-card [style*="color:#f5f0e8"] {
+                        color:#0f172a !important;
+                        font-weight:800 !important;
+                    }
+                    .bar-light .cat-label {
+                        color:#0f172a !important;
+                        font-weight:800 !important;
+                    }
 
-    /* Item cards (food list) */
-    .bar-light .item-card {
-      background:#ffffff !important;
-      border-color:#e2e8f0 !important;
-    }
+                    /* Food / item cards */
+                    .bar-light .item-card {
+                        background:#ffffff !important;
+                        border-color:#e2e8f0 !important;
+                    }
 
-    /* PIN login box */
-    .bar-light .pin-box {
-      background:#ffffff !important;
-      border-color:#e2e8f0 !important;
-    }
+                    /* PIN login box */
+                    .bar-light .pin-box {
+                        background:#ffffff !important;
+                        border-color:#e2e8f0 !important;
+                    }
 
-    /* Bartender stat cards (All / Pending / Preparing / Ready) */
-    .bar-light .stat-card {
-      background:#f8fafc !important;
-      border-color:#e2e8f0 !important;
-    }
-    /* Active stat card */
-    .bar-light .stat-card[style*="background: rgb(30, 16, 48)"],
-    .bar-light .stat-card[style*="background: #1e1030"] {
-      background:#ede9fe !important;
-    }
+                    /* Bartender stat cards (All / Pending / Preparing / Ready) */
+                    .bar-light .stat-card {
+                        background:#f8fafc !important;
+                        border-color:#e2e8f0 !important;
+                    }
 
-    /* Bartender order cards (ocard) */
-    .bar-light .ocard {
-      background:#ffffff !important;
-      border-color:#e2e8f0 !important;
-    }
+                    /* Bartender order list cards */
+                    .bar-light .ocard {
+                        background:#ffffff !important;
+                        border-color:#e2e8f0 !important;
+                    }
 
-    /* Customer order cards */
-    .bar-light .order-card {
-      background:#ffffff !important;
-    }
+                    /* Customer active order cards */
+                    .bar-light .order-card {
+                        background:#ffffff !important;
+                    }
 
-    /* ══════════════════════════════════════
-       ATTRIBUTE SELECTORS (WITH space after colon — how React renders)
-    ══════════════════════════════════════ */
+                    /* Order detail modal panel */
+                    .bar-light .modal-panel {
+                        background:#ffffff !important;
+                        border-color:#e2e8f0 !important;
+                    }
+                    .bar-light .modal-inner {
+                        background:#f8fafc !important;
+                    }
 
-    /* #0c0c10 */
-    .bar-light [style*="background: #0c0c10"] { background:#f0f4f8 !important; }
+                    /* "Order ready" green banner */
+                    .bar-light .ready-banner {
+                        background:#dcfce7 !important;
+                        color:#15803d !important;
+                    }
 
-    /* #13111e — nav inner, cart bar, icon circles */
-    .bar-light [style*="background: #13111e"] { background:#f8fafc !important; }
+                    /* ── ATTRIBUTE SELECTORS (React renders with space: "background: #hex") ── */
 
-    /* #1a1020 — incomplete progress dots */
-    .bar-light [style*="background: #1a1020"] { background:#f1f5f9 !important; }
+                    .bar-light [style*="background: #0c0c10"] { background:#f0f4f8 !important; }
+                    .bar-light [style*="background: #13111e"] { background:#f8fafc !important; }
+                    .bar-light [style*="background: #1a1020"] { background:#f1f5f9 !important; }
+                    .bar-light [style*="background: #1a1625"] { background:#ffffff !important; border-color:#e2e8f0 !important; }
+                    .bar-light [style*="background: #1a1a2e"] { background:#eef2ff !important; border-color:#c7d2fe !important; }
+                    .bar-light [style*="background: #1e1030"] { background:#ede9fe !important; }
+                    .bar-light [style*="background: #1e3a5f"] { background:#dbeafe !important; }
+                    .bar-light [style*="background: #1f2937"] { background:#f3f4f6 !important; }
+                    .bar-light [style*="background: #14532d"] { background:#dcfce7 !important; color:#14532d !important; }
+                    .bar-light [style*="background: #451a03"] { background:#fef3c7 !important; }
+                    .bar-light [style*="background: #2e2050"] { background:#e2e8f0 !important; }
+                    .bar-light [style*="background: #1e1a35"] { background:#e2e8f0 !important; }
+                    .bar-light [style*="background: #052e16"] { background:#dcfce7 !important; border-color:#16a34a !important; }
+                    .bar-light [style*="background: #450a0a"] { background:#fee2e2 !important; border-color:#dc2626 !important; }
 
-    /* #1a1625 — any remaining panels/modals not covered by class */
-    .bar-light [style*="background: #1a1625"] {
-      background:#ffffff !important;
-      border-color:#e2e8f0 !important;
-    }
+                    /* ── BORDERS ── */
+                    .bar-light [style*="border: 1px solid #2e2050"],
+                    .bar-light [style*="border: 1.5px solid #2e2050"],
+                    .bar-light [style*="border: 2px solid #2e2050"],
+                    .bar-light [style*="border: 1px solid #1e1a35"],
+                    .bar-light [style*="border: 1px solid #3a2a5e"],
+                    .bar-light [style*="border: 1px solid #3a1a1a"] { border-color:#e2e8f0 !important; }
 
-    /* #1a1a2e — table number purple banner */
-    .bar-light [style*="background: #1a1a2e"] {
-      background:#eef2ff !important;
-      border-color:#c7d2fe !important;
-    }
+                    .bar-light [style*="borderTop: 1px solid #2e2050"],
+                    .bar-light [style*="borderBottom: 1px solid #2e2050"],
+                    .bar-light [style*="borderTop: 1px solid #1e1a35"] { border-color:#e2e8f0 !important; }
 
-    /* #1e1030 — active stat card (non-class fallback) */
-    .bar-light [style*="background: #1e1030"] { background:#ede9fe !important; }
+                    /* ── TEXT ── */
+                    .bar-light [style*="color: #f5f0e8"] { color:#0f172a !important; }
+                    .bar-light [style*="color: #a09abf"] { color:#475569 !important; }
+                    .bar-light [style*="color: #7a6a90"] { color:#64748b !important; }
+                    .bar-light [style*="color: #6b6080"] { color:#64748b !important; }
+                    .bar-light [style*="color: #6b5a90"] { color:#64748b !important; }
+                    .bar-light [style*="color: #5a4a7e"] { color:#6d6a8a !important; }
+                    .bar-light [style*="color: #4a3a60"] { color:#94a3b8 !important; }
+                    .bar-light [style*="color: #3a2a5e"] { color:#94a3b8 !important; }
+                    .bar-light [style*="color: #4ade80"] { color:#15803d !important; }
 
-    /* #1e3a5f — Preparing dark bg (progress dot) */
-    .bar-light [style*="background: #1e3a5f"] { background:#dbeafe !important; }
+                    /* ── INPUTS (override global dark style tag) ── */
+                    .bar-light input,
+                    .bar-light textarea {
+                        background:#ffffff !important;
+                        border-color:#cbd5e1 !important;
+                        color:#1a1625 !important;
+                    }
+                    .bar-light input::placeholder,
+                    .bar-light textarea::placeholder { color:#94a3b8 !important; }
+                    .bar-light input[type="date"]::-webkit-calendar-picker-indicator { filter:none; }
 
-    /* #1f2937 — Delivered dark bg (progress dot) */
-    .bar-light [style*="background: #1f2937"] { background:#f3f4f6 !important; }
+                    /* ── FLOATING CART BAR ── */
+                    .bar-light [style*="position: fixed"][style*="bottom: 0"],
+                    .bar-light [style*="position:fixed"][style*="bottom:0"] {
+                        background:#ffffff !important;
+                        border-top-color:#e2e8f0 !important;
+                    }
 
-    /* #14532d — Ready dark bg + isReady green banner */
-    .bar-light [style*="background: #14532d"] {
-      background:#dcfce7 !important;
-      color:#14532d !important;
-    }
-
-    /* #451a03 — Pending dark bg */
-    .bar-light [style*="background: #451a03"] { background:#fef3c7 !important; }
-
-    /* #2e2050 — dividers, disabled buttons, filter panels */
-    .bar-light [style*="background: #2e2050"] { background:#e2e8f0 !important; }
-
-    /* #1e1a35 — thin divider strips */
-    .bar-light [style*="background: #1e1a35"] { background:#e2e8f0 !important; }
-
-    /* Progress bar connector — incomplete (flat gray) */
-    .bar-light [style*="background: #2e2050"][style*="height: 2"] { background:#e2e8f0 !important; }
-
-    /* Toast backgrounds */
-    .bar-light [style*="background: #052e16"] { background:#dcfce7 !important; border-color:#16a34a !important; }
-    .bar-light [style*="background: #450a0a"] { background:#fee2e2 !important; border-color:#dc2626 !important; }
-
-    /* ══════════════════════════════════════
-       BORDER OVERRIDES
-    ══════════════════════════════════════ */
-    .bar-light [style*="border: 1px solid #2e2050"],
-    .bar-light [style*="border: 1.5px solid #2e2050"],
-    .bar-light [style*="border: 2px solid #2e2050"],
-    .bar-light [style*="border: 1px solid #1e1a35"],
-    .bar-light [style*="border: 1px solid #3a2a5e"],
-    .bar-light [style*="border: 1px solid #3a1a1a"] { border-color:#e2e8f0 !important; }
-
-    .bar-light [style*="borderTop: 1px solid #2e2050"],
-    .bar-light [style*="borderBottom: 1px solid #2e2050"],
-    .bar-light [style*="borderTop: 1px solid #1e1a35"] { border-color:#e2e8f0 !important; }
-
-    /* ══════════════════════════════════════
-       TEXT COLOR OVERRIDES
-    ══════════════════════════════════════ */
-    .bar-light [style*="color: #f5f0e8"] { color:#1a1625 !important; }
-    .bar-light [style*="color: #a09abf"] { color:#475569 !important; }
-    .bar-light [style*="color: #7a6a90"] { color:#64748b !important; }
-    .bar-light [style*="color: #6b6080"] { color:#64748b !important; }
-    .bar-light [style*="color: #6b5a90"] { color:#64748b !important; }
-    .bar-light [style*="color: #5a4a7e"] { color:#6d6a8a !important; }
-    .bar-light [style*="color: #4a3a60"] { color:#94a3b8 !important; }
-    .bar-light [style*="color: #3a2a5e"] { color:#94a3b8 !important; }
-    .bar-light [style*="color: #4ade80"] { color:#15803d !important; }
-
-    /* ══════════════════════════════════════
-       INPUTS
-    ══════════════════════════════════════ */
-    .bar-light input,
-    .bar-light textarea {
-      background:#ffffff !important;
-      border-color:#cbd5e1 !important;
-      color:#1a1625 !important;
-    }
-    .bar-light input::placeholder,
-    .bar-light textarea::placeholder { color:#94a3b8 !important; }
-    .bar-light input[type="date"]::-webkit-calendar-picker-indicator { filter:none; }
-
-    /* ══════════════════════════════════════
-       FLOATING CART BAR
-    ══════════════════════════════════════ */
-    .bar-light [style*="position: fixed"][style*="bottom: 0"],
-    .bar-light [style*="position:fixed"][style*="bottom:0"] {
-      background:#ffffff !important;
-      border-top-color:#e2e8f0 !important;
-    }
-
-    /* ══════════════════════════════════════
-       QtyBtn minus (non-accent)
-    ══════════════════════════════════════ */
-    .bar-light button[style*="background: #2e2050"] {
-      background:#e2e8f0 !important;
-      color:#1a1625 !important;
-    }
-  `}</style>
+                    /* ── QtyBtn minus (non-accent, background:#2e2050) ── */
+                    .bar-light button[style*="background: #2e2050"] {
+                        background:#e2e8f0 !important;
+                        color:#1a1625 !important;
+                    }
+                `}</style>
             )}
+
             <style>{`
                 *, *::before, *::after { box-sizing: border-box; }
                 html, body { margin:0; padding:0; overscroll-behavior:none; -webkit-tap-highlight-color:transparent; }
@@ -1356,8 +1217,8 @@ export default function App() {
                                 fontSize:11, flexShrink:0 }}>
                         <FontAwesomeIcon icon={isDark ? faSun : faMoon} style={{ fontSize:12 }} />
                     </button>
-                    <NavBtn label="Menu" active={scene==="customer"} onClick={() => { setScene("customer"); setMenuView("categories"); }} />
-                    <NavBtn label="Orders" active={scene==="orders"} onClick={() => setScene("orders")} />
+                    <NavBtn label="Menu"   active={scene==="customer"}  onClick={() => { setScene("customer"); setMenuView("categories"); }} />
+                    <NavBtn label="Orders" active={scene==="orders"}    onClick={() => setScene("orders")} />
                     <NavBtn
                         label={staffUser ? staffUser.name.split(" ")[0] : "Staff"}
                         active={scene==="bartender"}
@@ -1371,7 +1232,8 @@ export default function App() {
             {scene === "pin" && (
                 <div style={{ display:"flex", justifyContent:"center", alignItems:"center",
                     minHeight:"calc(100vh - 62px)", padding:20 }}>
-                    <div style={{ background:"#1a1625", border:"1px solid #2e2050", borderRadius:20,
+                    {/* ── pin-box className added ── */}
+                    <div className="pin-box" style={{ background:"#1a1625", border:"1px solid #2e2050", borderRadius:20,
                         padding:"36px 24px", width:"100%", maxWidth:340, textAlign:"center" }}>
                         <FontAwesomeIcon icon={faLock} style={{ fontSize:36, color:"#c9a84c", marginBottom:14 }} />
                         <h2 style={{ color:"#c9a84c", marginBottom:6, fontWeight:600, fontSize:20, margin:"0 0 6px" }}>Staff access</h2>
@@ -1432,12 +1294,13 @@ export default function App() {
                                              style={{ background:"#1a1625", border:"1.5px solid #2e2050",
                                                  borderRadius:16, padding:"20px 14px",
                                                  display:"flex", flexDirection:"column", alignItems:"center", textAlign:"center", gap:10 }}>
-                                            <div style={{ width:52, height:52, borderRadius:"50%",
+                                            {/* ── cat-icon-circle className added ── */}
+                                            <div className="cat-icon-circle" style={{ width:52, height:52, borderRadius:"50%",
                                                 background:"#13111e", border:"1.5px solid #2e2050",
                                                 display:"flex", alignItems:"center", justifyContent:"center" }}>
                                                 <FontAwesomeIcon icon={cat.icon} style={{ fontSize:22, color:"#c9a84c" }} />
                                             </div>
-                                            <div style={{ fontSize:14, fontWeight:700, color:"#f5f0e8", lineHeight:1.3 }}>{cat.label}</div>
+                                            <div className="cat-label" style={{ fontSize:14, fontWeight:700, color:"#f5f0e8", lineHeight:1.3 }}>{cat.label}</div>
                                             <div style={{ display:"flex", alignItems:"center", gap:8, flexWrap:"wrap", justifyContent:"center" }}>
                                                 <span style={{ fontSize:11, color:"#7a6a90" }}>{cat.subcategories.length} section{cat.subcategories.length !== 1 ? "s" : ""}</span>
                                                 <span style={{ fontSize:10, color:"#3a2a5e" }}>·</span>
@@ -1465,7 +1328,6 @@ export default function App() {
                     {/* ══ SUBCATEGORY / ITEMS VIEW ══ */}
                     {menuView === "subcategory" && activeCategory && (
                         <>
-                            {/* Back header */}
                             <div style={{ display:"flex", alignItems:"center", gap:10, marginBottom:16 }}>
                                 <button onClick={goBackToCategories}
                                         style={{ background:"#1a1625", border:"1px solid #2e2050",
@@ -1480,7 +1342,7 @@ export default function App() {
                                         <FontAwesomeIcon icon={activeCategory.icon} style={{ fontSize:15, color:"#c9a84c" }} />
                                     </div>
                                     <div style={{ minWidth:0 }}>
-                                        <div style={{ fontWeight:700, fontSize:16, color:"#f5f0e8",
+                                        <div className="cat-label" style={{ fontWeight:700, fontSize:16, color:"#f5f0e8",
                                             overflow:"hidden", textOverflow:"ellipsis", whiteSpace:"nowrap" }}>
                                             {activeCategory.label}
                                         </div>
@@ -1491,7 +1353,6 @@ export default function App() {
                                 </div>
                             </div>
 
-                            {/* Subcategory pill tabs */}
                             {activeCategory.subcategories.length > 1 && (
                                 <div style={{ display:"flex", gap:6, overflowX:"auto", paddingBottom:6,
                                     marginBottom:16, WebkitOverflowScrolling:"touch" }}>
@@ -1525,9 +1386,7 @@ export default function App() {
                                             <span style={{ fontWeight:700, fontSize:14, color:"#a78bfa" }}>{sub.label}</span>
                                             <span style={{ fontSize:11, color:"#3a2a5e", marginLeft:2 }}>({sub.items.length})</span>
                                         </div>
-
                                         {sub.items.map(item => <ItemCard key={item.id} item={item} />)}
-
                                         {activeCategory.subcategories.length > 1 && (
                                             <div style={{ height:1, background:"#1e1a35", margin:"6px 0 18px" }} />
                                         )}
@@ -1589,12 +1448,11 @@ export default function App() {
                 <div onClick={e => e.target===e.currentTarget && setCustomizeItem(null)}
                      style={{ position:"fixed", inset:0, background:"rgba(0,0,0,0.82)", zIndex:500,
                          display:"flex", alignItems:"flex-end", justifyContent:"center" }}>
-                    <div style={{ background:"#1a1625", border:"1px solid #2e2050",
+                    <div className="modal-panel" style={{ background:"#1a1625", border:"1px solid #2e2050",
                         borderRadius:"20px 20px 0 0", padding:"20px 16px",
                         width:"100%", maxWidth:580, maxHeight:"88vh", overflowY:"auto",
                         paddingBottom:"max(20px, env(safe-area-inset-bottom))" }}>
 
-                        {/* Header */}
                         <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:14 }}>
                             <div>
                                 <div style={{ fontWeight:700, fontSize:17 }}>{customizeItem.name}</div>
@@ -1609,7 +1467,6 @@ export default function App() {
                             </button>
                         </div>
 
-                        {/* ── VARIANT SELECTOR (size/portion picker) ── */}
                         {customizeItem.variants?.length > 0 && (
                             <div style={{ marginBottom:18 }}>
                                 <p style={{ color:"#7a6a90", fontSize:13, marginBottom:10,
@@ -1620,26 +1477,15 @@ export default function App() {
                                     {customizeItem.variants.map(v => {
                                         const sel = chosenVariant?.label === v.label;
                                         return (
-                                            <button key={v.label}
-                                                    onClick={() => setChosenVariant(v)}
-                                                    style={{
-                                                        padding:"12px 18px", borderRadius:12, cursor:"pointer",
+                                            <button key={v.label} onClick={() => setChosenVariant(v)}
+                                                    style={{ padding:"12px 18px", borderRadius:12, cursor:"pointer",
                                                         border:`2px solid ${sel ? "#c9a84c" : "#2e2050"}`,
                                                         background: sel ? "#c9a84c18" : "#13111e",
                                                         display:"flex", flexDirection:"column", alignItems:"center", gap:4,
-                                                        minWidth:100, flex:1,
-                                                    }}>
-                                                <span style={{ fontSize:14, fontWeight:700,
-                                                    color: sel ? "#c9a84c" : "#f5f0e8" }}>
-                                                    {v.label}
-                                                </span>
-                                                <span style={{ fontSize:13, color: sel ? "#c9a84c" : "#7a6a90" }}>
-                                                    GHC {v.price}
-                                                </span>
-                                                {sel && (
-                                                    <FontAwesomeIcon icon={faCircleCheck}
-                                                                     style={{ fontSize:12, color:"#c9a84c", marginTop:2 }} />
-                                                )}
+                                                        minWidth:100, flex:1 }}>
+                                                <span style={{ fontSize:14, fontWeight:700, color: sel ? "#c9a84c" : "#f5f0e8" }}>{v.label}</span>
+                                                <span style={{ fontSize:13, color: sel ? "#c9a84c" : "#7a6a90" }}>GHC {v.price}</span>
+                                                {sel && <FontAwesomeIcon icon={faCircleCheck} style={{ fontSize:12, color:"#c9a84c", marginTop:2 }} />}
                                             </button>
                                         );
                                     })}
@@ -1647,7 +1493,6 @@ export default function App() {
                             </div>
                         )}
 
-                        {/* ── CUSTOMIZATION OPTIONS ── */}
                         {customizeItem.customizable && customizeItem.options.length > 0 && (
                             <>
                                 <p style={{ color:"#7a6a90", fontSize:13, marginBottom:10,
@@ -1673,7 +1518,6 @@ export default function App() {
                             </>
                         )}
 
-                        {/* ── SPECIAL INSTRUCTIONS ── */}
                         <div style={{ position:"relative", marginBottom:14 }}>
                             <FontAwesomeIcon icon={faNoteSticky}
                                              style={{ position:"absolute", top:13, left:12, color:"#4a3a60", fontSize:13, pointerEvents:"none" }} />
@@ -1730,6 +1574,7 @@ export default function App() {
                         </button>
                     </div>
 
+                    {/* ── Stat cards (already have className="stat-card") ── */}
                     <div style={{ display:"grid", gridTemplateColumns:"repeat(4,1fr)", gap:8, marginBottom:16 }}>
                         {STAT_CARDS.map(sc => {
                             const count = sc.status
@@ -1815,7 +1660,7 @@ export default function App() {
                             </button>
 
                             {showFilters && (
-                                <div style={{ marginTop:10, background:"#1a1625", border:"1px solid #2e2050",
+                                <div className="modal-panel" style={{ marginTop:10, background:"#1a1625", border:"1px solid #2e2050",
                                     borderRadius:14, padding:"16px 14px" }}>
                                     <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:10, marginBottom:12 }}>
                                         {[
@@ -1874,7 +1719,7 @@ export default function App() {
                             Loading orders…
                         </div>
                     ) : displayList.length === 0 ? (
-                        <div style={{ background:"#1a1625", border:"1px solid #2e2050", borderRadius:16,
+                        <div className="modal-panel" style={{ background:"#1a1625", border:"1px solid #2e2050", borderRadius:16,
                             padding:40, textAlign:"center", color:"#4a3a60" }}>
                             {bartenderTab === "live"
                                 ? statusFilter ? `No ${statusFilter.toLowerCase()} orders right now.` : "No active orders. Waiting for customers…"
@@ -1883,6 +1728,7 @@ export default function App() {
                     ) : (
                         <div style={{ display:"grid", gap:10 }}>
                             {displayList.map(order => (
+                                /* ── ocard already has className ── */
                                 <div key={order.id} className="ocard" onClick={() => setSelectedOrder(order)}
                                      style={{ background:"#1a1625", border:"1px solid #2e2050",
                                          borderRadius:16, padding:14,
@@ -1997,7 +1843,7 @@ function QtyBtn({ children, onClick, accent, small }) {
 
 function Chip({ label, value, gold }) {
     return (
-        <div style={{ background:"#1a1625", border:"1px solid #2e2050", borderRadius:10, padding:"8px 14px", fontSize:13 }}>
+        <div className="modal-panel" style={{ background:"#1a1625", border:"1px solid #2e2050", borderRadius:10, padding:"8px 14px", fontSize:13 }}>
             <span style={{ color:"#6b6080" }}>{label}: </span>
             <strong style={{ color: gold ? "#c9a84c" : "#f5f0e8" }}>{value}</strong>
         </div>
