@@ -1114,51 +1114,177 @@ export default function App() {
         <div style={{ fontFamily:"system-ui,-apple-system,sans-serif", background:"#0c0c10", minHeight:"100vh", color:"#f5f0e8" }} className={isDark ? "bar-dark" : "bar-light"}>
             {!isDark && (
                 <style>{`
-              .bar-light { background:#f0f4f8 !important; color:#1a1625 !important; }
-              .bar-light nav { background:#ffffff !important; border-bottom-color:#e2e8f0 !important; }
-              /* Cards and dark backgrounds */
-              .bar-light div[style*="background:#1a1625"],
-              .bar-light div[style*="background: #1a1625"] { background:#ffffff !important; border-color:#e2e8f0 !important; }
-              .bar-light div[style*="background:#13111e"],
-              .bar-light div[style*="background: #13111e"] { background:#f8fafc !important; }
-              .bar-light div[style*="background:#0c0c10"],
-              .bar-light div[style*="background: #0c0c10"] { background:#f0f4f8 !important; }
-              .bar-light div[style*="background:#1a1a2e"],
-              .bar-light div[style*="background: #1a1a2e"] { background:#eef2ff !important; border-color:#c7d2fe !important; }
-              .bar-light div[style*="background:#1a1020"],
-              .bar-light div[style*="background: #1a1020"] { background:#f8fafc !important; }
-              .bar-light div[style*="background:#2e2050"],
-              .bar-light div[style*="background: #2e2050"] { background:#e2e8f0 !important; }
-              /* Floating cart bar */
-              .bar-light div[style*="position:\"fixed\""][style*="bottom:0"] { background:#ffffff !important; border-top-color:#e2e8f0 !important; }
-              /* Borders */
-              .bar-light div[style*="borderTop:"1px solid #2e2050""],
-              .bar-light div[style*="border:"1px solid #2e2050""],
-              .bar-light div[style*="border:"1.5px solid #2e2050""],
-              .bar-light div[style*="border:"1px solid #1e1a35""] { border-color:#e2e8f0 !important; }
-              /* Text */
-              .bar-light div[style*="color:#f5f0e8"],
-              .bar-light span[style*="color:#f5f0e8"] { color:#1a1625 !important; }
-              .bar-light div[style*="color:#a09abf"],
-              .bar-light span[style*="color:#a09abf"] { color:#475569 !important; }
-              .bar-light div[style*="color:#7a6a90"],
-              .bar-light span[style*="color:#7a6a90"] { color:#64748b !important; }
-              .bar-light div[style*="color:#6b6080"],
-              .bar-light span[style*="color:#6b6080"] { color:#64748b !important; }
-              .bar-light div[style*="color:#4a3a60"],
-              .bar-light span[style*="color:#4a3a60"] { color:#94a3b8 !important; }
-              .bar-light div[style*="color:#3a2a5e"],
-              .bar-light span[style*="color:#3a2a5e"] { color:#94a3b8 !important; }
-              .bar-light div[style*="color:#6b5a90"],
-              .bar-light span[style*="color:#6b5a90"] { color:#64748b !important; }
-              /* Inputs */
-              .bar-light input, .bar-light textarea, .bar-light select {
-                background:#ffffff !important; border-color:#cbd5e1 !important; color:#1a1625 !important;
-              }
-              .bar-light input::placeholder, .bar-light textarea::placeholder { color:#94a3b8 !important; }
-              /* Footer */
-              .bar-light footer { background:#ffffff !important; border-top-color:#e2e8f0 !important; }
-            `}</style>
+    /* ── Page root ── */
+    .bar-light { background:#f0f4f8 !important; color:#1a1625 !important; }
+
+    /* ── Nav ── */
+    .bar-light nav { background:#f8fafc !important; border-bottom-color:#e2e8f0 !important; }
+
+    /* ── Footer ── */
+    .bar-light footer { background:#f8fafc !important; border-top-color:#e2e8f0 !important; }
+
+    /* ══════════════════════════════════════
+       CLASS-BASED TARGETS (reliable)
+    ══════════════════════════════════════ */
+
+    /* Category cards */
+    .bar-light .cat-card {
+      background:#ffffff !important;
+      border-color:#e2e8f0 !important;
+    }
+    /* Icon circle inside cat-card */
+    .bar-light .cat-card > div:first-child {
+      background:#f1f5f9 !important;
+      border-color:#e2e8f0 !important;
+    }
+
+    /* Item cards (food list) */
+    .bar-light .item-card {
+      background:#ffffff !important;
+      border-color:#e2e8f0 !important;
+    }
+
+    /* PIN login box */
+    .bar-light .pin-box {
+      background:#ffffff !important;
+      border-color:#e2e8f0 !important;
+    }
+
+    /* Bartender stat cards (All / Pending / Preparing / Ready) */
+    .bar-light .stat-card {
+      background:#f8fafc !important;
+      border-color:#e2e8f0 !important;
+    }
+    /* Active stat card */
+    .bar-light .stat-card[style*="background: rgb(30, 16, 48)"],
+    .bar-light .stat-card[style*="background: #1e1030"] {
+      background:#ede9fe !important;
+    }
+
+    /* Bartender order cards (ocard) */
+    .bar-light .ocard {
+      background:#ffffff !important;
+      border-color:#e2e8f0 !important;
+    }
+
+    /* Customer order cards */
+    .bar-light .order-card {
+      background:#ffffff !important;
+    }
+
+    /* ══════════════════════════════════════
+       ATTRIBUTE SELECTORS (WITH space after colon — how React renders)
+    ══════════════════════════════════════ */
+
+    /* #0c0c10 */
+    .bar-light [style*="background: #0c0c10"] { background:#f0f4f8 !important; }
+
+    /* #13111e — nav inner, cart bar, icon circles */
+    .bar-light [style*="background: #13111e"] { background:#f8fafc !important; }
+
+    /* #1a1020 — incomplete progress dots */
+    .bar-light [style*="background: #1a1020"] { background:#f1f5f9 !important; }
+
+    /* #1a1625 — any remaining panels/modals not covered by class */
+    .bar-light [style*="background: #1a1625"] {
+      background:#ffffff !important;
+      border-color:#e2e8f0 !important;
+    }
+
+    /* #1a1a2e — table number purple banner */
+    .bar-light [style*="background: #1a1a2e"] {
+      background:#eef2ff !important;
+      border-color:#c7d2fe !important;
+    }
+
+    /* #1e1030 — active stat card (non-class fallback) */
+    .bar-light [style*="background: #1e1030"] { background:#ede9fe !important; }
+
+    /* #1e3a5f — Preparing dark bg (progress dot) */
+    .bar-light [style*="background: #1e3a5f"] { background:#dbeafe !important; }
+
+    /* #1f2937 — Delivered dark bg (progress dot) */
+    .bar-light [style*="background: #1f2937"] { background:#f3f4f6 !important; }
+
+    /* #14532d — Ready dark bg + isReady green banner */
+    .bar-light [style*="background: #14532d"] {
+      background:#dcfce7 !important;
+      color:#14532d !important;
+    }
+
+    /* #451a03 — Pending dark bg */
+    .bar-light [style*="background: #451a03"] { background:#fef3c7 !important; }
+
+    /* #2e2050 — dividers, disabled buttons, filter panels */
+    .bar-light [style*="background: #2e2050"] { background:#e2e8f0 !important; }
+
+    /* #1e1a35 — thin divider strips */
+    .bar-light [style*="background: #1e1a35"] { background:#e2e8f0 !important; }
+
+    /* Progress bar connector — incomplete (flat gray) */
+    .bar-light [style*="background: #2e2050"][style*="height: 2"] { background:#e2e8f0 !important; }
+
+    /* Toast backgrounds */
+    .bar-light [style*="background: #052e16"] { background:#dcfce7 !important; border-color:#16a34a !important; }
+    .bar-light [style*="background: #450a0a"] { background:#fee2e2 !important; border-color:#dc2626 !important; }
+
+    /* ══════════════════════════════════════
+       BORDER OVERRIDES
+    ══════════════════════════════════════ */
+    .bar-light [style*="border: 1px solid #2e2050"],
+    .bar-light [style*="border: 1.5px solid #2e2050"],
+    .bar-light [style*="border: 2px solid #2e2050"],
+    .bar-light [style*="border: 1px solid #1e1a35"],
+    .bar-light [style*="border: 1px solid #3a2a5e"],
+    .bar-light [style*="border: 1px solid #3a1a1a"] { border-color:#e2e8f0 !important; }
+
+    .bar-light [style*="borderTop: 1px solid #2e2050"],
+    .bar-light [style*="borderBottom: 1px solid #2e2050"],
+    .bar-light [style*="borderTop: 1px solid #1e1a35"] { border-color:#e2e8f0 !important; }
+
+    /* ══════════════════════════════════════
+       TEXT COLOR OVERRIDES
+    ══════════════════════════════════════ */
+    .bar-light [style*="color: #f5f0e8"] { color:#1a1625 !important; }
+    .bar-light [style*="color: #a09abf"] { color:#475569 !important; }
+    .bar-light [style*="color: #7a6a90"] { color:#64748b !important; }
+    .bar-light [style*="color: #6b6080"] { color:#64748b !important; }
+    .bar-light [style*="color: #6b5a90"] { color:#64748b !important; }
+    .bar-light [style*="color: #5a4a7e"] { color:#6d6a8a !important; }
+    .bar-light [style*="color: #4a3a60"] { color:#94a3b8 !important; }
+    .bar-light [style*="color: #3a2a5e"] { color:#94a3b8 !important; }
+    .bar-light [style*="color: #4ade80"] { color:#15803d !important; }
+
+    /* ══════════════════════════════════════
+       INPUTS
+    ══════════════════════════════════════ */
+    .bar-light input,
+    .bar-light textarea {
+      background:#ffffff !important;
+      border-color:#cbd5e1 !important;
+      color:#1a1625 !important;
+    }
+    .bar-light input::placeholder,
+    .bar-light textarea::placeholder { color:#94a3b8 !important; }
+    .bar-light input[type="date"]::-webkit-calendar-picker-indicator { filter:none; }
+
+    /* ══════════════════════════════════════
+       FLOATING CART BAR
+    ══════════════════════════════════════ */
+    .bar-light [style*="position: fixed"][style*="bottom: 0"],
+    .bar-light [style*="position:fixed"][style*="bottom:0"] {
+      background:#ffffff !important;
+      border-top-color:#e2e8f0 !important;
+    }
+
+    /* ══════════════════════════════════════
+       QtyBtn minus (non-accent)
+    ══════════════════════════════════════ */
+    .bar-light button[style*="background: #2e2050"] {
+      background:#e2e8f0 !important;
+      color:#1a1625 !important;
+    }
+  `}</style>
             )}
             <style>{`
                 *, *::before, *::after { box-sizing: border-box; }
