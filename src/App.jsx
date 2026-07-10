@@ -14,7 +14,7 @@ import {
     faXmark, faArrowRight, faPaperPlane, faSpinner, faSlidersH, faNoteSticky,faMartiniGlassCitrus,
     faChevronDown, faChevronUp, faFilter, faCalendarDays, faTimesCircle,faShrimp,faWandMagicSparkles,
     faReceipt, faChevronRight, faListUl, faHourglassHalf, faCog, faCheckDouble,faPizzaSlice,
-    faChevronLeft, faDrumstickBite, faTag,faBowlFood,faBacon,faFireFlameCurved,faBolt, faLeaf, faStar, faFish, faSeedling, faUtensils,
+    faChevronLeft, faDrumstickBite, faTag,faBowlFood,faBacon,faFireFlameCurved,faBolt, faLeaf, faStar, faFish, faSeedling, faUtensils,faMagnifyingGlass,
     faBan, faTriangleExclamation, faSun, faMoon
 } from "@fortawesome/free-solid-svg-icons";
 import logo from "./assets/logo.svg";
@@ -24,7 +24,7 @@ const supabase = createClient(
     import.meta.env.VITE_SUPABASE_ANON_KEY
 );
 
-const RESTAURANT_SLUG = import.meta.env.VITE_RESTAURANT_SLUG || "piano-bar";
+const RESTAURANT_SLUG = import.meta.env.VITE_RESTAURANT_SLUG;
 
 const CATEGORIES = [
     {
@@ -731,8 +731,6 @@ export default function App() {
         setMenuView("categories");
         setActiveCategoryId(null);
     };
-    const activeCategory = CATEGORIES.find(c => c.id === activeCategoryId);
-
     useEffect(() => {
         let cancelled = false;
         (async () => {
@@ -751,6 +749,80 @@ export default function App() {
             .subscribe();
         return () => { cancelled = true; supabase.removeChannel(ch); };
     }, []);
+
+    /* ── Fetch menu from Supabase (falls back to CATEGORIES if empty) ── */
+    const [menuItems, setMenuItems] = useState(null); // null = loading, [] = empty db
+    useEffect(() => {
+        if (!restaurant?.id) return;
+        let cancelled = false;
+        const fetchMenu = async () => {
+            const { data, error } = await supabase
+                .from("menu_items")
+                .select("*")
+                .eq("restaurant_id", restaurant.id)
+                .eq("active", true)
+                .order("category_id")
+                .order("subcategory_id")
+                .order("sort_order");
+            if (!cancelled && !error) setMenuItems(data || []);
+        };
+        fetchMenu();
+        // Realtime: update menu when owner edits it
+        const ch = supabase.channel("menu-live")
+            .on("postgres_changes", { event:"*", schema:"public", table:"menu_items" }, fetchMenu)
+            .subscribe();
+        return () => { cancelled = true; supabase.removeChannel(ch); };
+    }, [restaurant?.id]);
+
+    /* ── Build CATEGORIES from DB rows, or fall back to hardcoded ── */
+    const ICON_MAP = {
+        faMartiniGlassCitrus, faBowlFood, faFireFlameCurved, faWandMagicSparkles,
+        faBeer, faBolt, faWhiskeyGlass, faWineBottle, faWineGlassEmpty, faChampagneGlasses,
+        faBottleDroplet, faBottleWater, faSeedling, faLeaf, faUtensils, faFish,
+        faShrimp, faBacon, faBurger, faDrumstickBite, faPizzaSlice, faStar,
+        faTag,
+    };
+    const getIcon = (name) => ICON_MAP[name] || faTag;
+
+    const activeCategories = (menuItems && menuItems.length > 0)
+        ? (() => {
+            const catMap = {};
+            menuItems.forEach(item => {
+                if (!catMap[item.category_id]) {
+                    catMap[item.category_id] = {
+                        id: item.category_id,
+                        label: item.category_label,
+                        icon: getIcon(item.category_icon),
+                        subcategories: {},
+                    };
+                }
+                const cat = catMap[item.category_id];
+                if (!cat.subcategories[item.subcategory_id]) {
+                    cat.subcategories[item.subcategory_id] = {
+                        id: item.subcategory_id,
+                        label: item.subcategory_label,
+                        icon: getIcon(item.subcategory_icon),
+                        items: [],
+                    };
+                }
+                cat.subcategories[item.subcategory_id].items.push({
+                    id: item.item_id,
+                    name: item.name,
+                    price: Number(item.price),
+                    description: item.description || "",
+                    customizable: item.customizable,
+                    options: item.options || [],
+                    variants: item.variants || [],
+                });
+            });
+            return Object.values(catMap).map(cat => ({
+                ...cat,
+                subcategories: Object.values(cat.subcategories),
+            }));
+        })()
+        : CATEGORIES; // fallback to hardcoded while loading or if DB is empty
+
+    const activeCategory = activeCategories.find(c => c.id === activeCategoryId);
 
     const isExpired   = restaurant?.plan_expires_at ? new Date(restaurant.plan_expires_at) < new Date() : false;
     const isSuspended = restaurant?.status === "suspended" || isExpired;
@@ -878,7 +950,11 @@ export default function App() {
         if (historyDateTo)   { const t = new Date(historyDateTo);   t.setHours(23,59,59,999); if (d > t) return false; }
         if (historySearch.trim()) {
             const q = historySearch.trim().toLowerCase();
+            const idFull  = String(o.id).toLowerCase();
+            const idShort = String(o.id).slice(-5).toLowerCase();
             if (
+                !idFull.includes(q) &&
+                !idShort.includes(q) &&
                 !o.table_no?.toLowerCase().includes(q) &&
                 !o.guest_name?.toLowerCase().includes(q) &&
                 !o.items?.some(i => i.name?.toLowerCase().includes(q)) &&
@@ -1199,12 +1275,16 @@ export default function App() {
                 justifyContent:"space-between", position:"sticky", top:0, zIndex:200,
             }}>
                 <div style={{ display:"flex", alignItems:"center", gap:10, minWidth:0, flex:1 }}>
-                    <img src={logo} alt="Logo"
-                         style={{ height:38, width:38, objectFit:"contain", borderRadius:8, flexShrink:0 }} />
+                    {restaurant?.logo_url
+                        ? <img src={restaurant.logo_url} alt="Logo"
+                               style={{ height:38, width:38, objectFit:"contain", borderRadius:8, flexShrink:0 }} />
+                        : <img src={logo} alt="Cravord"
+                               style={{ height:38, width:38, objectFit:"contain", borderRadius:8, flexShrink:0 }} />
+                    }
                     <div style={{ minWidth:0 }}>
                         <div style={{ fontSize:14, fontWeight:700, color:"#c9a84c", letterSpacing:1,
                             whiteSpace:"nowrap", overflow:"hidden", textOverflow:"ellipsis" }}>
-                            THE PIANO BAR
+                            {restaurant?.brand_name || restaurant?.name || "CRAVORD"}
                         </div>
                         <div style={{ fontSize:9, color:"#6b5a90", letterSpacing:2, marginTop:1 }}>SCAN · ORDER · RELAX</div>
                     </div>
@@ -1287,7 +1367,7 @@ export default function App() {
                                 Choose a category
                             </div>
                             <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:10, marginBottom:18 }}>
-                                {CATEGORIES.map(cat => {
+                                {activeCategories.map(cat => {
                                     const itemCount = cat.subcategories.reduce((s, sub) => s + sub.items.length, 0);
                                     return (
                                         <div key={cat.id} className="cat-card" onClick={() => openCategory(cat)}
@@ -1691,9 +1771,10 @@ export default function App() {
                             )}
 
                             <div style={{ marginTop:10, position:"relative" }}>
-                                <span style={{ position:"absolute", left:12, top:"50%", transform:"translateY(-50%)",
-                                    color:"#4a3a60", fontSize:13, pointerEvents:"none" }}>🔍</span>
-                                <input type="text" placeholder="Search table, guest, item…"
+                                <FontAwesomeIcon icon={faMagnifyingGlass}
+                                                 style={{ position:"absolute", left:12, top:"50%", transform:"translateY(-50%)",
+                                                     color:"#4a3a60", fontSize:13, pointerEvents:"none" }} />
+                                <input type="text" placeholder="Search order ID, table, guest, item…"
                                        value={historySearch} onChange={e => setHistorySearch(e.target.value)}
                                        style={{ width:"100%", padding:"11px 12px 11px 34px" }} />
                                 {historySearch && (
