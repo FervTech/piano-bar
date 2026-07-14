@@ -191,6 +191,7 @@ const CATEGORIES = [
                     { id: "P053", name: "Sausage Stir Fry Noodles",   price: 78, description: "Stir-fried noodles tossed with seasoned sausage",     customizable: true,  options: ["BBQ", "Hot sauce", "Lemon pepper", "Peri-peri"], variants: [{ label: "P053", price: 80 }, { label: "P053A", price: 120 }] },
                 ]
             },
+
             {
                 id: "beefDishes", label: "B24 – Beef Dishes", icon: faBurger, items: [
                     { id: "P054", name: "Beef Veggie Stew",         price: 80, description: "Tender beef in rich spiced vegetable stew",              customizable: true,  options: [],                                                variants: [{ label: "P054", price: 80 }, { label: "P054A", price: 120 }] },
