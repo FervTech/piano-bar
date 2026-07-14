@@ -191,7 +191,6 @@ const CATEGORIES = [
                     { id: "P053", name: "Sausage Stir Fry Noodles",   price: 78, description: "Stir-fried noodles tossed with seasoned sausage",     customizable: true,  options: ["BBQ", "Hot sauce", "Lemon pepper", "Peri-peri"], variants: [{ label: "P053", price: 80 }, { label: "P053A", price: 120 }] },
                 ]
             },
-
             {
                 id: "beefDishes", label: "B24 – Beef Dishes", icon: faBurger, items: [
                     { id: "P054", name: "Beef Veggie Stew",         price: 80, description: "Tender beef in rich spiced vegetable stew",              customizable: true,  options: [],                                                variants: [{ label: "P054", price: 80 }, { label: "P054A", price: 120 }] },
@@ -241,7 +240,6 @@ const CATEGORIES = [
             },
         ],
     },
-
     {
         id: "specials",
         label: "Specials",
@@ -1432,6 +1430,19 @@ export default function App() {
                 .type-card { transition:border-color 0.15s, transform 0.1s, box-shadow 0.15s; cursor:pointer; }
                 .type-card:active { transform:scale(0.98); }
                 .input-row { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:12px; }
+
+                /* ── Welcome screen: restrained entrance + a display face for any tenant's name ── */
+                @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&display=swap');
+                .wc-title { font-family:'Fraunces', Georgia, serif; font-weight:600; }
+                .wc-in { opacity:0; animation:wc-rise 0.6s ease-out forwards; }
+                @keyframes wc-rise { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
+                .wc-cta { transition:transform 0.15s ease, box-shadow 0.15s ease; }
+                .wc-cta:hover { transform:translateY(-1px); }
+                .wc-cta:active { transform:translateY(0) scale(0.98); }
+                @media (prefers-reduced-motion: reduce) {
+                    .wc-in { opacity:1; animation:none; }
+                    .wc-cta { transition:none; }
+                }
                 @media (max-width: 520px) { .input-row { grid-template-columns:1fr; } }
             `}</style>
 
@@ -1530,22 +1541,18 @@ export default function App() {
             {scene === "customer" && (
                 <div style={{ maxWidth:580, margin:"0 auto", padding: customerStep === "menu" ? "16px 12px 200px" : "0 16px" }}>
 
-                    {/* ══ STEP 1: WELCOME ══ */}
+                    {/* ══ STEP 1: WELCOME ══
+                         Tenant-agnostic: every visual here is generic to "a restaurant on
+                         the platform" — nothing references any one client's theme. Only
+                         the logo, name, and (optionally) brand color come from the DB. ── */}
                     {customerStep === "welcome" && (
                         <div className="welcome-stage" style={{ position:"relative", minHeight:"calc(100vh - 62px)",
                             display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center",
                             textAlign:"center", overflow:"hidden", margin:"0 -16px" }}>
 
-                            {/* Ambient stage glow + faint piano-key wash along the edges */}
+                            {/* Ambient spotlight — works behind any logo/name, no imagery tied to a specific client */}
                             <div aria-hidden="true" style={{ position:"absolute", inset:0, pointerEvents:"none",
-                                background:"radial-gradient(60% 50% at 50% 38%, rgba(201,168,76,0.16) 0%, rgba(201,168,76,0) 70%)" }} />
-                            <div aria-hidden="true" className="key-wash" style={{ position:"absolute", inset:0, pointerEvents:"none" }}>
-                                {Array.from({ length: 17 }).map((_, i) => (
-                                    <div key={i} style={{ position:"absolute", top:0, bottom:0, width:1,
-                                        left:`${(i / 16) * 100}%`,
-                                        background: i % 2 === 0 ? "rgba(201,168,76,0.05)" : "rgba(124,58,237,0.04)" }} />
-                                ))}
-                            </div>
+                                background:"radial-gradient(55% 45% at 50% 36%, rgba(201,168,76,0.14) 0%, rgba(201,168,76,0) 70%)" }} />
 
                             {restaurantLoading ? (
                                 <FontAwesomeIcon icon={faSpinner} spin style={{ fontSize:28, color:"#4a3a60" }} />
@@ -1566,19 +1573,18 @@ export default function App() {
                                         <div style={{ fontSize:10, letterSpacing:4, textTransform:"uppercase",
                                             color:"#7a6a90", marginBottom:10 }}>Welcome to</div>
                                         <h1 className="wc-title" style={{ margin:0, lineHeight:1.15,
-                                            fontSize:"clamp(30px, 8vw, 42px)", color:"#f5e9c8" }}>
+                                            fontSize:"clamp(28px, 8vw, 40px)", color:"#f5e9c8", wordBreak:"break-word" }}>
                                             {restaurant?.brand_name || restaurant?.name || "Cravord"}
                                         </h1>
                                     </div>
 
-                                    {/* Signature: a piano-key rule, literal nod to the name, doubling as a divider */}
-                                    <div aria-hidden="true" className="wc-in piano-keys" style={{ animationDelay:"0.25s",
-                                        display:"flex", gap:3, margin:"20px 0 16px" }}>
-                                        {Array.from({ length: 11 }).map((_, i) => (
-                                            <div key={i} style={{ width:5, borderRadius:2,
-                                                height: i % 3 === 0 ? 22 : 14,
-                                                background: i % 3 === 0 ? "#c9a84c" : "#3a2f52" }} />
-                                        ))}
+                                    {/* Signature: a simple menu-card rule — reads as "premium ordering",
+                                        not any single cuisine or client identity — so it works for every tenant */}
+                                    <div aria-hidden="true" className="wc-in" style={{ animationDelay:"0.25s",
+                                        display:"flex", alignItems:"center", gap:10, margin:"20px 0 16px" }}>
+                                        <span style={{ width:34, height:1, background:"linear-gradient(90deg,transparent,#c9a84c80)" }} />
+                                        <span style={{ width:5, height:5, borderRadius:"50%", background:"#c9a84c" }} />
+                                        <span style={{ width:34, height:1, background:"linear-gradient(90deg,#c9a84c80,transparent)" }} />
                                     </div>
 
                                     <p className="wc-in" style={{ animationDelay:"0.3s", margin:"0 0 34px",
