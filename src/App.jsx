@@ -241,6 +241,7 @@ const CATEGORIES = [
             },
         ],
     },
+
     {
         id: "specials",
         label: "Specials",
