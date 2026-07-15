@@ -15,7 +15,7 @@ import {
     faChevronDown, faChevronUp, faFilter, faCalendarDays, faTimesCircle,faShrimp,faWandMagicSparkles,
     faReceipt, faChevronRight, faListUl, faHourglassHalf, faCog, faCheckDouble,faPizzaSlice,
     faChevronLeft, faDrumstickBite, faTag,faBowlFood,faBacon,faFireFlameCurved,faBolt, faLeaf, faStar, faFish, faSeedling, faUtensils,faMagnifyingGlass,
-    faBan, faTriangleExclamation, faSun, faMoon, faBagShopping, faTruck
+    faBan, faSun, faMoon, faBagShopping, faTruck
 } from "@fortawesome/free-solid-svg-icons";
 import logo from "./assets/logo.svg";
 
@@ -331,7 +331,7 @@ const CATEGORIES = [
 /* ─────────────────────────── STATUS CONFIG ──────────────────────── */
 const STATUS_COLOR   = { Pending:"#b45309", Preparing:"#1d4ed8", Ready:"#15803d", Delivered:"#6b7280" };
 const STATUS_BG      = { Pending:"#fef3c7", Preparing:"#dbeafe", Ready:"#dcfce7", Delivered:"#f3f4f6" };
-const STATUS_DARK_BG = { Pending:"#451a03", Preparing:"#1e3a5f", Ready:"#14532d", Delivered:"#1f2937" };
+const STATUS_DARK_BG = { Pending:"var(--bg-status-pending-dark)", Preparing:"var(--bg-status-preparing-dark)", Ready:"var(--bg-status-ready-dark)", Delivered:"var(--bg-status-delivered-dark)" };
 const STATUS_NEXT    = { Pending:"Preparing", Preparing:"Ready", Ready:"Delivered" };
 const STATUS_LABEL   = { Pending:"Start preparing", Preparing:"Mark ready", Ready:"Mark delivered" };
 const STATUS_ICON    = { Pending:faHourglassHalf, Preparing:faCog, Ready:faCheckDouble };
@@ -341,7 +341,7 @@ const STAT_CARDS = [
     { label:"All",       color:"#c9a84c", status: null },
     { label:"Pending",   color:"#f59e0b", status:"Pending" },
     { label:"Preparing", color:"#60a5fa", status:"Preparing" },
-    { label:"Ready",     color:"#4ade80", status:"Ready" },
+    { label:"Ready",     color:"var(--text-ready)", status:"Ready" },
 ];
 
 const THREE_HOURS_MS = 3 * 60 * 60 * 1000;
@@ -399,16 +399,16 @@ function OrderDetailModal({ order, onClose, onUpdateStatus }) {
         <div onClick={e => e.target === e.currentTarget && onClose()}
              style={{ position:"fixed", inset:0, background:"rgba(0,0,0,0.88)", zIndex:700,
                  display:"flex", alignItems:"center", justifyContent:"center", padding:16 }}>
-            <div className="modal-panel" style={{ background:"#1a1625", border:"1px solid #3a2a5e", borderRadius:20,
+            <div className="modal-panel" style={{ background:"var(--bg-surface)", border:"1px solid var(--border-strong)", borderRadius:20,
                 width:"100%", maxWidth:460, maxHeight:"92vh", overflowY:"auto" }}>
 
                 <div style={{ padding:"18px 18px 0", display:"flex", justifyContent:"space-between", alignItems:"flex-start" }}>
                     <div>
                         <div style={{ display:"flex", alignItems:"center", gap:8, marginBottom:4 }}>
                             <FontAwesomeIcon icon={faReceipt} style={{ color:"#c9a84c", fontSize:15 }} />
-                            <span style={{ fontWeight:700, fontSize:16, color:"#f5f0e8" }}>Order #{String(order.id).slice(-5).toUpperCase()}</span>
+                            <span style={{ fontWeight:700, fontSize:16, color:"var(--text-primary)" }}>Order #{String(order.id).slice(-5).toUpperCase()}</span>
                         </div>
-                        <div style={{ color:"#7a6a90", fontSize:12, lineHeight:1.6 }}>
+                        <div style={{ color:"var(--text-muted)", fontSize:12, lineHeight:1.6 }}>
                             {type === "delivery" ? (
                                 <><FontAwesomeIcon icon={faTruck} style={{ fontSize:11 }} /> Delivery{" · "}{order.guest_name}{order.customer_phone && <>{" · "}{order.customer_phone}</>}</>
                             ) : type === "pickup" ? (
@@ -421,7 +421,7 @@ function OrderDetailModal({ order, onClose, onUpdateStatus }) {
                         </div>
                     </div>
                     <button onClick={onClose}
-                            style={{ background:"#2e2050", border:"none", color:"#a78bfa", borderRadius:8,
+                            style={{ background:"var(--border-color)", border:"none", color:"#a78bfa", borderRadius:8,
                                 padding:"8px 11px", cursor:"pointer", fontSize:15, flexShrink:0 }}>
                         <FontAwesomeIcon icon={faXmark} />
                     </button>
@@ -435,7 +435,7 @@ function OrderDetailModal({ order, onClose, onUpdateStatus }) {
                 </div>
 
                 {type === "delivery" && order.delivery_address && (
-                    <div style={{ margin:"14px 18px 0", padding:"10px 12px", background:"#13111e", borderRadius:10,
+                    <div style={{ margin:"14px 18px 0", padding:"10px 12px", background:"var(--bg-surface-alt)", borderRadius:10,
                         fontSize:12, color:"#a78bfa", display:"flex", alignItems:"flex-start", gap:8 }}>
                         <FontAwesomeIcon icon={faTruck} style={{ fontSize:12, marginTop:2, flexShrink:0 }} />
                         <span>{order.delivery_address}{order.delivery_notes ? ` — ${order.delivery_notes}` : ""}</span>
@@ -443,7 +443,7 @@ function OrderDetailModal({ order, onClose, onUpdateStatus }) {
                 )}
 
                 <div style={{ padding:"16px 18px 0" }}>
-                    <div style={{ fontSize:10, color:"#6b6080", letterSpacing:1, textTransform:"uppercase", marginBottom:10 }}>Progress</div>
+                    <div style={{ fontSize:10, color:"var(--text-faint)", letterSpacing:1, textTransform:"uppercase", marginBottom:10 }}>Progress</div>
                     <div style={{ display:"flex", alignItems:"center" }}>
                         {STATUSES.map((s, i) => {
                             const done  = i <= currentIdx;
@@ -454,19 +454,19 @@ function OrderDetailModal({ order, onClose, onUpdateStatus }) {
                                         <div style={{
                                             width:28, height:28, borderRadius:"50%",
                                             display:"flex", alignItems:"center", justifyContent:"center",
-                                            background: active ? STATUS_BG[s] : done ? STATUS_DARK_BG[s] : "#1a1020",
-                                            border:`2px solid ${active ? STATUS_COLOR[s] : done ? STATUS_COLOR[s]+"80" : "#2e2050"}`,
+                                            background: active ? STATUS_BG[s] : done ? STATUS_DARK_BG[s] : "var(--bg-inset)",
+                                            border:`2px solid ${active ? STATUS_COLOR[s] : done ? STATUS_COLOR[s]+"80" : "var(--border-color)"}`,
                                             boxShadow: active ? `0 0 0 3px ${STATUS_COLOR[s]}30` : "none",
                                         }}>
                                             {done
                                                 ? <FontAwesomeIcon icon={faCircleCheck} style={{ fontSize:12, color:STATUS_COLOR[s] }} />
-                                                : <span style={{ fontSize:10, color:"#4a3a60", fontWeight:700 }}>{i+1}</span>}
+                                                : <span style={{ fontSize:10, color:"var(--text-dimmer)", fontWeight:700 }}>{i+1}</span>}
                                         </div>
-                                        <span style={{ fontSize:8, color: done ? "#f5f0e8" : "#4a3a60", whiteSpace:"nowrap" }}>{s}</span>
+                                        <span style={{ fontSize:8, color: done ? "var(--text-primary)" : "var(--text-dimmer)", whiteSpace:"nowrap" }}>{s}</span>
                                     </div>
                                     {i < STATUSES.length-1 && (
                                         <div style={{ flex:1, height:2, marginBottom:14, marginLeft:3, marginRight:3,
-                                            background: i < currentIdx ? "linear-gradient(90deg,#7c3aed,#5b21b6)" : "#2e2050" }} />
+                                            background: i < currentIdx ? "linear-gradient(90deg,#7c3aed,#5b21b6)" : "var(--border-color)" }} />
                                     )}
                                 </div>
                             );
@@ -474,11 +474,11 @@ function OrderDetailModal({ order, onClose, onUpdateStatus }) {
                     </div>
                 </div>
 
-                <div className="modal-inner" style={{ margin:"16px 18px 0", background:"#13111e", borderRadius:14, padding:14 }}>
-                    <div style={{ fontSize:10, color:"#6b6080", letterSpacing:1, textTransform:"uppercase", marginBottom:10 }}>Items ordered</div>
+                <div className="modal-inner" style={{ margin:"16px 18px 0", background:"var(--bg-surface-alt)", borderRadius:14, padding:14 }}>
+                    <div style={{ fontSize:10, color:"var(--text-faint)", letterSpacing:1, textTransform:"uppercase", marginBottom:10 }}>Items ordered</div>
                     {order.items.map((item, i) => (
                         <div key={i} style={{ marginBottom:10, paddingBottom:10,
-                            borderBottom: i < order.items.length-1 ? "1px solid #2e2050" : "none" }}>
+                            borderBottom: i < order.items.length-1 ? "1px solid var(--border-color)" : "none" }}>
                             <div style={{ display:"flex", justifyContent:"space-between", fontSize:14, fontWeight:600, gap:8 }}>
                                 <span style={{ minWidth:0, overflow:"hidden", textOverflow:"ellipsis" }}>{item.name} × {item.qty}</span>
                                 <span style={{ color:"#c9a84c", flexShrink:0 }}>GHC {item.price * item.qty}</span>
@@ -494,15 +494,15 @@ function OrderDetailModal({ order, onClose, onUpdateStatus }) {
                                 </div>
                             )}
                             {item.note && (
-                                <div style={{ fontSize:12, color:"#7a6a90", marginTop:2, display:"flex", alignItems:"center", gap:4 }}>
+                                <div style={{ fontSize:12, color:"var(--text-muted)", marginTop:2, display:"flex", alignItems:"center", gap:4 }}>
                                     <FontAwesomeIcon icon={faNoteSticky} style={{ fontSize:9 }} /> {item.note}
                                 </div>
                             )}
                         </div>
                     ))}
                     <div style={{ display:"flex", justifyContent:"space-between", fontWeight:700, fontSize:16,
-                        paddingTop:10, borderTop:"1px solid #2e2050" }}>
-                        <span style={{ color:"#7a6a90" }}>Total</span>
+                        paddingTop:10, borderTop:"1px solid var(--border-color)" }}>
+                        <span style={{ color:"var(--text-muted)" }}>Total</span>
                         <span style={{ color:"#c9a84c" }}>GHC {order.total}</span>
                     </div>
                 </div>
@@ -518,7 +518,7 @@ function OrderDetailModal({ order, onClose, onUpdateStatus }) {
                             {STATUS_LABEL[order.status]}
                         </button>
                     ) : (
-                        <div style={{ textAlign:"center", color:"#4a3a60", fontSize:13, padding:"4px 0" }}>
+                        <div style={{ textAlign:"center", color:"var(--text-dimmer)", fontSize:13, padding:"4px 0" }}>
                             <FontAwesomeIcon icon={faCircleCheck} style={{ marginRight:6, color:"#15803d" }} />
                             Order completed
                         </div>
@@ -539,6 +539,9 @@ function CustomerOrdersPage({ tableNo, restaurantId }) {
     const [manualCode, setManualCode]   = useState("");
     const [manualErr, setManualErr]     = useState("");
     const [checkingCode, setCheckingCode] = useState(false);
+    // When set, the page shows ONLY this one order instead of the full
+    // table/code history — this is what "Track" is supposed to do.
+    const [trackedCode, setTrackedCode] = useState(null);
 
     useEffect(() => {
         const t = setInterval(() => setNow(Date.now()), 60_000);
@@ -549,17 +552,22 @@ function CustomerOrdersPage({ tableNo, restaurantId }) {
         const hasTable = tableNo.trim().length > 0;
         const hasCodes = storedCodes.length > 0;
         if (!hasTable && !hasCodes) { setMyOrders([]); setLoading(false); return; }
+        // Table numbers repeat across every restaurant on the platform, so a
+        // table-based lookup MUST be scoped to this restaurant — otherwise a
+        // customer at "Table 3" here can see another restaurant's Table 3 orders.
+        if (!restaurantId) { setLoading(true); return; }
         setLoading(true);
         let combined = [];
         if (hasTable) {
             const { data, error } = await supabase
                 .from("orders").select("*")
+                .eq("restaurant_id", restaurantId)
                 .eq("table_no", tableNo.trim())
                 .order("created_at", { ascending: false })
                 .limit(30);
             if (!error && data) combined = combined.concat(data);
         }
-        if (hasCodes && restaurantId) {
+        if (hasCodes) {
             const { data, error } = await supabase
                 .from("orders").select("*")
                 .eq("restaurant_id", restaurantId)
@@ -578,24 +586,27 @@ function CustomerOrdersPage({ tableNo, restaurantId }) {
 
     useEffect(() => {
         load();
-        if (!tableNo.trim() && storedCodes.length === 0) return;
+        if ((!tableNo.trim() && storedCodes.length === 0) || !restaurantId) return;
         const matchesMe = (o) => {
             if (tableNo.trim() && o.table_no === tableNo.trim()) return true;
             if (storedCodes.includes(orderCodeOf(o))) return true;
             return false;
         };
+        // Filtered to this restaurant for the same reason as the fetch above —
+        // an unfiltered subscription would fire (and match) on every
+        // restaurant's "Table 3" inserts/updates platform-wide.
         const channel = supabase.channel("my-orders-live")
-            .on("postgres_changes", { event:"UPDATE", schema:"public", table:"orders" }, p => {
+            .on("postgres_changes", { event:"UPDATE", schema:"public", table:"orders", filter:`restaurant_id=eq.${restaurantId}` }, p => {
                 if (matchesMe(p.new))
                     setMyOrders(prev => prev.map(o => o.id === p.new.id ? p.new : o));
             })
-            .on("postgres_changes", { event:"INSERT", schema:"public", table:"orders" }, p => {
+            .on("postgres_changes", { event:"INSERT", schema:"public", table:"orders", filter:`restaurant_id=eq.${restaurantId}` }, p => {
                 if (matchesMe(p.new))
                     setMyOrders(prev => [p.new, ...prev]);
             })
             .subscribe();
         return () => supabase.removeChannel(channel);
-    }, [load, tableNo, storedCodes]);
+    }, [load, tableNo, storedCodes, restaurantId]);
 
     const trackByCode = async () => {
         const code = manualCode.trim().toUpperCase();
@@ -613,12 +624,13 @@ function CustomerOrdersPage({ tableNo, restaurantId }) {
         if (!found) { setManualErr("No order found with that code."); return; }
         saveStoredCode(code);
         setStoredCodes(loadStoredCodes());
+        setTrackedCode(code);
         setManualCode("");
     };
 
     const codeEntryBox = (
-        <div style={{ background:"#1a1625", border:"1px solid #2e2050", borderRadius:14, padding:14, marginBottom:16 }}>
-            <div style={{ fontSize:12, color:"#7a6a90", marginBottom:8, display:"flex", alignItems:"center", gap:6 }}>
+        <div style={{ background:"var(--bg-surface)", border:"1px solid var(--border-color)", borderRadius:14, padding:14, marginBottom:16 }}>
+            <div style={{ fontSize:12, color:"var(--text-muted)", marginBottom:8, display:"flex", alignItems:"center", gap:6 }}>
                 <FontAwesomeIcon icon={faTag} /> Have a pickup or delivery order code?
             </div>
             <div style={{ display:"flex", gap:8 }}>
@@ -629,8 +641,8 @@ function CustomerOrdersPage({ tableNo, restaurantId }) {
                        style={{ flex:1, padding:"10px 12px", textTransform:"uppercase" }} />
                 <button onClick={trackByCode} disabled={checkingCode}
                         style={{ padding:"10px 16px", borderRadius:10, border:"none", cursor: checkingCode ? "wait" : "pointer",
-                            background: checkingCode ? "#2e2050" : "linear-gradient(135deg,#7c3aed,#5b21b6)",
-                            color: checkingCode ? "#7a6a90" : "#fff", fontSize:13, fontWeight:600, flexShrink:0 }}>
+                            background: checkingCode ? "var(--border-color)" : "linear-gradient(135deg,#7c3aed,#5b21b6)",
+                            color: checkingCode ? "var(--text-muted)" : "#fff", fontSize:13, fontWeight:600, flexShrink:0 }}>
                     {checkingCode ? <FontAwesomeIcon icon={faSpinner} spin /> : "Track"}
                 </button>
             </div>
@@ -641,8 +653,8 @@ function CustomerOrdersPage({ tableNo, restaurantId }) {
     if (!tableNo.trim() && storedCodes.length === 0 && !loading) return (
         <div style={{ maxWidth:520, margin:"0 auto", padding:"40px 20px 60px" }}>
             <div style={{ textAlign:"center", marginBottom:20 }}>
-                <FontAwesomeIcon icon={faListUl} style={{ fontSize:44, color:"#2e2050", marginBottom:16 }} />
-                <p style={{ color:"#4a3a60", fontSize:15 }}>
+                <FontAwesomeIcon icon={faListUl} style={{ fontSize:44, color:"var(--border-color)", marginBottom:16 }} />
+                <p style={{ color:"var(--text-dimmer)", fontSize:15 }}>
                     Enter your table number on the Menu tab, or enter your order code below to track a pickup or delivery order.
                 </p>
             </div>
@@ -651,7 +663,7 @@ function CustomerOrdersPage({ tableNo, restaurantId }) {
     );
 
     if (loading) return (
-        <div style={{ textAlign:"center", padding:60, color:"#4a3a60" }}>
+        <div style={{ textAlign:"center", padding:60, color:"var(--text-dimmer)" }}>
             <FontAwesomeIcon icon={faSpinner} spin style={{ fontSize:28, display:"block", margin:"0 auto 12px" }} />
             Loading your orders…
         </div>
@@ -663,15 +675,47 @@ function CustomerOrdersPage({ tableNo, restaurantId }) {
         return (now - updated.getTime()) < THREE_HOURS_MS;
     });
 
+    // Once a code is tracked, look it up live from myOrders so status
+    // updates keep flowing through the realtime subscription above.
+    const trackedOrder = trackedCode ? myOrders.find(o => orderCodeOf(o) === trackedCode) : null;
+
+    if (trackedCode) {
+        return (
+            <div style={{ maxWidth:520, margin:"0 auto", padding:"16px 12px 60px" }}>
+                <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between",
+                    marginBottom:14, flexWrap:"wrap", gap:8 }}>
+                    <div style={{ display:"flex", alignItems:"center", gap:8 }}>
+                        <FontAwesomeIcon icon={faTag} style={{ color:"#7c3aed" }} />
+                        <span style={{ color:"#a78bfa", fontSize:14 }}>Tracking order #{trackedCode}</span>
+                    </div>
+                    <button onClick={() => setTrackedCode(null)}
+                            style={{ background:"transparent", border:"1px solid var(--border-color)", color:"var(--text-muted)",
+                                borderRadius:20, padding:"5px 12px", cursor:"pointer", fontSize:12,
+                                display:"flex", alignItems:"center", gap:5 }}>
+                        <FontAwesomeIcon icon={faXmark} style={{ fontSize:11 }} /> Clear
+                    </button>
+                </div>
+                {trackedOrder
+                    ? <OrderTrackCard order={trackedOrder} expanded={true} onToggle={() => {}} />
+                    : (
+                        <div style={{ textAlign:"center", padding:"30px 20px" }}>
+                            <FontAwesomeIcon icon={faSpinner} spin style={{ fontSize:24, color:"var(--text-dimmer)", marginBottom:12 }} />
+                            <p style={{ color:"var(--text-dimmer)", fontSize:14 }}>Loading order #{trackedCode}…</p>
+                        </div>
+                    )}
+            </div>
+        );
+    }
+
     return (
         <div style={{ maxWidth:520, margin:"0 auto", padding:"16px 12px 60px" }}>
             {codeEntryBox}
 
             {visible.length === 0 ? (
                 <div style={{ textAlign:"center", padding:"30px 20px" }}>
-                    <FontAwesomeIcon icon={faReceipt} style={{ fontSize:44, color:"#2e2050", marginBottom:16 }} />
-                    <p style={{ color:"#4a3a60", fontSize:15 }}>No current orders{tableNo.trim() ? ` for Table ${tableNo}` : ""}.</p>
-                    <p style={{ color:"#3a2a5e", fontSize:13 }}>Head to the Menu tab and place an order.</p>
+                    <FontAwesomeIcon icon={faReceipt} style={{ fontSize:44, color:"var(--border-color)", marginBottom:16 }} />
+                    <p style={{ color:"var(--text-dimmer)", fontSize:15 }}>No current orders{tableNo.trim() ? ` for Table ${tableNo}` : ""}.</p>
+                    <p style={{ color:"var(--text-dimmest)", fontSize:13 }}>Head to the Menu tab and place an order.</p>
                 </div>
             ) : (
                 <>
@@ -681,134 +725,141 @@ function CustomerOrdersPage({ tableNo, restaurantId }) {
                             {visible.length} order{visible.length !== 1 ? "s" : ""}
                         </span>
                         <button onClick={load}
-                                style={{ marginLeft:"auto", background:"transparent", border:"1px solid #2e2050",
-                                    color:"#7a6a90", borderRadius:20, padding:"5px 12px", cursor:"pointer",
+                                style={{ marginLeft:"auto", background:"transparent", border:"1px solid var(--border-color)",
+                                    color:"var(--text-muted)", borderRadius:20, padding:"5px 12px", cursor:"pointer",
                                     fontSize:12, display:"flex", alignItems:"center", gap:5 }}>
                             <FontAwesomeIcon icon={faRotateRight} /> Refresh
                         </button>
                     </div>
 
-                    {visible.map(order => {
-                        const expanded   = expandedId === order.id;
-                        const currentIdx = STATUSES.indexOf(order.status);
-                        const isReady    = order.status === "Ready";
-                        const type       = order.order_type || "dine_in";
+                    {visible.map(order => (
+                        <OrderTrackCard key={order.id} order={order}
+                                        expanded={expandedId === order.id}
+                                        onToggle={() => setExpandedId(expandedId === order.id ? null : order.id)} />
+                    ))}
+                </>
+            )}
+        </div>
+    );
+}
+
+/* Single order card used both in the "all my orders" list and in the
+   focused single-order view shown right after tracking a code. */
+function OrderTrackCard({ order, expanded, onToggle }) {
+    const currentIdx = STATUSES.indexOf(order.status);
+    const isReady    = order.status === "Ready";
+    const type       = order.order_type || "dine_in";
+    return (
+        <div className="order-card" style={{
+            background:"var(--bg-surface)",
+            border:`1px solid ${isReady ? "#15803d80" : "var(--border-color)"}`,
+            borderRadius:16, marginBottom:12, overflow:"hidden",
+            boxShadow: isReady ? "0 0 0 1px #15803d30, 0 4px 20px #15803d18" : "none",
+        }}>
+            {isReady && (
+                <div className="ready-banner" style={{ background:"var(--bg-status-ready-dark)", padding:"9px 14px",
+                    display:"flex", alignItems:"center", gap:8,
+                    fontSize:13, fontWeight:600, color:"var(--text-ready)" }}>
+                    <FontAwesomeIcon icon={faCircleCheck} />
+                    {type === "delivery" ? "Your order is on its way!" : "Your order is ready — come collect it!"}
+                </div>
+            )}
+
+            <div onClick={onToggle}
+                 style={{ padding:"14px 14px 10px", cursor:"pointer",
+                     display:"flex", justifyContent:"space-between", alignItems:"center", gap:8 }}>
+                <div style={{ minWidth:0 }}>
+                    <div style={{ display:"flex", alignItems:"center", gap:6, marginBottom:4, flexWrap:"wrap" }}>
+                        <span style={{ fontSize:10, fontWeight:700, letterSpacing:0.5, textTransform:"uppercase",
+                            padding:"2px 8px", borderRadius:8, background:"var(--border-color)", color:"#a78bfa" }}>
+                            {type === "dine_in" ? `Table ${order.table_no}` : type === "pickup" ? "Pickup" : "Delivery"}
+                        </span>
+                        <span style={{ fontSize:12, color:"var(--text-muted)" }}>
+                            {new Date(order.created_at).toLocaleTimeString([], { hour:"2-digit", minute:"2-digit" })}
+                            {" · "}{order.items.length} item{order.items.length !== 1 ? "s" : ""}
+                        </span>
+                    </div>
+                    {type !== "dine_in" && (
+                        <div style={{ fontSize:11, color:"var(--text-dimmer)", fontFamily:"monospace", marginBottom:2 }}>
+                            Order code #{orderCodeOf(order)}
+                        </div>
+                    )}
+                    <div style={{ fontWeight:700, color:"#c9a84c", fontSize:17 }}>GHC {order.total}</div>
+                </div>
+                <div style={{ display:"flex", alignItems:"center", gap:8, flexShrink:0 }}>
+                    <span style={{ padding:"4px 12px", borderRadius:20, fontSize:11, fontWeight:700,
+                        color:STATUS_COLOR[order.status], background:STATUS_BG[order.status] }}>
+                        {order.status}
+                    </span>
+                    <FontAwesomeIcon icon={expanded ? faChevronUp : faChevronDown} style={{ color:"var(--text-dimmer)", fontSize:11 }} />
+                </div>
+            </div>
+
+            <div style={{ padding:"0 14px 14px" }}>
+                <div style={{ display:"flex", alignItems:"center" }}>
+                    {STATUSES.map((s, i) => {
+                        const done   = i <= currentIdx;
+                        const active = i === currentIdx;
                         return (
-                            <div key={order.id} className="order-card" style={{
-                                background:"#1a1625",
-                                border:`1px solid ${isReady ? "#15803d80" : "#2e2050"}`,
-                                borderRadius:16, marginBottom:12, overflow:"hidden",
-                                boxShadow: isReady ? "0 0 0 1px #15803d30, 0 4px 20px #15803d18" : "none",
-                            }}>
-                                {isReady && (
-                                    <div className="ready-banner" style={{ background:"#14532d", padding:"9px 14px",
-                                        display:"flex", alignItems:"center", gap:8,
-                                        fontSize:13, fontWeight:600, color:"#4ade80" }}>
-                                        <FontAwesomeIcon icon={faCircleCheck} />
-                                        {type === "delivery" ? "Your order is on its way!" : "Your order is ready — come collect it!"}
+                            <div key={s} style={{ display:"flex", alignItems:"center", flex: i < STATUSES.length-1 ? 1 : "none" }}>
+                                <div style={{ display:"flex", flexDirection:"column", alignItems:"center", gap:4 }}>
+                                    <div style={{
+                                        width: active ? 24 : 18, height: active ? 24 : 18, borderRadius:"50%",
+                                        background: active ? STATUS_BG[s] : done ? STATUS_DARK_BG[s] : "var(--bg-inset)",
+                                        border:`2px solid ${active ? STATUS_COLOR[s] : done ? STATUS_COLOR[s]+"80" : "var(--border-color)"}`,
+                                        display:"flex", alignItems:"center", justifyContent:"center",
+                                        transition:"all 0.25s",
+                                        boxShadow: active ? `0 0 0 3px ${STATUS_COLOR[s]}25` : "none",
+                                    }}>
+                                        {done && <FontAwesomeIcon icon={faCircleCheck} style={{ fontSize: active ? 11 : 8, color:STATUS_COLOR[s] }} />}
                                     </div>
-                                )}
-
-                                <div onClick={() => setExpandedId(expanded ? null : order.id)}
-                                     style={{ padding:"14px 14px 10px", cursor:"pointer",
-                                         display:"flex", justifyContent:"space-between", alignItems:"center", gap:8 }}>
-                                    <div style={{ minWidth:0 }}>
-                                        <div style={{ display:"flex", alignItems:"center", gap:6, marginBottom:4, flexWrap:"wrap" }}>
-                                            <span style={{ fontSize:10, fontWeight:700, letterSpacing:0.5, textTransform:"uppercase",
-                                                padding:"2px 8px", borderRadius:8, background:"#2e2050", color:"#a78bfa" }}>
-                                                {type === "dine_in" ? `Table ${order.table_no}` : type === "pickup" ? "Pickup" : "Delivery"}
-                                            </span>
-                                            <span style={{ fontSize:12, color:"#7a6a90" }}>
-                                                {new Date(order.created_at).toLocaleTimeString([], { hour:"2-digit", minute:"2-digit" })}
-                                                {" · "}{order.items.length} item{order.items.length !== 1 ? "s" : ""}
-                                            </span>
-                                        </div>
-                                        {type !== "dine_in" && (
-                                            <div style={{ fontSize:11, color:"#4a3a60", fontFamily:"monospace", marginBottom:2 }}>
-                                                Order code #{orderCodeOf(order)}
-                                            </div>
-                                        )}
-                                        <div style={{ fontWeight:700, color:"#c9a84c", fontSize:17 }}>GHC {order.total}</div>
-                                    </div>
-                                    <div style={{ display:"flex", alignItems:"center", gap:8, flexShrink:0 }}>
-                                        <span style={{ padding:"4px 12px", borderRadius:20, fontSize:11, fontWeight:700,
-                                            color:STATUS_COLOR[order.status], background:STATUS_BG[order.status] }}>
-                                            {order.status}
-                                        </span>
-                                        <FontAwesomeIcon icon={expanded ? faChevronUp : faChevronDown} style={{ color:"#4a3a60", fontSize:11 }} />
-                                    </div>
+                                    <span style={{ fontSize:8, color: done ? "var(--text-secondary)" : "var(--text-dimmest)", whiteSpace:"nowrap" }}>{s}</span>
                                 </div>
-
-                                <div style={{ padding:"0 14px 14px" }}>
-                                    <div style={{ display:"flex", alignItems:"center" }}>
-                                        {STATUSES.map((s, i) => {
-                                            const done   = i <= currentIdx;
-                                            const active = i === currentIdx;
-                                            return (
-                                                <div key={s} style={{ display:"flex", alignItems:"center", flex: i < STATUSES.length-1 ? 1 : "none" }}>
-                                                    <div style={{ display:"flex", flexDirection:"column", alignItems:"center", gap:4 }}>
-                                                        <div style={{
-                                                            width: active ? 24 : 18, height: active ? 24 : 18, borderRadius:"50%",
-                                                            background: active ? STATUS_BG[s] : done ? STATUS_DARK_BG[s] : "#1a1020",
-                                                            border:`2px solid ${active ? STATUS_COLOR[s] : done ? STATUS_COLOR[s]+"80" : "#2e2050"}`,
-                                                            display:"flex", alignItems:"center", justifyContent:"center",
-                                                            transition:"all 0.25s",
-                                                            boxShadow: active ? `0 0 0 3px ${STATUS_COLOR[s]}25` : "none",
-                                                        }}>
-                                                            {done && <FontAwesomeIcon icon={faCircleCheck} style={{ fontSize: active ? 11 : 8, color:STATUS_COLOR[s] }} />}
-                                                        </div>
-                                                        <span style={{ fontSize:8, color: done ? "#a09abf" : "#3a2a5e", whiteSpace:"nowrap" }}>{s}</span>
-                                                    </div>
-                                                    {i < STATUSES.length-1 && (
-                                                        <div style={{ flex:1, height:2, marginBottom:14, marginLeft:3, marginRight:3,
-                                                            background: i < currentIdx
-                                                                ? `linear-gradient(90deg,${STATUS_COLOR[STATUSES[i]]},${STATUS_COLOR[STATUSES[i+1]]})`
-                                                                : "#2e2050",
-                                                            transition:"background 0.3s" }} />
-                                                    )}
-                                                </div>
-                                            );
-                                        })}
-                                    </div>
-                                </div>
-
-                                {expanded && (
-                                    <div style={{ borderTop:"1px solid #2e2050", padding:"12px 14px" }}>
-                                        {type === "delivery" && order.delivery_address && (
-                                            <div style={{ marginBottom:10, fontSize:12, color:"#a78bfa", display:"flex", alignItems:"flex-start", gap:6 }}>
-                                                <FontAwesomeIcon icon={faTruck} style={{ fontSize:11, marginTop:2 }} />
-                                                <span>{order.delivery_address}{order.delivery_notes ? ` — ${order.delivery_notes}` : ""}</span>
-                                            </div>
-                                        )}
-                                        {order.items.map((item, i) => (
-                                            <div key={i} style={{ marginBottom:10 }}>
-                                                <div style={{ display:"flex", justifyContent:"space-between", fontSize:14, fontWeight:600, gap:8 }}>
-                                                    <span style={{ minWidth:0, overflow:"hidden", textOverflow:"ellipsis", whiteSpace:"nowrap" }}>{item.name} × {item.qty}</span>
-                                                    <span style={{ color:"#c9a84c", flexShrink:0 }}>GHC {item.price * item.qty}</span>
-                                                </div>
-                                                {item.variant && (
-                                                    <div style={{ fontSize:12, color:"#c9a84c90", marginTop:2, display:"flex", alignItems:"center", gap:4 }}>
-                                                        <FontAwesomeIcon icon={faTag} style={{ fontSize:9 }} /> {item.variant}
-                                                    </div>
-                                                )}
-                                                {item.opts?.length > 0 && (
-                                                    <div style={{ fontSize:12, color:"#a78bfa", marginTop:2, display:"flex", alignItems:"center", gap:4 }}>
-                                                        <FontAwesomeIcon icon={faSlidersH} style={{ fontSize:9 }} /> {item.opts.join(", ")}
-                                                    </div>
-                                                )}
-                                                {item.note && (
-                                                    <div style={{ fontSize:12, color:"#7a6a90", marginTop:1, display:"flex", alignItems:"center", gap:4 }}>
-                                                        <FontAwesomeIcon icon={faNoteSticky} style={{ fontSize:9 }} /> {item.note}
-                                                    </div>
-                                                )}
-                                            </div>
-                                        ))}
-                                    </div>
+                                {i < STATUSES.length-1 && (
+                                    <div style={{ flex:1, height:2, marginBottom:14, marginLeft:3, marginRight:3,
+                                        background: i < currentIdx
+                                            ? `linear-gradient(90deg,${STATUS_COLOR[STATUSES[i]]},${STATUS_COLOR[STATUSES[i+1]]})`
+                                            : "var(--border-color)",
+                                        transition:"background 0.3s" }} />
                                 )}
                             </div>
                         );
                     })}
-                </>
+                </div>
+            </div>
+
+            {expanded && (
+                <div style={{ borderTop:"1px solid var(--border-color)", padding:"12px 14px" }}>
+                    {type === "delivery" && order.delivery_address && (
+                        <div style={{ marginBottom:10, fontSize:12, color:"#a78bfa", display:"flex", alignItems:"flex-start", gap:6 }}>
+                            <FontAwesomeIcon icon={faTruck} style={{ fontSize:11, marginTop:2 }} />
+                            <span>{order.delivery_address}{order.delivery_notes ? ` — ${order.delivery_notes}` : ""}</span>
+                        </div>
+                    )}
+                    {order.items.map((item, i) => (
+                        <div key={i} style={{ marginBottom:10 }}>
+                            <div style={{ display:"flex", justifyContent:"space-between", fontSize:14, fontWeight:600, gap:8 }}>
+                                <span style={{ minWidth:0, overflow:"hidden", textOverflow:"ellipsis", whiteSpace:"nowrap" }}>{item.name} × {item.qty}</span>
+                                <span style={{ color:"#c9a84c", flexShrink:0 }}>GHC {item.price * item.qty}</span>
+                            </div>
+                            {item.variant && (
+                                <div style={{ fontSize:12, color:"#c9a84c90", marginTop:2, display:"flex", alignItems:"center", gap:4 }}>
+                                    <FontAwesomeIcon icon={faTag} style={{ fontSize:9 }} /> {item.variant}
+                                </div>
+                            )}
+                            {item.opts?.length > 0 && (
+                                <div style={{ fontSize:12, color:"#a78bfa", marginTop:2, display:"flex", alignItems:"center", gap:4 }}>
+                                    <FontAwesomeIcon icon={faSlidersH} style={{ fontSize:9 }} /> {item.opts.join(", ")}
+                                </div>
+                            )}
+                            {item.note && (
+                                <div style={{ fontSize:12, color:"var(--text-muted)", marginTop:1, display:"flex", alignItems:"center", gap:4 }}>
+                                    <FontAwesomeIcon icon={faNoteSticky} style={{ fontSize:9 }} /> {item.note}
+                                </div>
+                            )}
+                        </div>
+                    ))}
+                </div>
             )}
         </div>
     );
@@ -1158,7 +1209,7 @@ export default function App() {
 
         return (
             /* ── item-card className added ── */
-            <div className="item-card" style={{ background:"#1a1625", border:"1px solid #2e2050", borderRadius:14,
+            <div className="item-card" style={{ background:"var(--bg-surface)", border:"1px solid var(--border-color)", borderRadius:14,
                 padding:"14px", marginBottom:10, display:"flex", flexDirection:"column", gap:10 }}>
                 <div style={{ display:"flex", alignItems:"center", gap:12 }}>
                     <div style={{ flex:1, minWidth:0 }}>
@@ -1166,7 +1217,7 @@ export default function App() {
                             whiteSpace:"nowrap", overflow:"hidden", textOverflow:"ellipsis" }}>
                             {item.name}
                         </div>
-                        <div style={{ fontSize:12, color:"#7a6a90", marginBottom:6,
+                        <div style={{ fontSize:12, color:"var(--text-muted)", marginBottom:6,
                             whiteSpace:"nowrap", overflow:"hidden", textOverflow:"ellipsis" }}>
                             {item.description}
                         </div>
@@ -1186,7 +1237,7 @@ export default function App() {
                                 </span>
                             )}
                             {item.customizable && (
-                                <span style={{ fontSize:10, background:"#2e2050", color:"#a78bfa",
+                                <span style={{ fontSize:10, background:"var(--border-color)", color:"#a78bfa",
                                     padding:"2px 8px", borderRadius:10,
                                     display:"inline-flex", alignItems:"center", gap:4 }}>
                                     <FontAwesomeIcon icon={faSlidersH} style={{ fontSize:9 }} /> custom
@@ -1229,22 +1280,22 @@ export default function App() {
     /* ════════ SUSPENDED SCREEN ════════ */
     if (!restaurantLoading && isSuspended) {
         return (
-            <div style={{ fontFamily:"system-ui,-apple-system,sans-serif", background:"#0c0c10",
-                minHeight:"100vh", color:"#f5f0e8", display:"flex",
+            <div style={{ fontFamily:"system-ui,-apple-system,sans-serif", background:"var(--bg-page)",
+                minHeight:"100vh", color:"var(--text-primary)", display:"flex",
                 alignItems:"center", justifyContent:"center", padding:20 }}>
-                <div style={{ background:"#1a1625", border:"1px solid #3a1a1a", borderRadius:20,
+                <div style={{ background:"var(--bg-surface)", border:"1px solid var(--border-danger)", borderRadius:20,
                     padding:"40px 28px", width:"100%", maxWidth:380, textAlign:"center" }}>
                     <FontAwesomeIcon icon={faBan} style={{ fontSize:40, color:"#ef4444", marginBottom:16 }} />
-                    <h2 style={{ color:"#f5f0e8", margin:"0 0 8px", fontSize:19, fontWeight:700 }}>Service unavailable</h2>
-                    <p style={{ color:"#a09abf", fontSize:14, lineHeight:1.6, marginBottom:4 }}>
+                    <h2 style={{ color:"var(--text-primary)", margin:"0 0 8px", fontSize:19, fontWeight:700 }}>Service unavailable</h2>
+                    <p style={{ color:"var(--text-secondary)", fontSize:14, lineHeight:1.6, marginBottom:4 }}>
                         {isExpired ? "This restaurant's subscription has expired." : "This restaurant's account has been suspended."}
                     </p>
-                    <p style={{ color:"#7a6a90", fontSize:13, lineHeight:1.6, marginTop:12 }}>
+                    <p style={{ color:"var(--text-muted)", fontSize:13, lineHeight:1.6, marginTop:12 }}>
                         Please contact your administrator to restore access.
                     </p>
                     {restaurant?.name && (
-                        <div style={{ marginTop:20, padding:"10px 16px", background:"#13111e",
-                            borderRadius:10, fontSize:12, color:"#5a4a7e" }}>
+                        <div style={{ marginTop:20, padding:"10px 16px", background:"var(--bg-surface-alt)",
+                            borderRadius:10, fontSize:12, color:"var(--text-dim)" }}>
                             {restaurant.name}
                         </div>
                     )}
@@ -1255,168 +1306,50 @@ export default function App() {
 
     /* ════════════════════════════ RENDER ══════════════════════════════ */
     return (
-        <div style={{ fontFamily:"system-ui,-apple-system,sans-serif", background:"#0c0c10", minHeight:"100vh", color:"#f5f0e8" }}
+        <div style={{ fontFamily:"system-ui,-apple-system,sans-serif", background:"var(--bg-page)", minHeight:"100vh", color:"var(--text-primary)" }}
              className={isDark ? "bar-dark" : "bar-light"}>
 
-            {/* ══════════════════════════════════════════
-                LIGHT MODE CSS — class-based selectors
-                so React dynamic styles are covered
-            ══════════════════════════════════════════ */}
-            {!isDark && (
-                <style>{`
-                    /* Page root */
-                    .bar-light { background:#f0f4f8 !important; color:#1a1625 !important; }
 
-                    /* Nav */
-                    .bar-light nav { background:#f8fafc !important; border-bottom-color:#e2e8f0 !important; }
-
-                    /* Footer */
-                    .bar-light footer { background:#f8fafc !important; border-top-color:#e2e8f0 !important; }
-
-                    /* ── CLASS-BASED (reliable for dynamic/ternary backgrounds) ── */
-
-                    /* Category cards */
-                    .bar-light .cat-card {
-                        background:#ffffff !important;
-                        border-color:#e2e8f0 !important;
-                    }
-                    .bar-light .cat-card .cat-icon-circle {
-                        background:#f1f5f9 !important;
-                        border-color:#e2e8f0 !important;
-                    }
-                    /* Category name text — force deep/dark color, not light cream */
-                    .bar-light .cat-card [style*="color: #f5f0e8"],
-                    .bar-light .cat-card [style*="color:#f5f0e8"] {
-                        color:#0f172a !important;
-                        font-weight:800 !important;
-                    }
-                    .bar-light .cat-label {
-                        color:#0f172a !important;
-                        font-weight:800 !important;
-                    }
-
-                    /* Food / item cards */
-                    .bar-light .item-card {
-                        background:#ffffff !important;
-                        border-color:#e2e8f0 !important;
-                    }
-
-                    /* PIN login box */
-                    .bar-light .pin-box {
-                        background:#ffffff !important;
-                        border-color:#e2e8f0 !important;
-                    }
-
-                    /* Bartender stat cards (All / Pending / Preparing / Ready) */
-                    .bar-light .stat-card {
-                        background:#f8fafc !important;
-                        border-color:#e2e8f0 !important;
-                    }
-
-                    /* Bartender order list cards */
-                    .bar-light .ocard {
-                        background:#ffffff !important;
-                        border-color:#e2e8f0 !important;
-                    }
-
-                    /* Customer active order cards */
-                    .bar-light .order-card {
-                        background:#ffffff !important;
-                    }
-
-                    /* Order detail modal panel */
-                    .bar-light .modal-panel {
-                        background:#ffffff !important;
-                        border-color:#e2e8f0 !important;
-                    }
-                    .bar-light .modal-inner {
-                        background:#f8fafc !important;
-                    }
-
-                    /* "Order ready" green banner */
-                    .bar-light .ready-banner {
-                        background:#dcfce7 !important;
-                        color:#15803d !important;
-                    }
-
-                    /* ── ATTRIBUTE SELECTORS (React renders with space: "background: #hex") ── */
-
-                    .bar-light [style*="background: #0c0c10"] { background:#f0f4f8 !important; }
-                    .bar-light [style*="background: #13111e"] { background:#f8fafc !important; }
-                    .bar-light [style*="background: #1a1020"] { background:#f1f5f9 !important; }
-                    .bar-light [style*="background: #1a1625"] { background:#ffffff !important; border-color:#e2e8f0 !important; }
-                    .bar-light [style*="background: #1a1a2e"] { background:#eef2ff !important; border-color:#c7d2fe !important; }
-                    .bar-light [style*="background: #1e1030"] { background:#ede9fe !important; }
-                    .bar-light [style*="background: #1e3a5f"] { background:#dbeafe !important; }
-                    .bar-light [style*="background: #1f2937"] { background:#f3f4f6 !important; }
-                    .bar-light [style*="background: #14532d"] { background:#dcfce7 !important; color:#14532d !important; }
-                    .bar-light [style*="background: #451a03"] { background:#fef3c7 !important; }
-                    .bar-light [style*="background: #2e2050"] { background:#e2e8f0 !important; }
-                    .bar-light [style*="background: #1e1a35"] { background:#e2e8f0 !important; }
-                    .bar-light [style*="background: #052e16"] { background:#dcfce7 !important; border-color:#16a34a !important; }
-                    .bar-light [style*="background: #450a0a"] { background:#fee2e2 !important; border-color:#dc2626 !important; }
-
-                    /* ── BORDERS ── */
-                    .bar-light [style*="border: 1px solid #2e2050"],
-                    .bar-light [style*="border: 1.5px solid #2e2050"],
-                    .bar-light [style*="border: 2px solid #2e2050"],
-                    .bar-light [style*="border: 1px solid #1e1a35"],
-                    .bar-light [style*="border: 1px solid #3a2a5e"],
-                    .bar-light [style*="border: 1px solid #3a1a1a"] { border-color:#e2e8f0 !important; }
-
-                    .bar-light [style*="borderTop: 1px solid #2e2050"],
-                    .bar-light [style*="borderBottom: 1px solid #2e2050"],
-                    .bar-light [style*="borderTop: 1px solid #1e1a35"] { border-color:#e2e8f0 !important; }
-
-                    /* ── TEXT ── */
-                    .bar-light [style*="color: #f5f0e8"] { color:#0f172a !important; }
-                    .bar-light [style*="color: #a09abf"] { color:#475569 !important; }
-                    .bar-light [style*="color: #7a6a90"] { color:#64748b !important; }
-                    .bar-light [style*="color: #6b6080"] { color:#64748b !important; }
-                    .bar-light [style*="color: #6b5a90"] { color:#64748b !important; }
-                    .bar-light [style*="color: #5a4a7e"] { color:#6d6a8a !important; }
-                    .bar-light [style*="color: #4a3a60"] { color:#94a3b8 !important; }
-                    .bar-light [style*="color: #3a2a5e"] { color:#94a3b8 !important; }
-                    .bar-light [style*="color: #4ade80"] { color:#15803d !important; }
-
-                    /* ── INPUTS (override global dark style tag) ── */
-                    .bar-light input,
-                    .bar-light textarea {
-                        background:#ffffff !important;
-                        border-color:#cbd5e1 !important;
-                        color:#1a1625 !important;
-                    }
-                    .bar-light input::placeholder,
-                    .bar-light textarea::placeholder { color:#94a3b8 !important; }
-                    .bar-light input[type="date"]::-webkit-calendar-picker-indicator { filter:none; }
-
-                    /* ── FLOATING CART BAR ── */
-                    .bar-light [style*="position: fixed"][style*="bottom: 0"],
-                    .bar-light [style*="position:fixed"][style*="bottom:0"] {
-                        background:#ffffff !important;
-                        border-top-color:#e2e8f0 !important;
-                    }
-
-                    /* ── QtyBtn minus (non-accent, background:#2e2050) ── */
-                    .bar-light button[style*="background: #2e2050"] {
-                        background:#e2e8f0 !important;
-                        color:#1a1625 !important;
-                    }
-                `}</style>
-            )}
 
             <style>{`
+                /* ══════════════════════════════════════════
+                   THEME TOKENS — every color used anywhere in
+                   the app should reference one of these vars,
+                   never a raw hex, so light/dark always agree.
+                ══════════════════════════════════════════ */
+                .bar-dark {
+                    --bg-page:#0c0c10; --bg-surface-alt:#13111e; --bg-surface:#1a1625; --bg-inset:#1a1020;
+                    --bg-accent-soft:#1a1a2e; --border-accent-soft:rgba(124,58,237,0.4); --bg-selected:#1e1030;
+                    --bg-status-preparing-dark:#1e3a5f; --bg-status-delivered-dark:#1f2937;
+                    --bg-status-ready-dark:#14532d; --bg-status-pending-dark:#451a03;
+                    --border-color:#2e2050; --border-subtle:#1e1a35; --border-strong:#3a2a5e; --border-danger:#3a1a1a;
+                    --text-primary:#f5f0e8; --text-secondary:#a09abf; --text-muted:#7a6a90; --text-faint:#6b6080;
+                    --text-faint2:#6b5a90; --text-dim:#5a4a7e; --text-dimmer:#4a3a60; --text-dimmest:#3a2a5e; --text-ready:#4ade80;
+                    --input-border-focus:#7c3aed;
+                }
+                .bar-light {
+                    --bg-page:#f0f4f8; --bg-surface-alt:#f8fafc; --bg-surface:#ffffff; --bg-inset:#f1f5f9;
+                    --bg-accent-soft:#eef2ff; --border-accent-soft:#c7d2fe; --bg-selected:#ede9fe;
+                    --bg-status-preparing-dark:#dbeafe; --bg-status-delivered-dark:#f3f4f6;
+                    --bg-status-ready-dark:#dcfce7; --bg-status-pending-dark:#fef3c7;
+                    --border-color:#e2e8f0; --border-subtle:#e2e8f0; --border-strong:#e2e8f0; --border-danger:#fecaca;
+                    --text-primary:#0f172a; --text-secondary:#475569; --text-muted:#64748b; --text-faint:#64748b;
+                    --text-faint2:#64748b; --text-dim:#6d6a8a; --text-dimmer:#94a3b8; --text-dimmest:#94a3b8; --text-ready:#15803d;
+                    --input-border-focus:#7c3aed;
+                }
+                nav, footer { background:var(--bg-surface-alt); }
                 *, *::before, *::after { box-sizing: border-box; }
                 html, body { margin:0; padding:0; overscroll-behavior:none; -webkit-tap-highlight-color:transparent; }
                 input, textarea {
-                    background:#1a1625 !important; border:1px solid #2e2050 !important;
-                    color:#f5f0e8 !important; border-radius:10px !important; outline:none !important;
+                    background:var(--bg-surface) !important; border:1px solid var(--border-color) !important;
+                    color:var(--text-primary) !important; border-radius:10px !important; outline:none !important;
                     font-size:16px !important; font-family:inherit !important;
                     -webkit-appearance:none; appearance:none;
                 }
-                input:focus, textarea:focus { border-color:#7c3aed !important; }
-                input::placeholder, textarea::placeholder { color:#6b6080 !important; }
+                input:focus, textarea:focus { border-color:var(--input-border-focus) !important; }
+                input::placeholder, textarea::placeholder { color:var(--text-faint) !important; }
                 input[type="date"]::-webkit-calendar-picker-indicator { filter:invert(0.5); cursor:pointer; }
+                .bar-light input[type="date"]::-webkit-calendar-picker-indicator { filter:none; }
                 ::-webkit-scrollbar { display:none; }
                 button { -webkit-tap-highlight-color:transparent; touch-action:manipulation; font-family:inherit; }
                 @keyframes blink { 0%,100% { opacity:1; transform:scale(1); } 50% { opacity:0.3; transform:scale(0.7); } }
@@ -1467,7 +1400,7 @@ export default function App() {
 
             {/* ════════ NAV ════════ */}
             <nav style={{
-                background:"#13111e", borderBottom:"1px solid #1e1a35",
+                background:"var(--bg-surface-alt)", borderBottom:"1px solid var(--border-subtle)",
                 padding:"10px 14px", display:"flex", alignItems:"center",
                 justifyContent:"space-between", position:"sticky", top:0, zIndex:200,
             }}>
@@ -1483,14 +1416,14 @@ export default function App() {
                             whiteSpace:"nowrap", overflow:"hidden", textOverflow:"ellipsis" }}>
                             {restaurant?.brand_name || restaurant?.name || "CRAVORD"}
                         </div>
-                        <div style={{ fontSize:9, color:"#6b5a90", letterSpacing:2, marginTop:1 }}>SCAN · ORDER · RELAX</div>
+                        <div style={{ fontSize:9, color:"var(--text-faint2)", letterSpacing:2, marginTop:1 }}>SCAN · ORDER · RELAX</div>
                     </div>
                 </div>
                 <div style={{ display:"flex", gap:5, flexShrink:0, marginLeft:8, alignItems:"center" }}>
                     <button onClick={() => setTheme(t => t === "dark" ? "light" : "dark")}
                             title={isDark ? "Light mode" : "Dark mode"}
-                            style={{ padding:"5px 10px", borderRadius:20, border:"1px solid #2e2050",
-                                background:"transparent", color:"#7a6a90", cursor:"pointer",
+                            style={{ padding:"5px 10px", borderRadius:20, border:"1px solid var(--border-color)",
+                                background:"transparent", color:"var(--text-muted)", cursor:"pointer",
                                 fontSize:11, flexShrink:0 }}>
                         <FontAwesomeIcon icon={isDark ? faSun : faMoon} style={{ fontSize:12 }} />
                     </button>
@@ -1510,22 +1443,22 @@ export default function App() {
                 <div style={{ display:"flex", justifyContent:"center", alignItems:"center",
                     minHeight:"calc(100vh - 62px)", padding:20 }}>
                     {/* ── pin-box className added ── */}
-                    <div className="pin-box" style={{ background:"#1a1625", border:"1px solid #2e2050", borderRadius:20,
+                    <div className="pin-box" style={{ background:"var(--bg-surface)", border:"1px solid var(--border-color)", borderRadius:20,
                         padding:"36px 24px", width:"100%", maxWidth:340, textAlign:"center" }}>
                         <FontAwesomeIcon icon={faLock} style={{ fontSize:36, color:"#c9a84c", marginBottom:14 }} />
                         <h2 style={{ color:"#c9a84c", marginBottom:6, fontWeight:600, fontSize:20, margin:"0 0 6px" }}>Staff access</h2>
-                        <p style={{ color:"#7a6a90", fontSize:13, marginBottom:22 }}>Enter your PIN to continue</p>
+                        <p style={{ color:"var(--text-muted)", fontSize:13, marginBottom:22 }}>Enter your PIN to continue</p>
                         <input type="password" value={pin} inputMode="numeric"
                                onChange={e => { setPin(e.target.value); setPinErr(""); }}
                                onKeyDown={e => e.key==="Enter" && tryPin()}
                                placeholder="••••"
                                style={{ width:"100%", padding:"14px 0", textAlign:"center", letterSpacing:12, marginBottom:8 }} />
                         {pinErr && <p style={{ color:"#f87171", fontSize:13, marginBottom:8 }}>{pinErr}</p>}
-                        <p style={{ color:"#4a3a60", fontSize:11, marginBottom:18 }}>Each staff member has their own PIN</p>
+                        <p style={{ color:"var(--text-dimmer)", fontSize:11, marginBottom:18 }}>Each staff member has their own PIN</p>
                         <button onClick={tryPin} disabled={pinLoading}
                                 style={{ width:"100%", padding:14, borderRadius:12,
-                                    background: pinLoading ? "#2e2050" : "linear-gradient(135deg,#7c3aed,#5b21b6)",
-                                    color: pinLoading ? "#7a6a90" : "#fff", border:"none",
+                                    background: pinLoading ? "var(--border-color)" : "linear-gradient(135deg,#7c3aed,#5b21b6)",
+                                    color: pinLoading ? "var(--text-muted)" : "#fff", border:"none",
                                     cursor: pinLoading ? "wait" : "pointer",
                                     fontSize:15, fontWeight:600,
                                     display:"flex", alignItems:"center", justifyContent:"center", gap:8 }}>
@@ -1555,7 +1488,7 @@ export default function App() {
                                 background:"radial-gradient(55% 45% at 50% 36%, rgba(201,168,76,0.14) 0%, rgba(201,168,76,0) 70%)" }} />
 
                             {restaurantLoading ? (
-                                <FontAwesomeIcon icon={faSpinner} spin style={{ fontSize:28, color:"#4a3a60" }} />
+                                <FontAwesomeIcon icon={faSpinner} spin style={{ fontSize:28, color:"var(--text-dimmer)" }} />
                             ) : (
                                 <div style={{ position:"relative", padding:"0 20px", display:"flex",
                                     flexDirection:"column", alignItems:"center" }}>
@@ -1565,13 +1498,13 @@ export default function App() {
                                             border:"1px solid rgba(201,168,76,0.35)" }} />
                                         <img src={restaurant?.logo_url || logo} alt="Logo"
                                              style={{ position:"relative", height:76, width:76, objectFit:"contain",
-                                                 borderRadius:"50%", background:"#13111e", padding:14,
+                                                 borderRadius:"50%", background:"var(--bg-surface-alt)", padding:14,
                                                  boxShadow:"0 0 0 1px rgba(201,168,76,0.25), 0 12px 32px rgba(0,0,0,0.5)" }} />
                                     </div>
 
                                     <div className="wc-in" style={{ animationDelay:"0.15s" }}>
                                         <div style={{ fontSize:10, letterSpacing:4, textTransform:"uppercase",
-                                            color:"#7a6a90", marginBottom:10 }}>Welcome to</div>
+                                            color:"var(--text-muted)", marginBottom:10 }}>Welcome to</div>
                                         <h1 className="wc-title" style={{ margin:0, lineHeight:1.15,
                                             fontSize:"clamp(28px, 8vw, 40px)", color:"#f5e9c8", wordBreak:"break-word" }}>
                                             {restaurant?.brand_name || restaurant?.name || "Cravord"}
@@ -1588,7 +1521,7 @@ export default function App() {
                                     </div>
 
                                     <p className="wc-in" style={{ animationDelay:"0.3s", margin:"0 0 34px",
-                                        color:"#7a6a90", fontSize:12, letterSpacing:3, textTransform:"uppercase" }}>
+                                        color:"var(--text-muted)", fontSize:12, letterSpacing:3, textTransform:"uppercase" }}>
                                         Scan · Order · Relax
                                     </p>
 
@@ -1602,7 +1535,7 @@ export default function App() {
 
                                     <button className="wc-in" onClick={() => setScene("orders")}
                                             style={{ animationDelay:"0.48s", marginTop:20, background:"transparent", border:"none",
-                                                color:"#5a4a7e", cursor:"pointer", fontSize:12.5, letterSpacing:0.3,
+                                                color:"var(--text-dim)", cursor:"pointer", fontSize:12.5, letterSpacing:0.3,
                                                 display:"flex", alignItems:"center", gap:6 }}>
                                         <FontAwesomeIcon icon={faListUl} style={{ fontSize:11 }} /> Track an existing order
                                     </button>
@@ -1615,32 +1548,32 @@ export default function App() {
                     {customerStep === "orderType" && (
                         <div style={{ padding:"20px 0 60px" }}>
                             <button onClick={() => setCustomerStep("welcome")}
-                                    style={{ background:"#1a1625", border:"1px solid #2e2050", borderRadius:10,
+                                    style={{ background:"var(--bg-surface)", border:"1px solid var(--border-color)", borderRadius:10,
                                         padding:"8px 12px", cursor:"pointer", color:"#a78bfa", fontSize:13,
                                         display:"flex", alignItems:"center", gap:6, marginBottom:20 }}>
                                 <FontAwesomeIcon icon={faChevronLeft} /> Back
                             </button>
-                            <h2 style={{ margin:"0 0 4px", fontSize:19, color:"#f5f0e8", fontWeight:700 }}>
+                            <h2 style={{ margin:"0 0 4px", fontSize:19, color:"var(--text-primary)", fontWeight:700 }}>
                                 How would you like your order?
                             </h2>
-                            <p style={{ margin:"0 0 20px", color:"#7a6a90", fontSize:13 }}>Choose an option to get started</p>
+                            <p style={{ margin:"0 0 20px", color:"var(--text-muted)", fontSize:13 }}>Choose an option to get started</p>
 
                             <div style={{ display:"flex", flexDirection:"column", gap:12 }}>
                                 {ORDER_TYPES.map(t => (
                                     <div key={t.key} className="cat-card type-card"
                                          onClick={() => { setOrderType(t.key); setCustomerStep("menu"); }}
-                                         style={{ background:"#1a1625", border:"1.5px solid #2e2050", borderRadius:16,
+                                         style={{ background:"var(--bg-surface)", border:"1.5px solid var(--border-color)", borderRadius:16,
                                              padding:"18px 16px", display:"flex", alignItems:"center", gap:14 }}>
                                         <div className="cat-icon-circle" style={{ width:52, height:52, borderRadius:"50%", flexShrink:0,
-                                            background:"#13111e", border:"1.5px solid #2e2050",
+                                            background:"var(--bg-surface-alt)", border:"1.5px solid var(--border-color)",
                                             display:"flex", alignItems:"center", justifyContent:"center" }}>
                                             <FontAwesomeIcon icon={t.icon} style={{ fontSize:22, color:"#c9a84c" }} />
                                         </div>
                                         <div style={{ flex:1, minWidth:0, textAlign:"left" }}>
-                                            <div className="cat-label" style={{ fontSize:15, fontWeight:700, color:"#f5f0e8" }}>{t.label}</div>
-                                            <div style={{ fontSize:12, color:"#7a6a90", marginTop:2 }}>{t.desc}</div>
+                                            <div className="cat-label" style={{ fontSize:15, fontWeight:700, color:"var(--text-primary)" }}>{t.label}</div>
+                                            <div style={{ fontSize:12, color:"var(--text-muted)", marginTop:2 }}>{t.desc}</div>
                                         </div>
-                                        <FontAwesomeIcon icon={faChevronRight} style={{ color:"#3a2a5e", fontSize:14, flexShrink:0 }} />
+                                        <FontAwesomeIcon icon={faChevronRight} style={{ color:"var(--text-dimmest)", fontSize:14, flexShrink:0 }} />
                                     </div>
                                 ))}
                             </div>
@@ -1659,7 +1592,7 @@ export default function App() {
                                     {ORDER_TYPES.find(t => t.key===orderType)?.label}
                                 </div>
                                 <button onClick={() => setCustomerStep("orderType")}
-                                        style={{ background:"transparent", border:"1px solid #2e2050", color:"#7a6a90",
+                                        style={{ background:"transparent", border:"1px solid var(--border-color)", color:"var(--text-muted)",
                                             borderRadius:20, padding:"6px 12px", cursor:"pointer", fontSize:12 }}>
                                     Change
                                 </button>
@@ -1687,7 +1620,7 @@ export default function App() {
                             )}
 
                             {orderType === "dine_in" && tableNo && (
-                                <div style={{ background:"#1a1a2e", border:"1px solid #7c3aed40", borderRadius:10,
+                                <div style={{ background:"var(--bg-accent-soft)", border:"1px solid var(--border-accent-soft)", borderRadius:10,
                                     padding:"9px 14px", marginBottom:14, fontSize:13, color:"#a78bfa",
                                     display:"flex", alignItems:"center", gap:8 }}>
                                     <FontAwesomeIcon icon={faLocationDot} style={{ color:"#7c3aed", flexShrink:0 }} />
@@ -1695,7 +1628,7 @@ export default function App() {
                                 </div>
                             )}
                             {orderType === "pickup" && (
-                                <div style={{ background:"#1a1a2e", border:"1px solid #7c3aed40", borderRadius:10,
+                                <div style={{ background:"var(--bg-accent-soft)", border:"1px solid var(--border-accent-soft)", borderRadius:10,
                                     padding:"9px 14px", marginBottom:14, fontSize:13, color:"#a78bfa",
                                     display:"flex", alignItems:"center", gap:8 }}>
                                     <FontAwesomeIcon icon={faBagShopping} style={{ color:"#7c3aed", flexShrink:0 }} />
@@ -1703,7 +1636,7 @@ export default function App() {
                                 </div>
                             )}
                             {orderType === "delivery" && (
-                                <div style={{ background:"#1a1a2e", border:"1px solid #7c3aed40", borderRadius:10,
+                                <div style={{ background:"var(--bg-accent-soft)", border:"1px solid var(--border-accent-soft)", borderRadius:10,
                                     padding:"9px 14px", marginBottom:14, fontSize:13, color:"#a78bfa",
                                     display:"flex", alignItems:"center", gap:8 }}>
                                     <FontAwesomeIcon icon={faTruck} style={{ color:"#7c3aed", flexShrink:0 }} />
@@ -1714,7 +1647,7 @@ export default function App() {
                             {/* ══ CATEGORY GRID ══ */}
                             {menuView === "categories" && (
                                 <>
-                                    <div style={{ fontSize:10, color:"#6b6080", letterSpacing:2, textTransform:"uppercase", marginBottom:12 }}>
+                                    <div style={{ fontSize:10, color:"var(--text-faint)", letterSpacing:2, textTransform:"uppercase", marginBottom:12 }}>
                                         Choose a category
                                     </div>
                                     <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:10, marginBottom:18 }}>
@@ -1722,20 +1655,20 @@ export default function App() {
                                             const itemCount = cat.subcategories.reduce((s, sub) => s + sub.items.length, 0);
                                             return (
                                                 <div key={cat.id} className="cat-card" onClick={() => openCategory(cat)}
-                                                     style={{ background:"#1a1625", border:"1.5px solid #2e2050",
+                                                     style={{ background:"var(--bg-surface)", border:"1.5px solid var(--border-color)",
                                                          borderRadius:16, padding:"20px 14px",
                                                          display:"flex", flexDirection:"column", alignItems:"center", textAlign:"center", gap:10 }}>
                                                     {/* ── cat-icon-circle className added ── */}
                                                     <div className="cat-icon-circle" style={{ width:52, height:52, borderRadius:"50%",
-                                                        background:"#13111e", border:"1.5px solid #2e2050",
+                                                        background:"var(--bg-surface-alt)", border:"1.5px solid var(--border-color)",
                                                         display:"flex", alignItems:"center", justifyContent:"center" }}>
                                                         <FontAwesomeIcon icon={cat.icon} style={{ fontSize:22, color:"#c9a84c" }} />
                                                     </div>
-                                                    <div className="cat-label" style={{ fontSize:14, fontWeight:700, color:"#f5f0e8", lineHeight:1.3 }}>{cat.label}</div>
+                                                    <div className="cat-label" style={{ fontSize:14, fontWeight:700, color:"var(--text-primary)", lineHeight:1.3 }}>{cat.label}</div>
                                                     <div style={{ display:"flex", alignItems:"center", gap:8, flexWrap:"wrap", justifyContent:"center" }}>
-                                                        <span style={{ fontSize:11, color:"#7a6a90" }}>{cat.subcategories.length} section{cat.subcategories.length !== 1 ? "s" : ""}</span>
-                                                        <span style={{ fontSize:10, color:"#3a2a5e" }}>·</span>
-                                                        <span style={{ fontSize:11, color:"#7a6a90" }}>{itemCount} item{itemCount !== 1 ? "s" : ""}</span>
+                                                        <span style={{ fontSize:11, color:"var(--text-muted)" }}>{cat.subcategories.length} section{cat.subcategories.length !== 1 ? "s" : ""}</span>
+                                                        <span style={{ fontSize:10, color:"var(--text-dimmest)" }}>·</span>
+                                                        <span style={{ fontSize:11, color:"var(--text-muted)" }}>{itemCount} item{itemCount !== 1 ? "s" : ""}</span>
                                                     </div>
                                                     <div style={{ marginTop:2, display:"flex", alignItems:"center", gap:5, fontSize:12, color:"#a78bfa", fontWeight:600 }}>
                                                         View menu <FontAwesomeIcon icon={faChevronRight} style={{ fontSize:10 }} />
@@ -1746,7 +1679,7 @@ export default function App() {
                                     </div>
                                     <button onClick={() => setScene("orders")}
                                             style={{ width:"100%", marginTop:4, padding:"13px", borderRadius:14,
-                                                background:"transparent", border:"1px solid #2e2050", color:"#7a6a90",
+                                                background:"transparent", border:"1px solid var(--border-color)", color:"var(--text-muted)",
                                                 cursor:"pointer", fontSize:14, display:"flex", alignItems:"center", justifyContent:"center", gap:8 }}>
                                         <FontAwesomeIcon icon={faListUl} /> View my orders
                                         <FontAwesomeIcon icon={faChevronRight} style={{ fontSize:11 }} />
@@ -1759,23 +1692,23 @@ export default function App() {
                                 <>
                                     <div style={{ display:"flex", alignItems:"center", gap:10, marginBottom:16 }}>
                                         <button onClick={goBackToCategories}
-                                                style={{ background:"#1a1625", border:"1px solid #2e2050",
+                                                style={{ background:"var(--bg-surface)", border:"1px solid var(--border-color)",
                                                     borderRadius:10, padding:"8px 12px", cursor:"pointer",
                                                     color:"#a78bfa", fontSize:13, display:"flex", alignItems:"center", gap:6, flexShrink:0 }}>
                                             <FontAwesomeIcon icon={faChevronLeft} /> Back
                                         </button>
                                         <div style={{ display:"flex", alignItems:"center", gap:8, minWidth:0 }}>
                                             <div style={{ width:34, height:34, borderRadius:"50%",
-                                                background:"#13111e", border:"1px solid #2e2050",
+                                                background:"var(--bg-surface-alt)", border:"1px solid var(--border-color)",
                                                 display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0 }}>
                                                 <FontAwesomeIcon icon={activeCategory.icon} style={{ fontSize:15, color:"#c9a84c" }} />
                                             </div>
                                             <div style={{ minWidth:0 }}>
-                                                <div className="cat-label" style={{ fontWeight:700, fontSize:16, color:"#f5f0e8",
+                                                <div className="cat-label" style={{ fontWeight:700, fontSize:16, color:"var(--text-primary)",
                                                     overflow:"hidden", textOverflow:"ellipsis", whiteSpace:"nowrap" }}>
                                                     {activeCategory.label}
                                                 </div>
-                                                <div style={{ fontSize:11, color:"#7a6a90", marginTop:1 }}>
+                                                <div style={{ fontSize:11, color:"var(--text-muted)", marginTop:1 }}>
                                                     {activeCategory.subcategories.length} section{activeCategory.subcategories.length !== 1 ? "s" : ""}
                                                 </div>
                                             </div>
@@ -1792,9 +1725,9 @@ export default function App() {
                                                             style={{ padding:"8px 14px", borderRadius:20, border:"1px solid",
                                                                 whiteSpace:"nowrap", cursor:"pointer", fontSize:13,
                                                                 display:"flex", alignItems:"center", gap:6, flexShrink:0,
-                                                                borderColor: isSub ? "#c9a84c" : "#2e2050",
+                                                                borderColor: isSub ? "#c9a84c" : "var(--border-color)",
                                                                 background:  isSub ? "#c9a84c18" : "transparent",
-                                                                color:       isSub ? "#c9a84c" : "#7a6a90" }}>
+                                                                color:       isSub ? "#c9a84c" : "var(--text-muted)" }}>
                                                         <FontAwesomeIcon icon={sub.icon} /><span>{sub.label}</span>
                                                     </button>
                                                 );
@@ -1808,16 +1741,16 @@ export default function App() {
                                             <div key={sub.id}>
                                                 <div style={{ display:"flex", alignItems:"center", gap:8, marginBottom:10, marginTop:4 }}>
                                                     <div style={{ width:28, height:28, borderRadius:8,
-                                                        background:"#13111e", border:"1px solid #2e2050",
+                                                        background:"var(--bg-surface-alt)", border:"1px solid var(--border-color)",
                                                         display:"flex", alignItems:"center", justifyContent:"center" }}>
                                                         <FontAwesomeIcon icon={sub.icon} style={{ fontSize:12, color:"#a78bfa" }} />
                                                     </div>
                                                     <span style={{ fontWeight:700, fontSize:14, color:"#a78bfa" }}>{sub.label}</span>
-                                                    <span style={{ fontSize:11, color:"#3a2a5e", marginLeft:2 }}>({sub.items.length})</span>
+                                                    <span style={{ fontSize:11, color:"var(--text-dimmest)", marginLeft:2 }}>({sub.items.length})</span>
                                                 </div>
                                                 {sub.items.map(item => <ItemCard key={item.id} item={item} />)}
                                                 {activeCategory.subcategories.length > 1 && (
-                                                    <div style={{ height:1, background:"#1e1a35", margin:"6px 0 18px" }} />
+                                                    <div style={{ height:1, background:"var(--border-subtle)", margin:"6px 0 18px" }} />
                                                 )}
                                             </div>
                                         ))}
@@ -1830,15 +1763,15 @@ export default function App() {
 
             {/* ════════ FLOATING CART BAR ════════ */}
             {scene === "customer" && customerStep === "menu" && cartCount > 0 && (
-                <div style={{ position:"fixed", bottom:0, left:0, right:0, background:"#13111e",
-                    borderTop:"1px solid #2e2050", padding:"10px 14px", zIndex:150,
+                <div style={{ position:"fixed", bottom:0, left:0, right:0, background:"var(--bg-surface-alt)",
+                    borderTop:"1px solid var(--border-color)", padding:"10px 14px", zIndex:150,
                     paddingBottom:"max(10px, env(safe-area-inset-bottom))" }}>
                     <div style={{ maxWidth:580, margin:"0 auto" }}>
                         <div style={{ marginBottom:8, maxHeight:90, overflowY:"auto" }}>
                             {cart.map(item => (
                                 <div key={item._key}
                                      style={{ display:"flex", justifyContent:"space-between", fontSize:13,
-                                         color:"#a09abf", marginBottom:4, alignItems:"center", gap:8 }}>
+                                         color:"var(--text-secondary)", marginBottom:4, alignItems:"center", gap:8 }}>
                                     <span style={{ flex:1, minWidth:0, overflow:"hidden", textOverflow:"ellipsis", whiteSpace:"nowrap" }}>
                                         {item.name}
                                         {item.variant ? ` · ${item.variant}` : ""}
@@ -1855,13 +1788,13 @@ export default function App() {
                         </div>
                         <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", gap:10 }}>
                             <div>
-                                <span style={{ color:"#7a6a90", fontSize:12 }}>{cartCount} item{cartCount!==1?"s":""} · </span>
+                                <span style={{ color:"var(--text-muted)", fontSize:12 }}>{cartCount} item{cartCount!==1?"s":""} · </span>
                                 <span style={{ color:"#c9a84c", fontWeight:700, fontSize:16 }}>GHC {cartTotal}</span>
                             </div>
                             <button onClick={submitOrder} disabled={submitting}
                                     style={{ padding:"12px 20px", borderRadius:12,
-                                        background: submitting ? "#2e2050" : "linear-gradient(135deg,#7c3aed,#5b21b6)",
-                                        color: submitting ? "#7a6a90" : "#fff", border:"none",
+                                        background: submitting ? "var(--border-color)" : "linear-gradient(135deg,#7c3aed,#5b21b6)",
+                                        color: submitting ? "var(--text-muted)" : "#fff", border:"none",
                                         cursor: submitting ? "wait" : "pointer",
                                         fontSize:14, fontWeight:700,
                                         display:"flex", alignItems:"center", gap:7, flexShrink:0, whiteSpace:"nowrap" }}>
@@ -1879,7 +1812,7 @@ export default function App() {
                 <div onClick={e => e.target===e.currentTarget && setCustomizeItem(null)}
                      style={{ position:"fixed", inset:0, background:"rgba(0,0,0,0.82)", zIndex:500,
                          display:"flex", alignItems:"flex-end", justifyContent:"center" }}>
-                    <div className="modal-panel" style={{ background:"#1a1625", border:"1px solid #2e2050",
+                    <div className="modal-panel" style={{ background:"var(--bg-surface)", border:"1px solid var(--border-color)",
                         borderRadius:"20px 20px 0 0", padding:"20px 16px",
                         width:"100%", maxWidth:580, maxHeight:"88vh", overflowY:"auto",
                         paddingBottom:"max(20px, env(safe-area-inset-bottom))" }}>
@@ -1892,7 +1825,7 @@ export default function App() {
                                 </div>
                             </div>
                             <button onClick={() => setCustomizeItem(null)}
-                                    style={{ background:"#2e2050", border:"none", color:"#a78bfa",
+                                    style={{ background:"var(--border-color)", border:"none", color:"#a78bfa",
                                         borderRadius:8, padding:"8px 12px", cursor:"pointer", fontSize:16 }}>
                                 <FontAwesomeIcon icon={faXmark} />
                             </button>
@@ -1900,7 +1833,7 @@ export default function App() {
 
                         {customizeItem.variants?.length > 0 && (
                             <div style={{ marginBottom:18 }}>
-                                <p style={{ color:"#7a6a90", fontSize:13, marginBottom:10,
+                                <p style={{ color:"var(--text-muted)", fontSize:13, marginBottom:10,
                                     display:"flex", alignItems:"center", gap:6 }}>
                                     <FontAwesomeIcon icon={faTag} /> Choose your size
                                 </p>
@@ -1910,12 +1843,12 @@ export default function App() {
                                         return (
                                             <button key={v.label} onClick={() => setChosenVariant(v)}
                                                     style={{ padding:"12px 18px", borderRadius:12, cursor:"pointer",
-                                                        border:`2px solid ${sel ? "#c9a84c" : "#2e2050"}`,
-                                                        background: sel ? "#c9a84c18" : "#13111e",
+                                                        border:`2px solid ${sel ? "#c9a84c" : "var(--border-color)"}`,
+                                                        background: sel ? "#c9a84c18" : "var(--bg-surface-alt)",
                                                         display:"flex", flexDirection:"column", alignItems:"center", gap:4,
                                                         minWidth:100, flex:1 }}>
-                                                <span style={{ fontSize:14, fontWeight:700, color: sel ? "#c9a84c" : "#f5f0e8" }}>{v.label}</span>
-                                                <span style={{ fontSize:13, color: sel ? "#c9a84c" : "#7a6a90" }}>GHC {v.price}</span>
+                                                <span style={{ fontSize:14, fontWeight:700, color: sel ? "#c9a84c" : "var(--text-primary)" }}>{v.label}</span>
+                                                <span style={{ fontSize:13, color: sel ? "#c9a84c" : "var(--text-muted)" }}>GHC {v.price}</span>
                                                 {sel && <FontAwesomeIcon icon={faCircleCheck} style={{ fontSize:12, color:"#c9a84c", marginTop:2 }} />}
                                             </button>
                                         );
@@ -1926,7 +1859,7 @@ export default function App() {
 
                         {customizeItem.customizable && customizeItem.options.length > 0 && (
                             <>
-                                <p style={{ color:"#7a6a90", fontSize:13, marginBottom:10,
+                                <p style={{ color:"var(--text-muted)", fontSize:13, marginBottom:10,
                                     display:"flex", alignItems:"center", gap:6 }}>
                                     <FontAwesomeIcon icon={faSlidersH} /> Choose your preferences
                                 </p>
@@ -1938,9 +1871,9 @@ export default function App() {
                                                     onClick={() => setChosenOpts(p => sel ? p.filter(o => o!==opt) : [...p, opt])}
                                                     style={{ padding:"9px 14px", borderRadius:20, border:"1px solid", cursor:"pointer",
                                                         fontSize:13, display:"inline-flex", alignItems:"center", gap:6,
-                                                        borderColor: sel ? "#c9a84c" : "#2e2050",
+                                                        borderColor: sel ? "#c9a84c" : "var(--border-color)",
                                                         background:  sel ? "#c9a84c20" : "transparent",
-                                                        color:       sel ? "#c9a84c" : "#a09abf" }}>
+                                                        color:       sel ? "#c9a84c" : "var(--text-secondary)" }}>
                                                 {sel && <FontAwesomeIcon icon={faCircleCheck} style={{ fontSize:11 }} />}{opt}
                                             </button>
                                         );
@@ -1951,7 +1884,7 @@ export default function App() {
 
                         <div style={{ position:"relative", marginBottom:14 }}>
                             <FontAwesomeIcon icon={faNoteSticky}
-                                             style={{ position:"absolute", top:13, left:12, color:"#4a3a60", fontSize:13, pointerEvents:"none" }} />
+                                             style={{ position:"absolute", top:13, left:12, color:"var(--text-dimmer)", fontSize:13, pointerEvents:"none" }} />
                             <textarea value={itemNote} onChange={e => setItemNote(e.target.value)}
                                       placeholder="Special instructions? (optional)"
                                       style={{ width:"100%", padding:"11px 12px 11px 32px", borderRadius:10, resize:"none", height:70 }} />
@@ -1992,14 +1925,14 @@ export default function App() {
                         <div>
                             <h2 style={{ margin:0, color:"#c9a84c", fontSize:20 }}>Live Dashboard</h2>
                             {staffUser && (
-                                <p style={{ margin:"3px 0 0", color:"#7a6a90", fontSize:12 }}>
+                                <p style={{ margin:"3px 0 0", color:"var(--text-muted)", fontSize:12 }}>
                                     Logged in as <strong style={{ color:"#a78bfa" }}>{staffUser.name}</strong> · {staffUser.role}
                                 </p>
                             )}
                         </div>
                         <button onClick={() => { setStaffUser(null); setScene("customer"); }}
-                                style={{ padding:"8px 14px", borderRadius:20, border:"1px solid #2e2050",
-                                    background:"transparent", color:"#7a6a90", cursor:"pointer",
+                                style={{ padding:"8px 14px", borderRadius:20, border:"1px solid var(--border-color)",
+                                    background:"transparent", color:"var(--text-muted)", cursor:"pointer",
                                     fontSize:13, display:"flex", alignItems:"center", gap:6 }}>
                             <FontAwesomeIcon icon={faRightFromBracket} /> Log out
                         </button>
@@ -2018,12 +1951,12 @@ export default function App() {
                                          setBartenderTab("live");
                                          setStatusFilter(prev => (prev === sc.status && sc.status !== null) ? null : sc.status);
                                      }}
-                                     style={{ background: isActive ? "#1e1030" : "#1a1625",
-                                         border:`1px solid ${isActive ? sc.color : "#2e2050"}`,
+                                     style={{ background: isActive ? "var(--bg-selected)" : "var(--bg-surface)",
+                                         border:`1px solid ${isActive ? sc.color : "var(--border-color)"}`,
                                          borderRadius:12, padding:"12px 6px", textAlign:"center",
                                          boxShadow: isActive ? `0 0 0 2px ${sc.color}30` : "none" }}>
                                     <div style={{ fontSize:22, fontWeight:700, color:sc.color }}>{count}</div>
-                                    <div style={{ fontSize:10, color:"#6b6080", marginTop:2 }}>{sc.label}</div>
+                                    <div style={{ fontSize:10, color:"var(--text-faint)", marginTop:2 }}>{sc.label}</div>
                                     {isActive && <div style={{ fontSize:9, color:sc.color, marginTop:3, letterSpacing:0.5 }}>▲ filtered</div>}
                                 </div>
                             );
@@ -2039,9 +1972,9 @@ export default function App() {
                                     onClick={() => { setBartenderTab(t.key); if (t.key === "history") setStatusFilter(null); }}
                                     style={{ padding:"8px 16px", borderRadius:20, border:"1px solid", cursor:"pointer",
                                         fontSize:13, display:"flex", alignItems:"center", gap:6,
-                                        borderColor: bartenderTab===t.key ? "#c9a84c" : "#2e2050",
+                                        borderColor: bartenderTab===t.key ? "#c9a84c" : "var(--border-color)",
                                         background:  bartenderTab===t.key ? "#c9a84c18" : "transparent",
-                                        color:       bartenderTab===t.key ? "#c9a84c" : "#7a6a90" }}>
+                                        color:       bartenderTab===t.key ? "#c9a84c" : "var(--text-muted)" }}>
                                 <FontAwesomeIcon icon={t.icon}
                                                  className={t.key==="live" ? "live-dot" : ""}
                                                  style={{ fontSize: t.key==="live" ? 8 : 12,
@@ -2065,8 +1998,8 @@ export default function App() {
 
                         <button onClick={() => void fetchOrders()}
                                 style={{ marginLeft:"auto", padding:"8px 14px", borderRadius:20,
-                                    border:"1px solid #2e2050", background:"transparent",
-                                    color:"#7a6a90", cursor:"pointer", fontSize:13,
+                                    border:"1px solid var(--border-color)", background:"transparent",
+                                    color:"var(--text-muted)", cursor:"pointer", fontSize:13,
                                     display:"flex", alignItems:"center", gap:6 }}>
                             <FontAwesomeIcon icon={faRotateRight} /> Refresh
                         </button>
@@ -2077,9 +2010,9 @@ export default function App() {
                             <button onClick={() => setShowFilters(!showFilters)}
                                     style={{ display:"flex", alignItems:"center", gap:8, padding:"9px 16px",
                                         borderRadius:12, cursor:"pointer", fontSize:13,
-                                        border:`1px solid ${hasDateFilter ? "#c9a84c" : "#2e2050"}`,
+                                        border:`1px solid ${hasDateFilter ? "#c9a84c" : "var(--border-color)"}`,
                                         background: hasDateFilter ? "#c9a84c18" : "transparent",
-                                        color: hasDateFilter ? "#c9a84c" : "#7a6a90",
+                                        color: hasDateFilter ? "#c9a84c" : "var(--text-muted)",
                                         fontWeight: hasDateFilter ? 600 : 400 }}>
                                 <FontAwesomeIcon icon={faFilter} />
                                 Filter by date
@@ -2091,7 +2024,7 @@ export default function App() {
                             </button>
 
                             {showFilters && (
-                                <div className="modal-panel" style={{ marginTop:10, background:"#1a1625", border:"1px solid #2e2050",
+                                <div className="modal-panel" style={{ marginTop:10, background:"var(--bg-surface)", border:"1px solid var(--border-color)",
                                     borderRadius:14, padding:"16px 14px" }}>
                                     <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:10, marginBottom:12 }}>
                                         {[
@@ -2099,7 +2032,7 @@ export default function App() {
                                             { label:"To",   value:historyDateTo,   setter:setHistoryDateTo },
                                         ].map(f => (
                                             <div key={f.label}>
-                                                <div style={{ fontSize:10, color:"#6b6080", letterSpacing:1,
+                                                <div style={{ fontSize:10, color:"var(--text-faint)", letterSpacing:1,
                                                     textTransform:"uppercase", marginBottom:6,
                                                     display:"flex", alignItems:"center", gap:5 }}>
                                                     <FontAwesomeIcon icon={faCalendarDays} /> {f.label}
@@ -2113,7 +2046,7 @@ export default function App() {
                                     {hasDateFilter && (
                                         <button onClick={() => { setHistoryDateFrom(""); setHistoryDateTo(""); }}
                                                 style={{ display:"flex", alignItems:"center", gap:6, padding:"7px 14px",
-                                                    borderRadius:10, border:"1px solid #3a2a5e",
+                                                    borderRadius:10, border:"1px solid var(--border-strong)",
                                                     background:"transparent", color:"#f87171", cursor:"pointer", fontSize:13 }}>
                                             <FontAwesomeIcon icon={faTimesCircle} /> Clear filter
                                         </button>
@@ -2124,7 +2057,7 @@ export default function App() {
                             <div style={{ marginTop:10, position:"relative" }}>
                                 <FontAwesomeIcon icon={faMagnifyingGlass}
                                                  style={{ position:"absolute", left:12, top:"50%", transform:"translateY(-50%)",
-                                                     color:"#4a3a60", fontSize:13, pointerEvents:"none" }} />
+                                                     color:"var(--text-dimmer)", fontSize:13, pointerEvents:"none" }} />
                                 <input type="text" placeholder="Search order ID, table, guest, item…"
                                        value={historySearch} onChange={e => setHistorySearch(e.target.value)}
                                        style={{ width:"100%", padding:"11px 12px 11px 34px" }} />
@@ -2132,7 +2065,7 @@ export default function App() {
                                     <button onClick={() => setHistorySearch("")}
                                             style={{ position:"absolute", right:10, top:"50%", transform:"translateY(-50%)",
                                                 background:"transparent", border:"none", cursor:"pointer",
-                                                color:"#7a6a90", fontSize:14, padding:0, lineHeight:1 }}>✕</button>
+                                                color:"var(--text-muted)", fontSize:14, padding:0, lineHeight:1 }}>✕</button>
                                 )}
                             </div>
 
@@ -2146,13 +2079,13 @@ export default function App() {
                     )}
 
                     {loadingOrders ? (
-                        <div style={{ textAlign:"center", color:"#4a3a60", padding:48 }}>
+                        <div style={{ textAlign:"center", color:"var(--text-dimmer)", padding:48 }}>
                             <FontAwesomeIcon icon={faSpinner} spin style={{ fontSize:28, display:"block", margin:"0 auto 12px" }} />
                             Loading orders…
                         </div>
                     ) : displayList.length === 0 ? (
-                        <div className="modal-panel" style={{ background:"#1a1625", border:"1px solid #2e2050", borderRadius:16,
-                            padding:40, textAlign:"center", color:"#4a3a60" }}>
+                        <div className="modal-panel" style={{ background:"var(--bg-surface)", border:"1px solid var(--border-color)", borderRadius:16,
+                            padding:40, textAlign:"center", color:"var(--text-dimmer)" }}>
                             {bartenderTab === "live"
                                 ? statusFilter ? `No ${statusFilter.toLowerCase()} orders right now.` : "No active orders. Waiting for customers…"
                                 : hasDateFilter ? "No orders match this date range." : "No completed orders yet."}
@@ -2164,7 +2097,7 @@ export default function App() {
                                 return (
                                     /* ── ocard already has className ── */
                                     <div key={order.id} className="ocard" onClick={() => setSelectedOrder(order)}
-                                         style={{ background:"#1a1625", border:"1px solid #2e2050",
+                                         style={{ background:"var(--bg-surface)", border:"1px solid var(--border-color)",
                                              borderRadius:16, padding:14,
                                              opacity: order.status==="Delivered" ? 0.72 : 1 }}>
 
@@ -2178,12 +2111,12 @@ export default function App() {
                                                     </div>
                                                     {type !== "dine_in" && (
                                                         <span style={{ fontSize:9, fontWeight:700, letterSpacing:0.5, textTransform:"uppercase",
-                                                            padding:"2px 7px", borderRadius:7, background:"#2e2050", color:"#a78bfa", flexShrink:0 }}>
+                                                            padding:"2px 7px", borderRadius:7, background:"var(--border-color)", color:"#a78bfa", flexShrink:0 }}>
                                                         {type === "pickup" ? "Pickup" : "Delivery"}
                                                     </span>
                                                     )}
                                                 </div>
-                                                <div style={{ color:"#7a6a90", fontSize:12, marginTop:2 }}>
+                                                <div style={{ color:"var(--text-muted)", fontSize:12, marginTop:2 }}>
                                                     {type === "delivery" ? (
                                                         <>Delivery{order.customer_phone ? ` · ${order.customer_phone}` : ""}</>
                                                     ) : type === "pickup" ? (
@@ -2193,13 +2126,13 @@ export default function App() {
                                                     )}
                                                     {" · "}{new Date(order.created_at).toLocaleTimeString([], { hour:"2-digit", minute:"2-digit" })}
                                                     {bartenderTab === "history" && (
-                                                        <span style={{ color:"#4a3a60" }}>
+                                                        <span style={{ color:"var(--text-dimmer)" }}>
                                                         {" · "}{new Date(order.created_at).toLocaleDateString([], { day:"numeric", month:"short" })}
                                                     </span>
                                                     )}
                                                 </div>
                                                 {type === "delivery" && order.delivery_address && (
-                                                    <div style={{ fontSize:11, color:"#4a3a60", marginTop:2,
+                                                    <div style={{ fontSize:11, color:"var(--text-dimmer)", marginTop:2,
                                                         overflow:"hidden", textOverflow:"ellipsis", whiteSpace:"nowrap" }}>
                                                         {order.delivery_address}
                                                     </div>
@@ -2210,29 +2143,29 @@ export default function App() {
                                                 color:STATUS_COLOR[order.status], background:STATUS_BG[order.status] }}>
                                                 {order.status}
                                             </span>
-                                                <FontAwesomeIcon icon={faChevronRight} style={{ color:"#3a2a5e", fontSize:11 }} />
+                                                <FontAwesomeIcon icon={faChevronRight} style={{ color:"var(--text-dimmest)", fontSize:11 }} />
                                             </div>
                                         </div>
 
-                                        <div style={{ borderTop:"1px solid #2e2050", paddingTop:8, marginBottom:10 }}>
+                                        <div style={{ borderTop:"1px solid var(--border-color)", paddingTop:8, marginBottom:10 }}>
                                             {order.items.slice(0, 2).map((item, i) => (
                                                 <div key={i} style={{ display:"flex", justifyContent:"space-between",
                                                     fontSize:13, gap:8, marginBottom:3 }}>
-                                                <span style={{ color:"#a09abf", overflow:"hidden", textOverflow:"ellipsis", whiteSpace:"nowrap" }}>
+                                                <span style={{ color:"var(--text-secondary)", overflow:"hidden", textOverflow:"ellipsis", whiteSpace:"nowrap" }}>
                                                     {item.name}{item.variant ? ` · ${item.variant}` : ""} × {item.qty}
                                                 </span>
                                                     <span style={{ color:"#c9a84c", flexShrink:0 }}>GHC {item.price * item.qty}</span>
                                                 </div>
                                             ))}
                                             {order.items.length > 2 && (
-                                                <div style={{ fontSize:11, color:"#4a3a60", marginTop:2 }}>
+                                                <div style={{ fontSize:11, color:"var(--text-dimmer)", marginTop:2 }}>
                                                     +{order.items.length-2} more — tap to view all
                                                 </div>
                                             )}
                                         </div>
 
                                         <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center",
-                                            borderTop:"1px solid #2e2050", paddingTop:10, gap:8, flexWrap:"wrap" }}>
+                                            borderTop:"1px solid var(--border-color)", paddingTop:10, gap:8, flexWrap:"wrap" }}>
                                             <span style={{ fontWeight:700, color:"#c9a84c", fontSize:15 }}>GHC {order.total}</span>
                                             {STATUS_NEXT[order.status] && (
                                                 <button onClick={e => { e.stopPropagation(); updateStatus(order.id, STATUS_NEXT[order.status]); }}
@@ -2253,9 +2186,9 @@ export default function App() {
                 </div>
             )}
 
-            <footer style={{ textAlign:"center", padding:"20px 16px", borderTop:"1px solid #1e1a35", marginTop:8 }}>
-                <p style={{ margin:0, fontSize:11, color:"#3a2a5e", letterSpacing:1 }}>
-                    &copy; {new Date().getFullYear()} <span style={{ color:"#5a4a7e", fontWeight:600 }}>FervTech</span>. All rights reserved.
+            <footer style={{ textAlign:"center", padding:"20px 16px", borderTop:"1px solid var(--border-subtle)", marginTop:8 }}>
+                <p style={{ margin:0, fontSize:11, color:"var(--text-dimmest)", letterSpacing:1 }}>
+                    &copy; {new Date().getFullYear()} <span style={{ color:"var(--text-dim)", fontWeight:600 }}>FervTech</span>. All rights reserved.
                 </p>
             </footer>
         </div>
@@ -2268,9 +2201,9 @@ function NavBtn({ label, active, badge, onClick }) {
         <button onClick={onClick}
                 style={{ padding:"7px 13px", borderRadius:20, border:"1px solid", cursor:"pointer",
                     fontSize:12, position:"relative", flexShrink:0,
-                    borderColor: active ? "#c9a84c" : "#2e2050",
+                    borderColor: active ? "#c9a84c" : "var(--border-color)",
                     background:  active ? "#c9a84c18" : "transparent",
-                    color:       active ? "#c9a84c" : "#7a6a90" }}>
+                    color:       active ? "#c9a84c" : "var(--text-muted)" }}>
             {label}
             {badge > 0 && (
                 <span style={{ position:"absolute", top:-6, right:-6,
@@ -2288,7 +2221,7 @@ function QtyBtn({ children, onClick, accent, small }) {
     return (
         <button onClick={onClick}
                 style={{ width: small ? 26 : 32, height: small ? 26 : 32, borderRadius:8, border:"none",
-                    background: accent ? "#7c3aed" : "#2e2050", color:"#fff", cursor:"pointer",
+                    background: accent ? "#7c3aed" : "var(--border-color)", color:"#fff", cursor:"pointer",
                     fontSize: small ? 10 : 12, display:"flex", alignItems:"center",
                     justifyContent:"center", flexShrink:0 }}>
             {children}
@@ -2298,9 +2231,9 @@ function QtyBtn({ children, onClick, accent, small }) {
 
 function Chip({ label, value, gold }) {
     return (
-        <div className="modal-panel" style={{ background:"#1a1625", border:"1px solid #2e2050", borderRadius:10, padding:"8px 14px", fontSize:13 }}>
-            <span style={{ color:"#6b6080" }}>{label}: </span>
-            <strong style={{ color: gold ? "#c9a84c" : "#f5f0e8" }}>{value}</strong>
+        <div className="modal-panel" style={{ background:"var(--bg-surface)", border:"1px solid var(--border-color)", borderRadius:10, padding:"8px 14px", fontSize:13 }}>
+            <span style={{ color:"var(--text-faint)" }}>{label}: </span>
+            <strong style={{ color: gold ? "#c9a84c" : "var(--text-primary)" }}>{value}</strong>
         </div>
     );
 }
