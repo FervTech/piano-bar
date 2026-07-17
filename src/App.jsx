@@ -15,7 +15,7 @@ import {
     faChevronDown, faChevronUp, faFilter, faCalendarDays, faTimesCircle,faShrimp,faWandMagicSparkles,
     faReceipt, faChevronRight, faListUl, faHourglassHalf, faCog, faCheckDouble,faPizzaSlice,
     faChevronLeft, faDrumstickBite, faTag,faBowlFood,faBacon,faFireFlameCurved,faBolt, faLeaf, faStar, faFish, faSeedling, faUtensils,faMagnifyingGlass,
-    faBan, faSun, faMoon, faBagShopping, faTruck
+    faBan, faTriangleExclamation, faSun, faMoon, faBagShopping, faTruck, faPrint
 } from "@fortawesome/free-solid-svg-icons";
 import logo from "./assets/logo.svg";
 
@@ -391,7 +391,7 @@ function useToasts() {
 }
 
 /* ─────────────────────── ORDER DETAIL MODAL ────────────────────── */
-function OrderDetailModal({ order, onClose, onUpdateStatus }) {
+function OrderDetailModal({ order, onClose, onUpdateStatus, onPrintReceipt }) {
     if (!order) return null;
     const currentIdx = STATUSES.indexOf(order.status);
     const type = order.order_type || "dine_in";
@@ -518,13 +518,134 @@ function OrderDetailModal({ order, onClose, onUpdateStatus }) {
                             {STATUS_LABEL[order.status]}
                         </button>
                     ) : (
-                        <div style={{ textAlign:"center", color:"var(--text-dimmer)", fontSize:13, padding:"4px 0" }}>
-                            <FontAwesomeIcon icon={faCircleCheck} style={{ marginRight:6, color:"#15803d" }} />
-                            Order completed
-                        </div>
+                        <>
+                            <div style={{ textAlign:"center", color:"var(--text-dimmer)", fontSize:13, padding:"4px 0 12px" }}>
+                                <FontAwesomeIcon icon={faCircleCheck} style={{ marginRight:6, color:"#15803d" }} />
+                                Order completed
+                            </div>
+                            {onPrintReceipt && (
+                                <button onClick={() => onPrintReceipt(order)}
+                                        style={{ width:"100%", padding:14, borderRadius:12, border:"1px solid var(--border-color)",
+                                            cursor:"pointer", fontSize:14, fontWeight:700, background:"transparent",
+                                            color:"var(--text-primary)", display:"flex", alignItems:"center",
+                                            justifyContent:"center", gap:8 }}>
+                                    <FontAwesomeIcon icon={faPrint} /> Print receipt
+                                </button>
+                            )}
+                        </>
                     )}
                 </div>
             </div>
+        </div>
+    );
+}
+
+/* ─────────────────────── RECEIPT MODAL ─────────────────────────── */
+/* Printable order receipt. Always light-on-white regardless of the app's
+   theme — like the printed QR table cards, this is a physical artifact
+   meant to go on paper, not a themed UI surface. */
+function ReceiptModal({ order, restaurant, onClose }) {
+    if (!order) return null;
+    const type = order.order_type || "dine_in";
+    const itemsTotal = order.items.reduce((s, i) => s + i.price * i.qty, 0);
+    return (
+        <div onClick={e => e.target === e.currentTarget && onClose()}
+             className="no-print-backdrop"
+             style={{ position:"fixed", inset:0, background:"rgba(0,0,0,0.82)", zIndex:800,
+                 display:"flex", alignItems:"center", justifyContent:"center", padding:16 }}>
+            <div style={{ width:"100%", maxWidth:360, maxHeight:"92vh", display:"flex", flexDirection:"column" }}>
+                <div className="receipt-print" style={{ background:"#fff", color:"#111", borderRadius:12,
+                    padding:"24px 22px", fontFamily:"'Courier New', Courier, monospace",
+                    overflowY:"auto", maxHeight:"calc(92vh - 60px)" }}>
+
+                    <div style={{ textAlign:"center", marginBottom:14 }}>
+                        <div style={{ fontSize:16, fontWeight:700, letterSpacing:1 }}>
+                            {restaurant?.brand_name || restaurant?.name || "CRAVORD"}
+                        </div>
+                        <div style={{ fontSize:10, color:"#555", letterSpacing:2, marginTop:2 }}>ORDER RECEIPT</div>
+                    </div>
+
+                    <div style={{ borderTop:"1px dashed #999", borderBottom:"1px dashed #999", padding:"10px 0", marginBottom:12, fontSize:12 }}>
+                        <div style={{ display:"flex", justifyContent:"space-between", marginBottom:3 }}>
+                            <span>Order #</span><span>{String(order.id).slice(-5).toUpperCase()}</span>
+                        </div>
+                        <div style={{ display:"flex", justifyContent:"space-between", marginBottom:3 }}>
+                            <span>Date</span>
+                            <span>{new Date(order.created_at).toLocaleString([], { day:"numeric", month:"short", year:"numeric", hour:"2-digit", minute:"2-digit" })}</span>
+                        </div>
+                        <div style={{ display:"flex", justifyContent:"space-between", marginBottom:3 }}>
+                            <span>Type</span>
+                            <span>{type === "dine_in" ? `Dine-in · Table ${order.table_no}` : type === "pickup" ? "Pickup" : "Delivery"}</span>
+                        </div>
+                        <div style={{ display:"flex", justifyContent:"space-between" }}>
+                            <span>Guest</span><span>{order.guest_name || "Guest"}</span>
+                        </div>
+                        {order.customer_phone && (
+                            <div style={{ display:"flex", justifyContent:"space-between", marginTop:3 }}>
+                                <span>Phone</span><span>{order.customer_phone}</span>
+                            </div>
+                        )}
+                        {type === "delivery" && order.delivery_address && (
+                            <div style={{ marginTop:3 }}>
+                                <div>Address:</div>
+                                <div style={{ color:"#333" }}>{order.delivery_address}{order.delivery_notes ? ` — ${order.delivery_notes}` : ""}</div>
+                            </div>
+                        )}
+                    </div>
+
+                    <div style={{ fontSize:12, marginBottom:10 }}>
+                        {order.items.map((item, i) => (
+                            <div key={i} style={{ marginBottom:8 }}>
+                                <div style={{ display:"flex", justifyContent:"space-between", fontWeight:700 }}>
+                                    <span style={{ maxWidth:220 }}>{item.qty} × {item.name}{item.variant ? ` (${item.variant})` : ""}</span>
+                                    <span>{(item.price * item.qty).toFixed(2)}</span>
+                                </div>
+                                {item.opts?.length > 0 && (
+                                    <div style={{ color:"#555", fontSize:11 }}>{item.opts.join(", ")}</div>
+                                )}
+                                {item.note && <div style={{ color:"#555", fontSize:11 }}>Note: {item.note}</div>}
+                            </div>
+                        ))}
+                    </div>
+
+                    <div style={{ borderTop:"1px dashed #999", paddingTop:10, fontSize:13 }}>
+                        <div style={{ display:"flex", justifyContent:"space-between", marginBottom:4 }}>
+                            <span>Subtotal</span><span>GHC {itemsTotal.toFixed(2)}</span>
+                        </div>
+                        <div style={{ display:"flex", justifyContent:"space-between", fontWeight:700, fontSize:16 }}>
+                            <span>Total</span><span>GHC {Number(order.total).toFixed(2)}</span>
+                        </div>
+                    </div>
+
+                    <div style={{ textAlign:"center", marginTop:18, fontSize:11, color:"#666" }}>
+                        Thank you for your order!
+                        <div style={{ marginTop:4, letterSpacing:1 }}>Powered by FervTech / Cravord</div>
+                    </div>
+                </div>
+
+                <div className="no-print" style={{ display:"flex", gap:8, marginTop:10 }}>
+                    <button onClick={() => window.print()}
+                            style={{ flex:1, padding:"12px", borderRadius:10, border:"none", cursor:"pointer",
+                                background:"linear-gradient(135deg,#7c3aed,#5b21b6)", color:"#fff",
+                                fontSize:14, fontWeight:700, display:"flex", alignItems:"center", justifyContent:"center", gap:8 }}>
+                        <FontAwesomeIcon icon={faPrint} /> Print
+                    </button>
+                    <button onClick={onClose}
+                            style={{ padding:"12px 18px", borderRadius:10, border:"1px solid var(--border-color)",
+                                background:"var(--bg-surface)", color:"var(--text-primary)", cursor:"pointer", fontSize:14, fontWeight:600 }}>
+                        Close
+                    </button>
+                </div>
+            </div>
+
+            <style>{`
+                @media print {
+                    body * { visibility: hidden; }
+                    .receipt-print, .receipt-print * { visibility: visible; }
+                    .receipt-print { position: fixed; inset: 0; max-height: none !important; border-radius: 0; padding: 20px; }
+                    .no-print, .no-print-backdrop { background: transparent !important; }
+                }
+            `}</style>
         </div>
     );
 }
@@ -908,6 +1029,7 @@ export default function App() {
     const [submitting, setSubmitting]       = useState(false);
     const [loadingOrders, setLoadingOrders] = useState(false);
     const [selectedOrder, setSelectedOrder] = useState(null);
+    const [receiptOrder, setReceiptOrder]   = useState(null);
     const [historyDateFrom, setHistoryDateFrom] = useState("");
     const [historyDateTo,   setHistoryDateTo]   = useState("");
     const [showFilters, setShowFilters]         = useState(false);
@@ -1396,7 +1518,9 @@ export default function App() {
                 ))}
             </div>
 
-            <OrderDetailModal order={selectedOrder} onClose={() => setSelectedOrder(null)} onUpdateStatus={updateStatus} />
+            <OrderDetailModal order={selectedOrder} onClose={() => setSelectedOrder(null)} onUpdateStatus={updateStatus}
+                              onPrintReceipt={(o) => { setSelectedOrder(null); setReceiptOrder(o); }} />
+            <ReceiptModal order={receiptOrder} restaurant={restaurant} onClose={() => setReceiptOrder(null)} />
 
             {/* ════════ NAV ════════ */}
             <nav style={{
@@ -2167,7 +2291,7 @@ export default function App() {
                                         <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center",
                                             borderTop:"1px solid var(--border-color)", paddingTop:10, gap:8, flexWrap:"wrap" }}>
                                             <span style={{ fontWeight:700, color:"#c9a84c", fontSize:15 }}>GHC {order.total}</span>
-                                            {STATUS_NEXT[order.status] && (
+                                            {STATUS_NEXT[order.status] ? (
                                                 <button onClick={e => { e.stopPropagation(); updateStatus(order.id, STATUS_NEXT[order.status]); }}
                                                         style={{ padding:"7px 14px", borderRadius:10, border:"none", cursor:"pointer",
                                                             fontSize:12, fontWeight:600, display:"flex", alignItems:"center", gap:5,
@@ -2175,6 +2299,13 @@ export default function App() {
                                                             background:STATUS_BG[STATUS_NEXT[order.status]] }}>
                                                     <FontAwesomeIcon icon={STATUS_ICON[order.status]} />
                                                     {STATUS_LABEL[order.status]}
+                                                </button>
+                                            ) : order.status === "Delivered" && (
+                                                <button onClick={e => { e.stopPropagation(); setReceiptOrder(order); }}
+                                                        style={{ padding:"7px 14px", borderRadius:10, border:"1px solid var(--border-color)", cursor:"pointer",
+                                                            fontSize:12, fontWeight:600, display:"flex", alignItems:"center", gap:5,
+                                                            color:"var(--text-primary)", background:"transparent" }}>
+                                                    <FontAwesomeIcon icon={faPrint} /> Receipt
                                                 </button>
                                             )}
                                         </div>
