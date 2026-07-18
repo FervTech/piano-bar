@@ -1630,7 +1630,7 @@ export default function App() {
                                         <div style={{ fontSize:10, letterSpacing:4, textTransform:"uppercase",
                                             color:"var(--text-muted)", marginBottom:10 }}>Welcome to</div>
                                         <h1 className="wc-title" style={{ margin:0, lineHeight:1.15,
-                                            fontSize:"clamp(28px, 8vw, 40px)", color:"#f5e9c8", wordBreak:"break-word" }}>
+                                            fontSize:"clamp(28px, 8vw, 40px)", color:"#c9a84c", wordBreak:"break-word" }}>
                                             {restaurant?.brand_name || restaurant?.name || "Cravord"}
                                         </h1>
                                     </div>
