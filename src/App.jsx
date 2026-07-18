@@ -619,7 +619,7 @@ function ReceiptModal({ order, restaurant, onClose }) {
 
                     <div style={{ textAlign:"center", marginTop:18, fontSize:11, color:"#666" }}>
                         Thank you for your order!
-                        <div style={{ marginTop:4, letterSpacing:1 }}>Powered by FervTech / Cravord</div>
+                        <div style={{ marginTop:4, letterSpacing:1 }}>Powered by Cravord</div>
                     </div>
                 </div>
 
@@ -2319,7 +2319,7 @@ export default function App() {
 
             <footer style={{ textAlign:"center", padding:"20px 16px", borderTop:"1px solid var(--border-subtle)", marginTop:8 }}>
                 <p style={{ margin:0, fontSize:11, color:"var(--text-dimmest)", letterSpacing:1 }}>
-                    &copy; {new Date().getFullYear()} <span style={{ color:"var(--text-dim)", fontWeight:600 }}>FervTech</span>. All rights reserved.
+                    &copy; {new Date().getFullYear()} <span style={{ color:"var(--text-dim)", fontWeight:600 }}>FervTech</span>. All rights reserved. Powered by <span style={{ color:"var(--text-dim)", fontWeight:600 }}>Cravord</span>.
                 </p>
             </footer>
         </div>
