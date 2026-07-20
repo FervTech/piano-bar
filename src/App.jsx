@@ -3,7 +3,7 @@
  * npm install @supabase/supabase-js bcryptjs @fortawesome/react-fontawesome @fortawesome/free-solid-svg-icons @fortawesome/fontawesome-svg-core
  */
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { createClient } from "@supabase/supabase-js";
 import bcrypt from "bcryptjs";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -1486,6 +1486,29 @@ export default function App() {
                 .type-card:active { transform:scale(0.98); }
                 .input-row { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:12px; }
 
+                /* ── Sub-category scroll rail arrows: hidden until there is
+                     room to scroll in that direction ── */
+                .subrail-wrap { position:relative; }
+                .subrail-arrow {
+                    position:absolute; top:50%; transform:translateY(-50%);
+                    width:30px; height:30px; border-radius:50%; z-index:5;
+                    border:1px solid var(--border-color); background:var(--bg-surface);
+                    color:var(--text-primary); cursor:pointer; display:flex;
+                    align-items:center; justify-content:center; font-size:12px;
+                    box-shadow:0 2px 10px rgba(0,0,0,0.25);
+                    opacity:0; pointer-events:none; transition:opacity 0.15s ease;
+                }
+                .subrail-arrow.is-visible { opacity:1; pointer-events:auto; }
+                .subrail-arrow.left  { left:-4px; }
+                .subrail-arrow.right { right:-4px; }
+                .subrail-fade {
+                    position:absolute; top:0; bottom:6px; width:28px; z-index:4;
+                    pointer-events:none; opacity:0; transition:opacity 0.15s ease;
+                }
+                .subrail-fade.is-visible { opacity:1; }
+                .subrail-fade.left  { left:0; background:linear-gradient(90deg, var(--bg-page), transparent); }
+                .subrail-fade.right { right:0; background:linear-gradient(270deg, var(--bg-page), transparent); }
+
                 /* ── Welcome screen: restrained entrance + a display face for any tenant's name ── */
                 @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&display=swap');
                 .wc-title { font-family:'Fraunces', Georgia, serif; font-weight:600; }
@@ -1840,23 +1863,11 @@ export default function App() {
                                     </div>
 
                                     {activeCategory.subcategories.length > 1 && (
-                                        <div style={{ display:"flex", gap:6, overflowX:"auto", paddingBottom:6,
-                                            marginBottom:16, WebkitOverflowScrolling:"touch" }}>
-                                            {activeCategory.subcategories.map(sub => {
-                                                const isSub = activeSubcategory === sub.id;
-                                                return (
-                                                    <button key={sub.id} onClick={() => setActiveSubcategory(sub.id)}
-                                                            style={{ padding:"8px 14px", borderRadius:20, border:"1px solid",
-                                                                whiteSpace:"nowrap", cursor:"pointer", fontSize:13,
-                                                                display:"flex", alignItems:"center", gap:6, flexShrink:0,
-                                                                borderColor: isSub ? "#c9a84c" : "var(--border-color)",
-                                                                background:  isSub ? "#c9a84c18" : "transparent",
-                                                                color:       isSub ? "#c9a84c" : "var(--text-muted)" }}>
-                                                        <FontAwesomeIcon icon={sub.icon} /><span>{sub.label}</span>
-                                                    </button>
-                                                );
-                                            })}
-                                        </div>
+                                        <SubcategoryRail
+                                            subcategories={activeCategory.subcategories}
+                                            activeSubcategory={activeSubcategory}
+                                            onSelect={setActiveSubcategory}
+                                        />
                                     )}
 
                                     {activeCategory.subcategories
@@ -2322,6 +2333,90 @@ export default function App() {
                     &copy; {new Date().getFullYear()} <span style={{ color:"var(--text-dim)", fontWeight:600 }}>FervTech</span>. All rights reserved. Powered by <span style={{ color:"var(--text-dim)", fontWeight:600 }}>Cravord</span>.
                 </p>
             </footer>
+        </div>
+    );
+}
+
+/* ─────────────────────── SUBCATEGORY SCROLL RAIL ─────────────────
+   The pill row of sections within a category. Horizontally scrollable
+   on its own, plus optional left/right arrow buttons for pointer/desktop
+   users. Each arrow only shows once there's actually room to scroll in
+   that direction — the left arrow stays hidden until the user has
+   scrolled right at least a little, and the right arrow hides once
+   they've reached the end. */
+function SubcategoryRail({ subcategories, activeSubcategory, onSelect }) {
+    const scrollerRef = useRef(null);
+    const [canScrollLeft, setCanScrollLeft]   = useState(false);
+    const [canScrollRight, setCanScrollRight] = useState(false);
+
+    const updateScrollState = useCallback(() => {
+        const el = scrollerRef.current;
+        if (!el) return;
+        const maxScroll = el.scrollWidth - el.clientWidth;
+        setCanScrollLeft(el.scrollLeft > 4);
+        setCanScrollRight(el.scrollLeft < maxScroll - 4);
+    }, []);
+
+    useEffect(() => {
+        updateScrollState();
+        const el = scrollerRef.current;
+        if (!el) return;
+        const onScroll = () => updateScrollState();
+        el.addEventListener("scroll", onScroll, { passive: true });
+        const onResize = () => updateScrollState();
+        window.addEventListener("resize", onResize);
+        return () => {
+            el.removeEventListener("scroll", onScroll);
+            window.removeEventListener("resize", onResize);
+        };
+        // re-check whenever the set of sections changes (new category)
+    }, [updateScrollState, subcategories]);
+
+    const scrollByAmount = (dir) => {
+        const el = scrollerRef.current;
+        if (!el) return;
+        el.scrollBy({ left: dir * Math.round(el.clientWidth * 0.7), behavior: "smooth" });
+    };
+
+    return (
+        <div className="subrail-wrap" style={{ marginBottom:16 }}>
+            <div className={`subrail-fade left ${canScrollLeft ? "is-visible" : ""}`} />
+            <div className={`subrail-fade right ${canScrollRight ? "is-visible" : ""}`} />
+
+            <button type="button"
+                    className={`subrail-arrow left ${canScrollLeft ? "is-visible" : ""}`}
+                    onClick={() => scrollByAmount(-1)}
+                    aria-hidden={!canScrollLeft}
+                    tabIndex={canScrollLeft ? 0 : -1}>
+                <FontAwesomeIcon icon={faChevronLeft} />
+            </button>
+
+            <div ref={scrollerRef}
+                 style={{ display:"flex", gap:6, overflowX:"auto", paddingBottom:6,
+                     WebkitOverflowScrolling:"touch" }}>
+                {subcategories.map(sub => {
+                    const isSub = activeSubcategory === sub.id;
+                    return (
+                        <button key={sub.id} onClick={() => onSelect(sub.id)}
+                                style={{ padding:"8px 14px", borderRadius:20, border:"1px solid",
+                                    whiteSpace:"nowrap", cursor:"pointer", fontSize:13,
+                                    display:"flex", alignItems:"center", gap:6, flexShrink:0,
+                                    borderColor: isSub ? "#c9a84c" : "var(--border-color)",
+                                    background:  isSub ? "#c9a84c18" : "transparent",
+                                    color:       isSub ? "#c9a84c" : "var(--text-muted)" }}>
+                            <FontAwesomeIcon icon={sub.icon} /><span>{sub.label}</span>
+                        </button>
+                    );
+                })}
+            </div>
+
+            <button type="button"
+                    className={`subrail-arrow right ${canScrollRight ? "is-visible" : ""}`}
+                    onClick={() => scrollByAmount(1)}
+                    aria-hidden={!canScrollRight}
+                    tabIndex={canScrollRight ? 0 : -1}>
+                <FontAwesomeIcon icon={faChevronRight} />
+            </button>
         </div>
     );
 }
